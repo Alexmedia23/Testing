@@ -9,7 +9,7 @@ global.socialm = "GitHub: Alexmedia23"
 global.location = "Nigeria"
 
 global.ownername = 'JOSHUA' //owner name
-global.botname = 'JOSH-MD' //name of the bot
+global.botname = 'JOSH' //name of the bot
 
 //sticker details
 global.stickername = '𓆩‎✘JOSHUA✘𓆪_✰'
