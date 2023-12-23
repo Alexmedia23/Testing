@@ -1520,7 +1520,7 @@ const txt = `╭━──═❮ *${botname}* ❯═─┈•
 ┃┃ Version: 1.2.0
 ┃┃ Prefix:- ${prefix}
 ┃┃ MODE :- private 
-┃┃ Time :- ${tine}
+┃┃ Time :12:30
 ┃╰━━━━━━━━━━━━━
 ┠┌─═❮ *GENERAL* ❯═─┈•
 ┃│◦ MENU
