@@ -1515,7 +1515,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
             case 'menu': case 'help':
 const txt = `╭━──═❮ *${botname}* ❯═─┈•
 ┃╭━━━━━━━━━━━━━━
-┃┃ User :- ${pushnane}
+┃┃ User :- ${pushname}
 ┃┃ Owner :- ${owner}
 ┃┃ Version: 1.2.0
 ┃┃ Prefix:- ${prefix}
