@@ -1519,7 +1519,7 @@ const txt = `╭━──═❮ *${botname}* ❯═─┈•
 ┃┃ Owner :- ${owner}
 ┃┃ Version: 1.2.0
 ┃┃ Prefix:- ${prefix}
-┃┃ MODE :- ${mode}
+┃┃ MODE :- private 
 ┃┃ Time :- ${tine}
 ┃╰━━━━━━━━━━━━━
 ┠┌─═❮ *GENERAL* ❯═─┈•
