@@ -1,8 +1,8 @@
-<a href="https://ibb.co/pQNpmwN"><img src="https://i.ibb.co/xYwQ4Lw/cheemspic.jpg" alt="joshbot-Md" border="0"></a>
-<h1 align="center">⭐joshbot-Md⭐<br></h1>
+<a href="https://ibb.co/pQNpmwN"><img src="https://i.ibb.co/xYwQ4Lw/cheemspic.jpg" alt="Joshbot-Md" border="0"></a>
+<h1 align="center">⭐Joshbot-Md⭐<br></h1>
 
 <p align="center"> 
-  Konochiwa Senpai, I am "joshbot md " a WhatsApp bot made by Joshua to do everything that is possible on WhatsApp based on WhatsApp Multi Device(MD) Support.
+  Konochiwa Senpai, I am "Joshbot md " a WhatsApp bot made by Joshua to do everything that is possible on WhatsApp based on WhatsApp Multi Device(MD) Support.
 </p>
 </br>
 
@@ -29,7 +29,7 @@
 
 # Setup For Deployment 👇
 
-- FORK THE REPOSITORY [Here](https://github.com/Joshua-PANDEY023/joshbot-Md/fork)
+- FORK THE REPOSITORY [Here](https://github.com/Joshua-PANDEY023/Joshbot-Md/fork)
 
 
 ## ` Pair with WhatsApp`
@@ -45,7 +45,7 @@
 
 
 
-<a href="https://heroku.com/deploy?template=https://github.com/Joshua-PANDEY023/joshbot-Md">
+<a href="https://heroku.com/deploy?template=https://github.com/Joshua-PANDEY023/Joshbot-Md">
     <img src="https://www.herokucdn.com/deploy/button.png" width="160px" alt="Deploy on Heroku" >
     </a>
 
@@ -112,9 +112,9 @@ pkg install yarn
 
 pkg install imagemagick -y
 
-git clone https://github.com/Joshua-PANDEY023/joshbot-Md
+git clone https://github.com/Joshua-PANDEY023/Joshbot-Md
 
-cd joshbot-Md
+cd Joshbot-Md
 
 rm -rf session
 
