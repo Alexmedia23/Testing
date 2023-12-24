@@ -33,7 +33,7 @@ let hit = JSON.parse(fs.readFileSync('./Gallery/database/total-hit-user.json'))
 
 //time
 const replay = (teks) => {
-    joshbot.sendMessage(m.chat, { text: teks }, { quoted: m })
+    Joshbot.sendMessage(m.chat, { text: teks }, { quoted: m })
 }
 const xtime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
 const xdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
@@ -56,7 +56,7 @@ if (time2 < "11:00:00") {
 if (time2 < "05:00:00") {
     var Joshuaytimewisher = `Good Morning 🌄`
 }
-module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
+module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
     try {
         const {
             type,
@@ -73,7 +73,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
         const args = body.trim().split(/ +/).slice(1)
         const full_args = body.replace(command, '').slice(1).trim()
         const pushname = m.pushName || "No Name"
-        const botNumber = await joshbot.decodeJid(joshbot.user.id)
+        const botNumber = await Joshbot.decodeJid(Joshbot.user.id)
         const itsMe = m.sender == botNumber ? true : false
         const sender = m.sender
         const text = q = args.join(" ")
@@ -100,7 +100,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
         const sticker = []
         const isAfkOn = afk.checkAfkUser(m.sender, _afk)
         const isGroup = m.key.remoteJid.endsWith('@g.us')
-        const groupMetadata = m.isGroup ? await joshbot.groupMetadata(m.chat).catch(e => { }) : ''
+        const groupMetadata = m.isGroup ? await Joshbot.groupMetadata(m.chat).catch(e => { }) : ''
         const groupName = m.isGroup ? groupMetadata.subject : ''
         const participants = m.isGroup ? await groupMetadata.participants : ''
         const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
@@ -114,7 +114,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
         const AntiLinkAll = m.isGroup ? ntilinkall.includes(from) : false
         //group chat msg by Joshua
         const reply = (teks) => {
-            joshbot.sendMessage(m.chat,
+            Joshbot.sendMessage(m.chat,
                 {
                     text: teks,
                     contextInfo: {
@@ -133,57 +133,57 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 "《 ████████████》100%",
                 "Done ✅️"
             ]
-            let { key } = await joshbot.sendMessage(from, { text: 'ʟᴏᴀᴅɪɴɢ...' })
+            let { key } = await Joshbot.sendMessage(from, { text: 'ʟᴏᴀᴅɪɴɢ...' })
 
             for (let i = 0; i < Joshualod.length; i++) {
-                await joshbot.sendMessage(from, { text: Joshualod[i], edit: key });
+                await Joshbot.sendMessage(from, { text: Joshualod[i], edit: key });
             }
         }
 
-        if (!joshbot.public) {
+        if (!Joshbot.public) {
             if (!isCreator && !m.key.fromMe) return
         }
         if (autoread) {
-            joshbot.readMessages([m.key])
+            Joshbot.readMessages([m.key])
         }
         if (global.autoTyping) {
 
-            joshbot.sendPresenceUpdate('composing', from)
+            Joshbot.sendPresenceUpdate('composing', from)
 
 
         }
 
         if (global.autoRecording) {
 
-            joshbot.sendPresenceUpdate('recording', from)
+            Joshbot.sendPresenceUpdate('recording', from)
 
         }
 
 
         //bot number online status, available=online, unavailable=offline
-        joshbot.sendPresenceUpdate('unavailable', from)
+        Joshbot.sendPresenceUpdate('unavailable', from)
 
         if (global.autorecordtype) {
             let Joshuarecordin = ['recording', 'composing']
 
             let Joshuarecordinfinal = Joshuarecordin[Math.floor(Math.random() * Joshuarecordin.length)]
 
-            joshbot.sendPresenceUpdate(Joshuarecordinfinal, from)
+            Joshbot.sendPresenceUpdate(Joshuarecordinfinal, from)
 
         }
 
         if (autobio) {
-            joshbot.updateProfileStatus(`Hey,joshbot-Md is here to inspire and lead, thanks to Joshua Botz, Inc. ${runtime(process.uptime())} `).catch(_ => _)
+            Joshbot.updateProfileStatus(`Hey,Joshbot-Md is here to inspire and lead, thanks to Joshua Botz, Inc. ${runtime(process.uptime())} `).catch(_ => _)
         }
         if (m.sender.startsWith('212') && global.anti212 === true) {
-            return joshbot.updateBlockStatus(m.sender, 'block')
+            return Joshbot.updateBlockStatus(m.sender, 'block')
         }
 
         let list = []
         for (let i of owner) {
             list.push({
-                displayName: await joshbot.getName(i),
-                vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await joshbot.getName(i)}\nFN:${await joshbot.getName(i)}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Click here to chat\nitem2.EMAIL;type=INTERNET:${ytname}\nitem2.X-ABLabel:YouTube\nitem3.URL:${socialm}\nitem3.X-ABLabel:GitHub\nitem4.ADR:;;${location};;;;\nitem4.X-ABLabel:Region\nEND:VCARD`
+                displayName: await Joshbot.getName(i),
+                vcard: `BEGIN:VCARD\nVERSION:3.0\nN:${await Joshbot.getName(i)}\nFN:${await Joshbot.getName(i)}\nitem1.TEL;waid=${i}:${i}\nitem1.X-ABLabel:Click here to chat\nitem2.EMAIL;type=INTERNET:${ytname}\nitem2.X-ABLabel:YouTube\nitem3.URL:${socialm}\nitem3.X-ABLabel:GitHub\nitem4.ADR:;;${location};;;;\nitem4.X-ABLabel:Region\nEND:VCARD`
             })
         }
 
@@ -228,7 +228,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 let heheh = ms(getTime)
                 _afk.splice(afk.getAfkPosition(m.sender, _afk), 1)
                 fs.writeFileSync('./Gallery/database/afk-user.json', JSON.stringify(_afk))
-                joshbot.sendTextWithMentions(m.chat, `@${m.sender.split('@')[0]} have returned from afk`, m)
+                Joshbot.sendTextWithMentions(m.chat, `@${m.sender.split('@')[0]} have returned from afk`, m)
             }
         }
 
@@ -250,7 +250,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (isAdmins) return m.reply(bvl)
                 if (m.key.fromMe) return m.reply(bvl)
                 if (isCreator) return m.reply(bvl)
-                await joshbot.sendMessage(m.chat,
+                await Joshbot.sendMessage(m.chat,
                     {
                         delete: {
                             remoteJid: m.chat,
@@ -259,8 +259,8 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                             participant: m.key.participant
                         }
                     })
-                joshbot.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
-                joshbot.sendMessage(from, { text: `\`\`\`「 Link Detected 」\`\`\`\n\n@${m.sender.split("@")[0]} Has been kicked because of sending link in this group`, contextInfo: { mentionedJid: [m.sender] } }, { quoted: m })
+                Joshbot.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
+                Joshbot.sendMessage(from, { text: `\`\`\`「 Link Detected 」\`\`\`\n\n@${m.sender.split("@")[0]} Has been kicked because of sending link in this group`, contextInfo: { mentionedJid: [m.sender] } }, { quoted: m })
             } else {
             }
 
@@ -274,13 +274,13 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     ntilinkall.push(from)
                     fs.writeFileSync('./Gallery/database/antilink.json', JSON.stringify(ntilinkall))
                     reply('Success in turning on all antilink in this group')
-                    var groupe = await joshbot.groupMetadata(from)
+                    var groupe = await Joshbot.groupMetadata(from)
                     var members = groupe['participants']
                     var mems = []
                     members.map(async adm => {
                         mems.push(adm.id.replace('c.us', 's.whatsapp.net'))
                     })
-                    joshbot.sendMessage(from, { text: `\`\`\`「 ⚠️Warning⚠️ 」\`\`\`\n\nIf you're not an admin, don't send any link in this group or u will be kicked immediately!`, contextInfo: { mentionedJid: mems } }, { quoted: m })
+                    Joshbot.sendMessage(from, { text: `\`\`\`「 ⚠️Warning⚠️ 」\`\`\`\n\nIf you're not an admin, don't send any link in this group or u will be kicked immediately!`, contextInfo: { mentionedJid: mems } }, { quoted: m })
                 } else if (args[0] === "off") {
                     if (!AntiLinkAll) return reply('Already deactivated')
                     let off = ntilinkall.indexOf(from)
@@ -328,7 +328,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     if (!isUrl(args[0]) && !args[0].includes('whatsapp.com')) return reply('Link Invalid!')
                     reply(mess.wait)
                     let result = args[0].split('https://chat.whatsapp.com/')[1]
-                    await joshbot.groupAcceptInvite(result).then((res) => reply(json(res))).catch((err) => reply(json(err)))
+                    await Joshbot.groupAcceptInvite(result).then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 } catch {
                     reply('Failed to join the Group')
                 }
@@ -337,7 +337,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!isCreator) return reply(mess.owner)
                 reply('Wait a moment, currently retrieving your session file')
                 let sesi = await fs.readFileSync('./session/creds.json')
-                joshbot.sendMessage(m.chat, {
+                Joshbot.sendMessage(m.chat, {
                     document: sesi,
                     mimetype: 'application/json',
                     fileName: 'creds.json'
@@ -426,10 +426,12 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!isCreator) return reply(mess.owner)
                 if (args.length < 1) return reply(` Check out this example: ${prefix + command} in public/self`)
                 if (q == 'public') {
-                    joshbot.public = true
+                    Joshbot.public = true
                     reply(mess.done)
+        
+        
                 } else if (q == 'self') {
-                    joshbot.public = false
+                    Joshbot.public = false
                     reply(mess.done)
                 }
                 break
@@ -447,12 +449,12 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!quoted) return reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (!/image/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (/webp/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
-                var medis = await joshbot.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
+                var medis = await Joshbot.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
                 if (args[0] == 'full') {
                     var {
                         img
                     } = await generateProfilePicture(medis)
-                    await joshbot.query({
+                    await Joshbot.query({
                         tag: 'iq',
                         attrs: {
                             to: botNumber,
@@ -470,7 +472,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     fs.unlinkSync(medis)
                     reply(mess.done)
                 } else {
-                    var memeg = await joshbot.updateProfilePicture(botNumber, {
+                    var memeg = await Joshbot.updateProfilePicture(botNumber, {
                         url: medis
                     })
                     fs.unlinkSync(medis)
@@ -480,31 +482,31 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
             case 'block':
                 if (!isCreator) return reply(mess.owner)
                 let blockw = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                await joshbot.updateBlockStatus(blockw, 'block').then((res) => reply(json(res))).catch((err) => reply(json(err)))
+                await Joshbot.updateBlockStatus(blockw, 'block').then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 break
             case 'unblock':
                 if (!isCreator) return reply(mess.owner)
                 let blockww = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                await joshbot.updateBlockStatus(blockww, 'unblock').then((res) => reply(json(res))).catch((err) => reply(json(err)))
+                await Joshbot.updateBlockStatus(blockww, 'unblock').then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 break
             case 'leave':
                 if (!isCreator) return reply(mess.owner)
                 if (!m.isGroup) return reply(mess.group)
                 reply('🟨Bye Everyone 🥺')
-                await joshbot.groupLeave(m.chat)
+                await Joshbot.groupLeave(m.chat)
                 break
             case 'bcgc':
             case 'bcgroup': {
                 if (!isCreator) return reply(mess.owner)
                 if (!text) return reply(`Which text?\n\nExample : ${prefix + command} It's holiday tomorrow `)
-                let getGroups = await joshbot.groupFetchAllParticipating()
+                let getGroups = await Joshbot.groupFetchAllParticipating()
                 let groups = Object.entries(getGroups).slice(0).map(entry => entry[1])
                 let anu = groups.map(v => v.id)
                 reply(`Send Broadcast To ${anu.length} Group Chat, End Time ${anu.length * 1.5} second`)
                 for (let i of anu) {
                     await sleep(1500)
                     let a = '```' + `\n\n${text}\n\n` + '```' + '\n\n\nʙʀᴏᴀᴅᴄᴀsᴛ'
-                    joshbot.sendMessage(i, {
+                    Joshbot.sendMessage(i, {
                         text: a,
                         contextInfo: {
                             externalAdReply: {
@@ -540,7 +542,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     isBaileys
                 } = m.quoted
                 if (!isBaileys) return reply('The message was not sent by the bot!')
-                joshbot.sendMessage(m.chat, {
+                Joshbot.sendMessage(m.chat, {
                     delete: {
                         remoteJid: m.chat,
                         fromMe: true,
@@ -571,7 +573,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 setTimeout(() => {
                     var nomor = m.participant
                     const close = `*Closed* group closed by admin\nnow only admin can send messages`
-                    joshbot.groupSettingUpdate(m.chat, 'announcement')
+                    Joshbot.groupSettingUpdate(m.chat, 'announcement')
                     reply(close)
                 }, timer)
                 break
@@ -595,7 +597,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 setTimeout(() => {
                     var nomor = m.participant
                     const open = `*Opened* The group is opened by admin\nNow members can send messages`
-                    joshbot.groupSettingUpdate(m.chat, 'not_announcement')
+                    Joshbot.groupSettingUpdate(m.chat, 'not_announcement')
                     reply(open)
                 }, timer)
                 break
@@ -604,28 +606,28 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
                 if (!isBotAdmins) return reply(mess.botAdmin)
                 let blockwww = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                await joshbot.groupParticipantsUpdate(m.chat, [blockwww], 'remove').then((res) => reply(json(res))).catch((err) => reply(json(err)))
+                await Joshbot.groupParticipantsUpdate(m.chat, [blockwww], 'remove').then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 break
             case 'add':
                 if (!m.isGroup) return reply(mess.group)
                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
                 if (!isBotAdmins) return reply(mess.botAdmin)
                 let blockwwww = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                await joshbot.groupParticipantsUpdate(m.chat, [blockwwww], 'add').then((res) => reply(json(res))).catch((err) => reply(json(err)))
+                await Joshbot.groupParticipantsUpdate(m.chat, [blockwwww], 'add').then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 break
             case 'promote':
                 if (!m.isGroup) return reply(mess.group)
                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
                 if (!isBotAdmins) return reply(mess.botAdmin)
                 let blockwwwww = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                await joshbot.groupParticipantsUpdate(m.chat, [blockwwwww], 'promote').then((res) => reply(json(res))).catch((err) => reply(json(err)))
+                await Joshbot.groupParticipantsUpdate(m.chat, [blockwwwww], 'promote').then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 break
             case 'demote':
                 if (!m.isGroup) return reply(mess.group)
                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
                 if (!isBotAdmins) return reply(mess.botAdmin)
                 let blockwwwwwa = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net'
-                await joshbot.groupParticipantsUpdate(m.chat, [blockwwwwwa], 'demote').then((res) => reply(json(res))).catch((err) => reply(json(err)))
+                await Joshbot.groupParticipantsUpdate(m.chat, [blockwwwwwa], 'demote').then((res) => reply(json(res))).catch((err) => reply(json(err)))
                 break
             case 'setname':
             case 'setsubject':
@@ -634,7 +636,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
                 if (!isBotAdmins) return reply(mess.botAdmin)
                 if (!text) return 'Text ?'
-                await joshbot.groupUpdateSubject(m.chat, text).then((res) => reply(mess.success)).catch((err) => reply(json(err)))
+                await Joshbot.groupUpdateSubject(m.chat, text).then((res) => reply(mess.success)).catch((err) => reply(json(err)))
                 break
             case 'setdesc':
             case 'setdesk':
@@ -642,7 +644,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
                 if (!isBotAdmins) return reply(mess.botAdmin)
                 if (!text) return 'Text ?'
-                await joshbot.groupUpdateDescription(m.chat, text).then((res) => reply(mess.success)).catch((err) => reply(json(err)))
+                await Joshbot.groupUpdateDescription(m.chat, text).then((res) => reply(mess.success)).catch((err) => reply(json(err)))
                 break
             case 'setppgroup':
             case 'setppgrup':
@@ -654,12 +656,12 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!quoted) return reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (!/image/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (/webp/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
-                var medis = await joshbot.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
+                var medis = await Joshbot.downloadAndSaveMediaMessage(quoted, 'ppbot.jpeg')
                 if (args[0] == 'full') {
                     var {
                         img
                     } = await generateProfilePicture(medis)
-                    await joshbot.query({
+                    await Joshbot.query({
                         tag: 'iq',
                         attrs: {
                             to: m.chat,
@@ -677,7 +679,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     fs.unlinkSync(medis)
                     reply(mess.done)
                 } else {
-                    var memeg = await joshbot.updateProfilePicture(m.chat, {
+                    var memeg = await Joshbot.updateProfilePicture(m.chat, {
                         url: medis
                     })
                     fs.unlinkSync(medis)
@@ -695,7 +697,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 for (let mem of participants) {
                     teks += ` @${mem.id.split('@')[0]}\n`
                 }
-                joshbot.sendMessage(m.chat, { text: teks, mentions: participants.map(a => a.id) }, { quoted: m })
+                Joshbot.sendMessage(m.chat, { text: teks, mentions: participants.map(a => a.id) }, { quoted: m })
             }
                 break
 
@@ -705,7 +707,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!isBotAdmins) return reply(mess.botAdmin)
                 if (!isAdmins) return reply(mess.admin)
                 if (!m.quoted) return reply(`Reply messages with captions ${prefix + command}`)
-                joshbot.sendMessage(m.chat, {
+                Joshbot.sendMessage(m.chat, {
                     forward: m.quoted.fakeObj,
                     mentions: participants.map(a => a.id)
                 })
@@ -716,9 +718,9 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
             //     if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
             //     if (!isBotAdmins) return reply(mess.botAdmin)
             //     if (args[0] === 'mute') {
-            //         await joshbot.groupSettingUpdate(m.chat, 'announcement').then((res) => reply(`♠️Success In Closing The Group️`)).catch((err) => reply(json(err)))
+            //         await Joshbot.groupSettingUpdate(m.chat, 'announcement').then((res) => reply(`♠️Success In Closing The Group️`)).catch((err) => reply(json(err)))
             //     } else if (args[0] === 'unmute') {
-            //         await joshbot.groupSettingUpdate(m.chat, 'not_announcement').then((res) => reply(`Success In Opening The Group 🕊️`)).catch((err) => reply(json(err)))
+            //         await Joshbot.groupSettingUpdate(m.chat, 'not_announcement').then((res) => reply(`Success In Opening The Group 🕊️`)).catch((err) => reply(json(err)))
             //     } else {
             //         reply(`Mode ${command}\n\n\nType ${prefix + command} unmute/mute`)
             //     }
@@ -726,14 +728,14 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
 
             case 'unmute':
                 if (args[0] = 'unmute') {
-                    await joshbot.groupSettingUpdate(m.chat, 'not_announcement').then((res) => reply(`*_Unmuted!_*`)).catch((err) => reply(json(err)))
+                    await Joshbot.groupSettingUpdate(m.chat, 'not_announcement').then((res) => reply(`*_Unmuted!_*`)).catch((err) => reply(json(err)))
                 }
 
                 break
 
             case 'mute':
                 if (args[0] = 'mute') {
-                    await joshbot.groupSettingUpdate(m.chat, 'announcement').then((res) => reply(`*_Muted!_*`)).catch((err) => reply(json(err)))
+                    await Joshbot.groupSettingUpdate(m.chat, 'announcement').then((res) => reply(`*_Muted!_*`)).catch((err) => reply(json(err)))
                 }
                 break
 
@@ -743,9 +745,9 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
                 if (!isBotAdmins) return reply(mess.botAdmin)
                 if (args[0] === 'open') {
-                    await joshbot.groupSettingUpdate(m.chat, 'unlocked').then((res) => reply(`Successfully Opened Group Edit Info 🕊️`)).catch((err) => reply(json(err)))
+                    await Joshbot.groupSettingUpdate(m.chat, 'unlocked').then((res) => reply(`Successfully Opened Group Edit Info 🕊️`)).catch((err) => reply(json(err)))
                 } else if (args[0] === 'close') {
-                    await joshbot.groupSettingUpdate(m.chat, 'locked').then((res) => reply(`Successfully Closed Group Edit Info🕊️`)).catch((err) => reply(json(err)))
+                    await Joshbot.groupSettingUpdate(m.chat, 'locked').then((res) => reply(`Successfully Closed Group Edit Info🕊️`)).catch((err) => reply(json(err)))
                 } else {
                     reply(`Mode ${command}\n\n\nType ${prefix + command}on/off`)
                 }
@@ -755,15 +757,15 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     if (!m.isGroup) return reply(mess.group)
                     if (!isBotAdmins) return reply(mess.botAdmin)
 
-                    let response = await joshbot.groupInviteCode(m.chat);
-                    joshbot.sendText(
-                        mess.group,
-                        ` 🤖𝐵𝑜𝑡 𝑛𝑎𝑚𝑒:- joshbot Bot\n\n🔖𝐺𝑟𝑜𝑢𝑝 𝑛𝑎𝑚𝑒:- ${groupMetadata.subject}\n\n🔰𝐺𝑟𝑜𝑢𝑝 𝑙𝑖𝑛𝑘:- https://chat.whatsapp.com/${response}`,
+                    let response = await Joshbot.groupInviteCode(m.chat);
+                    Joshbot.sendText(
+                        m.group,
+                        ` 🤖𝐵𝑜𝑡 𝑛𝑎𝑚𝑒:- Joshbot Bot\n\n🔖𝐺𝑟𝑜𝑢𝑝 𝑛𝑎𝑚𝑒:- ${groupMetadata.subject}\n\n🔰𝐺𝑟𝑜𝑢𝑝 𝑙𝑖𝑛𝑘:- https://chat.whatsapp.com/${response}`,
                         m,
                         { detectLink: true }
                     );
                 }
-                await joshbot.sendMessage(m.group, { video: { url: `https://media.tenor.com/hzWYhzhMTeEAAAPo/joshbot-useless.mp4` }, caption: 'I sent you the Group Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
+                await Joshbot.sendMessage(m.group, { video: { url: `https://media.tenor.com/hzWYhzhMTeEAAAPo/Joshbot-useless.mp4` }, caption: 'I sent you the Group Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
                 break
 
             case 'revoke':
@@ -771,7 +773,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!m.isGroup) return reply(mess.group)
                 if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
                 if (!isBotAdmins) return reply(mess.botAdmin)
-                await joshbot.groupRevokeInvite(m.chat)
+                await Joshbot.groupRevokeInvite(m.chat)
                     .then(res => {
                         reply(`Successful Reset, Group Invite Link ${groupMetadata.subject}`)
                     }).catch((err) => reply(json(err)))
@@ -781,7 +783,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
             case "sc": case "script": case "repo": {
                 const scritxt = `*🚀Josh-𝑩𝒐𝒕-𝑺𝒄𝒓𝒊𝒑𝒕🚀*\n
   *🌟Creator:* Joshua\n
-  *🌟 Repo:* https://github.com/Joshua-PANDEY023/joshbot-Md \n
+  *🌟 Repo:* https://github.com/Joshua-PANDEY023/Joshbot-Md \n
   *🌟 pair:*https://replit.com/@theofficialbhar/Joshua-PAIRING
   *🌟 Tutorial:*https://youtu.be/wqc0LtA0abo?si=BbZ4iml94hX6WcsS
   *🌟 Website:*https://Joshua-botz.vercel.app/
@@ -795,20 +797,18 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
 
 
                 }
-                joshbot.sendMessage(m.chat, buttonMessage, { quoted: m })
+                Joshbot.sendMessage(m.chat, buttonMessage, { quoted: m })
             }
                 break
 
 
 
             case 'owner': {
-                const repf = await joshbot.sendMessage(from, {
-                    contacts: {
-                        displayName: `${list.length} Contact`,
-                        contacts: list
-                    }, mentions: [sender]
-                }, { quoted: m })
-            }
+const repf = await Joshbot.sendMessage(from, { 
+contacts: { 
+displayName: `${list.length} Contact`, 
+contacts: list }, mentions: [sender] }, { quoted: m })
+}
                 break
 
 
@@ -818,7 +818,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!quoted) return reply(`Reply to Video/Image With Caption ${prefix + command}`)
                 if (/image/.test(mime)) {
                     let media = await quoted.download()
-                    let encmedia = await joshbot.sendImageAsSticker(m.chat, media, m, {
+                    let encmedia = await Joshbot.sendImageAsSticker(m.chat, media, m, {
 
                         author: global.stickername
                     })
@@ -826,7 +826,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 } else if (isVideo || /video/.test(mime)) {
                     if ((quoted.msg || quoted).seconds > 11) return reply('Maximum 10 seconds!')
                     let media = await quoted.download()
-                    let encmedia = await joshbot.sendVideoAsSticker(m.chat, media, m, {
+                    let encmedia = await Joshbot.sendVideoAsSticker(m.chat, media, m, {
                         packname: global.stickername,
 
                     })
@@ -843,10 +843,10 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 reply(mess.wait)
                 atas = text.split('|')[0] ? text.split('|')[0] : '-'
                 bawah = text.split('|')[1] ? text.split('|')[1] : '-'
-                let dwnld = await joshbot.downloadAndSaveMediaMessage(qmsg)
+                let dwnld = await Joshbot.downloadAndSaveMediaMessage(qmsg)
                 let fatGans = await TelegraPh(dwnld)
                 let smeme = `https://api.memegen.link/images/custom/${encodeURIComponent(bawah)}/${encodeURIComponent(atas)}.png?background=${fatGans}`
-                let pop = await joshbot.sendImageAsSticker(m.chat, smeme, m, {
+                let pop = await Joshbot.sendImageAsSticker(m.chat, smeme, m, {
                     packname: global.stickername,
 
                 })
@@ -859,15 +859,15 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 const pcknm = swn.split("|")[0]
                 const atnm = swn.split("|")[1]
                 if (m.quoted.isAnimated === true) {
-                    joshbot.downloadAndSaveMediaMessage(quoted, "gifee")
-                    joshbot.sendMessage(from, { sticker: fs.readFileSync("gifee.webp") }, { quoted: m })
+                    Joshbot.downloadAndSaveMediaMessage(quoted, "gifee")
+                    Joshbot.sendMessage(from, { sticker: fs.readFileSync("gifee.webp") }, { quoted: m })
                 } else if (/image/.test(mime)) {
                     let media = await quoted.download()
-                    let encmedia = await joshbot.sendImageAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
+                    let encmedia = await Joshbot.sendImageAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
                 } else if (/video/.test(mime)) {
                     if ((quoted.msg || quoted).seconds > 11) return reply('Maximum 10 Seconds!')
                     let media = await quoted.download()
-                    let encmedia = await joshbot.sendVideoAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
+                    let encmedia = await Joshbot.sendVideoAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
                 } else {
                     reply(`Photo/Video?`)
                 }
@@ -877,13 +877,13 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
             case 'toimg': {
                 if (!/webp/.test(mime)) return reply(`Reply sticker with caption *${prefix + command}*`)
                 reply(mess.wait)
-                let media = await joshbot.downloadAndSaveMediaMessage(qmsg)
+                let media = await Joshbot.downloadAndSaveMediaMessage(qmsg)
                 let ran = await getRandom('.png')
                 exec(`ffmpeg -i ${media} ${ran}`, (err) => {
                     fs.unlinkSync(media)
                     if (err) return err
                     let buffer = fs.readFileSync(ran)
-                    joshbot.sendMessage(m.chat, {
+                    Joshbot.sendMessage(m.chat, {
                         image: buffer
                     }, {
                         quoted: m
@@ -897,9 +897,9 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
             case 'tovideo': {
                 if (!/webp/.test(mime)) return reply(`Reply sticker with caption *${prefix + command}*`)
                 reply(mess.wait)
-                let media = await joshbot.downloadAndSaveMediaMessage(qmsg)
+                let media = await Joshbot.downloadAndSaveMediaMessage(qmsg)
                 let webpToMp4 = await webp2mp4File(media)
-                await joshbot.sendMessage(m.chat, {
+                await Joshbot.sendMessage(m.chat, {
                     video: {
                         url: webpToMp4.result,
                         caption: 'Convert Webp To Video'
@@ -919,12 +919,12 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
             case 'tomp3': {
                 if (!/video/.test(mime) && !/audio/.test(mime)) return reply(`Send/Reply Video/Audio that you want to make into MP3 with caption ${prefix + command}`)
                 reply(mess.wait)
-                let media = await joshbot.downloadMediaMessage(qmsg)
+                let media = await Joshbot.downloadMediaMessage(qmsg)
                 let audio = await toAudio(media, 'mp4')
-                joshbot.sendMessage(m.chat, {
+                Joshbot.sendMessage(m.chat, {
                     document: audio,
                     mimetype: 'audio/mp3',
-                    fileName: `joshbot-bot.mp3`
+                    fileName: `Joshbot-bot.mp3`
                 }, {
                     quoted: m
                 })
@@ -935,12 +935,12 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
             case 'toptt': {
                 if (!/video/.test(mime) && !/audio/.test(mime)) return reply(`Reply Video/Audio that you want to make into a VN with caption ${prefix + command}`)
                 reply(mess.wait)
-                let media = await joshbot.downloadMediaMessage(qmsg)
+                let media = await Joshbot.downloadMediaMessage(qmsg)
                 let {
                     toPTT
                 } = require('./Gallery/lib/converter')
                 let audio = await toPTT(media, 'mp4')
-                joshbot.sendMessage(m.chat, {
+                Joshbot.sendMessage(m.chat, {
                     audio: audio,
                     mimetype: 'audio/mpeg',
                     ptt: true
@@ -953,9 +953,9 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
             case 'togif': {
                 if (!/webp/.test(mime)) return reply(`Reply sticker with caption *${prefix + command}*`)
                 reply(mess.wait)
-                let media = await joshbot.downloadAndSaveMediaMessage(qmsg)
+                let media = await Joshbot.downloadAndSaveMediaMessage(qmsg)
                 let webpToMp4 = await webp2mp4File(media)
-                await joshbot.sendMessage(m.chat, {
+                await Joshbot.sendMessage(m.chat, {
                     video: {
                         url: webpToMp4.result,
                         caption: 'Convert Webp To Video'
@@ -970,7 +970,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 break
             case 'tourl': {
                 reply(mess.wait)
-                let media = await joshbot.downloadAndSaveMediaMessage(qmsg)
+                let media = await Joshbot.downloadAndSaveMediaMessage(qmsg)
                 if (/image/.test(mime)) {
                     let anu = await TelegraPh(media)
                     reply(util.format(anu))
@@ -989,7 +989,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 reply(mess.wait)
                 let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`)
                 for (let res of anu.results) {
-                    let encmedia = await joshbot.sendImageAsSticker(m.chat, res.url, m, {
+                    let encmedia = await Joshbot.sendImageAsSticker(m.chat, res.url, m, {
                         packname: global.stickername,
 
                         categories: res.tags
@@ -1002,8 +1002,8 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
             case 'toviewonce': {
                 if (!quoted) return reply(`Reply Image/Video`)
                 if (/image/.test(mime)) {
-                    anuan = await joshbot.downloadAndSaveMediaMessage(quoted)
-                    joshbot.sendMessage(m.chat, {
+                    anuan = await Joshbot.downloadAndSaveMediaMessage(quoted)
+                    Joshbot.sendMessage(m.chat, {
                         image: {
                             url: anuan
                         },
@@ -1014,8 +1014,8 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                         quoted: m
                     })
                 } else if (/video/.test(mime)) {
-                    anuanuan = await joshbot.downloadAndSaveMediaMessage(quoted)
-                    joshbot.sendMessage(m.chat, {
+                    anuanuan = await Joshbot.downloadAndSaveMediaMessage(quoted)
+                    Joshbot.sendMessage(m.chat, {
                         video: {
                             url: anuanuan
                         },
@@ -1039,7 +1039,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 let buff = getRandom('.jpg')
                 await fs.writeFileSync('./' + buff, data)
                 let medi = fs.readFileSync('./' + buff)
-                await joshbot.sendMessage(from, {
+                await Joshbot.sendMessage(from, {
                     image: medi,
                     caption: "Here you go!"
                 }, {
@@ -1062,7 +1062,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 if (!isCreator) return reply(mess.owner)
                 if (!args[0]) return reply(`Use ${prefix + command} number\nExample ${prefix + command} ${ownernumber}`)
                 bnnd = q.split("|")[0].replace(/[^0-9]/g, '')
-                let ceknye = await joshbot.onWhatsApp(bnnd)
+                let ceknye = await Joshbot.onWhatsApp(bnnd)
                 if (ceknye.length == 0) return reply(`Enter A Valid And Registered Number On WhatsApp!!!`)
                 owner.push(bnnd)
                 fs.writeFileSync('./Gallery/database/owner.json', JSON.stringify(owner))
@@ -1090,10 +1090,10 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     quote
                 } = require('./Gallery/lib/quote.js')
                 if (!q) return reply('Enter Text')
-                let ppnyauser = await await joshbot.profilePictureUrl(m.sender, 'image').catch(_ => 'https://telegra.ph/file/6880771a42bad09dd6087.jpg')
+                let ppnyauser = await await Joshbot.profilePictureUrl(m.sender, 'image').catch(_ => 'https://telegra.ph/file/6880771a42bad09dd6087.jpg')
                 const rest = await quote(q, pushname, ppnyauser)
                 reply(mess.wait)
-                joshbot.sendImageAsSticker(m.chat, rest.result, m, {
+                Joshbot.sendImageAsSticker(m.chat, rest.result, m, {
                     packname: `${global.stickername}`
 
                 })
@@ -1107,7 +1107,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 let anup3k = search.videos[0]
                 const pl= await Joshuaplaymp3.mp3(anup3k.url);
                 m.reply('```Song found! Sending...```');
-                await joshbot.sendMessage(m.chat, {
+                await Joshbot.sendMessage(m.chat, {
                     audio: fs.readFileSync(pl.path),
                     fileName: anup3k.title + '.mp3',
                     mimetype: 'audio/mp4', ptt: true,
@@ -1130,7 +1130,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 const Joshuaaudp3 = require('./Gallery/lib/ytdl2')
                 if (args.length < 1 || !isUrl(text) || !Joshuaaudp3.isYTUrl(text)) return reply(`Where's the yt link?\nExample: ${prefix + command} https://youtube.com/shorts/YQf-vMjDuKY?feature=share`)
                 const audio = await Joshuaaudp3.mp3(text)
-                await joshbot.sendMessage(m.chat, {
+                await Joshbot.sendMessage(m.chat, {
                     audio: fs.readFileSync(audio.path),
                     mimetype: 'audio/mp4', ptt: true,
                     contextInfo: {
@@ -1155,7 +1155,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
 *${themeemoji}Date:* ${vid.date}
 *${themeemoji}Duration:* ${vid.duration}
 *${themeemoji}Quality:* ${vid.quality}`
-                await joshbot.sendMessage(m.chat, {
+                await Joshbot.sendMessage(m.chat, {
                     video: { url: vid.videoUrl },
                     caption: ytc
                 }, { quoted: m })
@@ -1163,83 +1163,131 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                 break
             ///////////////////////////////////////////////////
 
-            case 'chatgpt': case 'gpt': {
-                if (!q) return reply(`Please provide a text query. Example: ${prefix + command} Hello, ChatGPT!`);
-
-                const apiUrl1 = `https://vihangayt.me/tools/chatgpt?q=${encodeURIComponent(q)}`;
-                const apiUrl2 = `https://gurugpt.cyclic.app/gpt4?prompt=${encodeURIComponent(q)}&model=llama`;
-
-                try {
-
-                    const response1 = await fetch(apiUrl1);
-                    const responseData1 = await response1.json();
-
-                    if (response1.status === 200 && responseData1 && responseData1.status === true && responseData1.data) {
-
-                        const message = responseData1.data;
-                        const me = m.sender;
-                        await joshbot.sendMessage(m.chat, { text: message, mentions: [me] }, { quoted: m });
-                    } else {
-
-                        const response2 = await fetch(apiUrl2);
-                        const responseData2 = await response2.json();
-
-                        if (response2.status === 200 && responseData2 && responseData2.data) {
-
-                            const message = responseData2.data;
-                            const me = m.sender;
-                            await joshbot.sendMessage(m.chat, { text: message, mentions: [me] }, { quoted: m });
-                        } else {
-                            reply("Sorry, I couldn't fetch a response from both APIs at the moment.");
-                        }
-                    }
-                } catch (error) {
-                    console.error(error);
-                    reply("An error occurred while fetching the response from both APIs.");
+            case 'chatgpt': case 'gpt':{
+Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key }}) 
+              if (!q) return reply(`Please provide a text query. Example: ${prefix + command} Hello, ChatGPT!`);
+            
+              const apiUrl1 = `https://vihangayt.me/tools/chatgpt?q=${encodeURIComponent(q)}`;
+              const apiUrl2 = `https://gurugpt.cyclic.app/gpt4?prompt=${encodeURIComponent(q)}&model=llama`;
+            
+              try {
+                
+                const response1 = await fetch(apiUrl1);
+                const responseData1 = await response1.json();
+            
+                if (response1.status === 200 && responseData1 && responseData1.status === true && responseData1.data) {
+                  
+                  const message = responseData1.data;
+                  const me = m.sender;
+                  await Joshbot.sendMessage(m.chat, { text: message, mentions: [me] }, { quoted: m });
+                } else {
+                  
+                  const response2 = await fetch(apiUrl2);
+                  const responseData2 = await response2.json();
+            
+                  if (response2.status === 200 && responseData2 && responseData2.data) {
+                    
+                    const message = responseData2.data;
+                    const me = m.sender;
+                    await Joshbot.sendMessage(m.chat, { text: message, mentions: [me] }, { quoted: m });
+                  } else {
+                    reply("Sorry, I couldn't fetch a response from both APIs at the moment.");
+                  }
                 }
+              } catch (error) {
+                console.error(error);
+                reply("An error occurred while fetching the response from both APIs.");
+              }
             }
-                break;
+              break;
+             case 'dalle': {
+       
 
+        if (!q) return reply(`Please provide a query to generate an image. Example: ${prefix + command} Beautiful landscape`);
+
+        const apiUrl = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(q)}`;
+
+        try {
+          await Joshbot.sendMessage(m.chat, { image: { url: apiUrl } }, { quoted: m });
+        } catch (error) {
+          console.error(error);
+          reply("An error occurred while generating the image.");
+        }
+      }
+        break;
+        
+        case 'hd': {
+			if (!quoted) return reply(`Where is the picture?`)
+			if (!/image/.test(mime)) return reply(`Send/Reply Photos With Captions ${prefix + command}`)
+			reply(mess.wait)
+			const { remini } = require('./Gallery/lib/remini')
+			let media = await quoted.download()
+			let proses = await remini(media, "enhance")
+			Joshbot.sendMessage(m.chat, { image: proses, caption: mess.done}, { quoted: m})
+			}
+			break
+			
+			case 'pinterest':
+      case 'pin': {
+      if (!args.join(" ")) return reply(`${pushname} Please provide a search term!`);
+        reply(mess.waiting)
+        let { pinterest } = require('./Gallery/lib/scraper');
+        let anutrest = await pinterest(text);
+        let results = [];
+
+        // Get multiple random images (let's say 5 images)
+        const numImages = 5;
+        for (let i = 0; i < numImages && i < anutrest.length; i++) {
+          results.push(anutrest[Math.floor(Math.random() * anutrest.length)]);
+        }
+
+        // Send each image without any caption
+        for (let i = 0; i < results.length; i++) {
+          Joshbot.sendMessage(m.chat, { image: { url: results[i] } }, { quoted: m });
+        }
+      }
+        break;  
+        
             case "rules":
 
-                const helptxt = `_*📍[Rules for joshbot Md usage]📍*_\n\n\n*>>>* use -support to get the Official group link in your dm.\n\n*--->* If you want to add joshbot-Md in your group the contact the owner by *-owner/-mods* \n\n*--->* Dont use wrong command, use the command given in the *-help* list \n\n* Dont spam the bot with commands if joshbot-Md is not responding, its means the maybe owner is offline or facing internet issue. \n\n*IF YOU DONT FOLLOW THE RULES THEN YOU WILL BE BANNED* 🚫 \n\n\n*©️ Joshua Bots inc* `
+                const helptxt = `_*📍[Rules for Joshbot Md usage]📍*_\n\n\n*>>>* use -support to get the Official group link in your dm.\n\n*--->* If you want to add Joshbot-Md in your group the contact the owner by *-owner/-mods* \n\n*--->* Dont use wrong command, use the command given in the *-help* list \n\n* Dont spam the bot with commands if Joshbot-Md is not responding, its means the maybe owner is offline or facing internet issue. \n\n*IF YOU DONT FOLLOW THE RULES THEN YOU WILL BE BANNED* 🚫 \n\n\n*©️ Joshua Bots inc* `
 
-                joshbot.sendMessage(from, { video: { url: 'https://c.tenor.com/geMdtLCXZkAAAAPo/rules.mp4' }, gifPlayback: true, caption: helptxt }, { quoted: m })
+                Joshbot.sendMessage(from, { video: { url: 'https://c.tenor.com/geMdtLCXZkAAAAPo/rules.mp4' }, gifPlayback: true, caption: helptxt }, { quoted: m })
 
                 break
             case 'hii': case 'hi': case 'Hi':
 
 
-                let txxt = `👋🏻 Hi *${pushname}*, i am  *joshbot-Md*📍\nA whatsapp bot created by: Joshua \n\n I don't have time for chit-chat. Use command from *${prefix}help* list if you want me to do anything.`
+                let txxt = `👋🏻 Hi *${pushname}*, i am  *Joshbot-Md*📍\nA whatsapp bot created by: Joshua \n\n I don't have time for chit-chat. Use command from *${prefix}help* list if you want me to do anything.`
 
-                joshbot.sendMessage(m.chat, { image: { url: "./Gallery/ch1.jpg" }, caption: txxt, gifPlayback: true }, { quoted: m });
+                Joshbot.sendMessage(m.chat, { image: { url: "./Gallery/ch1.jpg" }, caption: txxt, gifPlayback: true }, { quoted: m });
                 break
             case "support":
 
                 let tex = `📍My Developer's Group📍\n\n*🎇 BOTS support group:🎇*\n\n**`
 
-                await joshbot.sendMessage(m.sender, { text: `${tex}` },);
+                await Joshbot.sendMessage(m.sender, { text: `${tex}` },);
 
-                await joshbot.sendMessage(m.chat, { image: { url: "./Gallery/ch2.jpg" }, caption: 'I sent you the support Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
+                await Joshbot.sendMessage(m.chat, { image: { url: "./Gallery/ch2.jpg" }, caption: 'I sent you the support Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
                 break
 
             case "info":
 
 
-                let ifx = `『JOSHBOT-𝕄𝕕 』
-*🌟Description:* A WhatsApp Bot With Rich features based on joshbot
+                let ifx = `『Joshbot-𝕄𝕕 』
+*🌟Description:* A WhatsApp Bot With Rich features based on Joshbot
 *🚦Uptime:* ${runtime(process.uptime())}
 *🕸Version:* 1.2.0
 *👤Creator:*  JOSHUA\n
 *Powered by Joshua*`
-                joshbot.sendMessage(m.chat, { image: { url: "./Gallery/ch3.jpg" }, caption: ifx, gifPlayback: true }, { quoted: m });
+                Joshbot.sendMessage(m.chat, { image: { url: "./Gallery/ch3.jpg" }, caption: ifx, gifPlayback: true }, { quoted: m });
                 break
 
 
-            case 'owner': case 'creator': case 'mod': case 'mods': {
+           case 'owner': case 'creator': case 'mod': case 'mods': {
+        Joshbot.sendContact(m.chat, global.Owner, m)
+      }
 
-                joshbot.sendContact(m.chat, global.Owner, m)
-            }
 
                 break
 
@@ -1299,11 +1347,11 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     } else if (random_length == 4) {
                         random21 = `${status1}${status2}${status3}${dom4}`
                     }
-                    var anu = await joshbot.onWhatsApp(`${number0}${i}${number1}@s.whatsapp.net`)
+                    var anu = await Joshbot.onWhatsApp(`${number0}${i}${number1}@s.whatsapp.net`)
                     var anuu = anu.length !== 0 ? anu : false
                     try {
                         try {
-                            var anu1 = await joshbot.fetchStatus(anu[0].jid)
+                            var anu1 = await Joshbot.fetchStatus(anu[0].jid)
                         } catch {
                             var anu1 = '401'
                         }
@@ -1394,7 +1442,7 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     "shout you bastard in front of your mom/papa",
                     "change the name to i am idiot for 24 hours",
                     "slap urself firmly and send the sound of slap through voice note😂",
-                    "say i love the bot owner joshbot through voice note",
+                    "say i love the bot owner Joshbot through voice note",
                     "send your gf/bf pic here",
                     "make any tiktok dance challenge video and put it on status, u can delete it after 5hrs",
                     "breakup with your best friend for 5hrs without telling him/her that its a dare",
@@ -1406,9 +1454,9 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     "put your father name on status for 5hrs",
                     "send abusive words in any grup, excepting this grup, and send screenshot proof here"
                 ]
-                const joshbotdareww = dare[Math.floor(Math.random() * dare.length)]
+                const Joshbotdareww = dare[Math.floor(Math.random() * dare.length)]
                 buffer = await getBuffer(`https://graph.org/file/8dd92e67cd4019b092f53.jpg`)
-                joshbot.sendMessage(from, { image: buffer, caption: '*You have chosen Dare*\n\n' + joshbotdareww }, { quoted: m })
+                Joshbot.sendMessage(from, { image: buffer, caption: '*You have chosen Dare*\n\n' + Joshbotdareww }, { quoted: m })
                 break
 
 
@@ -1507,20 +1555,20 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
                     "Whats the strangest dream you have ever had",
                     "do you play pubg, if you then send ur id number"
                 ]
-                const joshbottruthww = truth[Math.floor(Math.random() * truth.length)]
+                const Joshbottruthww = truth[Math.floor(Math.random() * truth.length)]
                 buffer = await getBuffer(`https://graph.org/file/8dd92e67cd4019b092f53.jpg`)
-                joshbot.sendMessage(from, { image: buffer, caption: '*You have chosen Truth*\n' + joshbottruthww }, { quoted: m })
+                Joshbot.sendMessage(from, { image: buffer, caption: '*You have chosen Truth*\n' + Joshbottruthww }, { quoted: m })
                 break
 
             case 'menu': case 'help':
 const txt = `╭━──═❮ *${botname}* ❯═─┈•
 ┃╭━━━━━━━━━━━━━━
 ┃┃ User :- ${pushname}
-┃┃ Owner :- ${owner}
+┃┃ Owner :- ${ownername}
 ┃┃ Version: 1.2.0
-┃┃ Prefix:- ${prefix}
+┃┃ Prefix:- (${prefix})
 ┃┃ MODE :- private 
-┃┃ Time :12:30
+┃┃ Time :${time2}
 ┃╰━━━━━━━━━━━━━
 ┠┌─═❮ *GENERAL* ❯═─┈•
 ┃│◦ MENU
@@ -1591,7 +1639,7 @@ const txt = `╭━──═❮ *${botname}* ❯═─┈•
 ┃└──────────
 ╰━━━━━━━━━━━━━
 `
-                const joshbotarray = [
+                const Joshbotarray = [
                     "https://telegra.ph/file/a979e37a8d2971c088ff4.jpg",
                     "https://telegra.ph/file/2a1939dd4157aa5832cc0.jpg",
                     "https://telegra.ph/file/3b13d4f143cec77d49c8f.jpg",
@@ -1600,9 +1648,9 @@ const txt = `╭━──═❮ *${botname}* ❯═─┈•
 
                 ]
 
-                const joshbotselection = joshbotarray[Math.floor(Math.random() * joshbotarray.length)]
+                const Joshbotselection = Joshbotarray[Math.floor(Math.random() * Joshbotarray.length)]
 
-                joshbot.sendMessage(from, {
+                Joshbot.sendMessage(from, {
                     image: { url: "./Gallery/ch2.jpg" }, caption: txt,
 
                 }, { quoted: m })
@@ -1610,8 +1658,8 @@ const txt = `╭━──═❮ *${botname}* ❯═─┈•
                 break
             case 'circlevideo': {
                 try {
-                    const joshbotbaileys = await require("@whiskeysockets/baileys").generateWAMessageContent({ video: await m.quoted.download() }, { upload: joshbot.waUploadToServer })
-                    await joshbot.relayMessage(from, { ptvMessage: { ...joshbotbaileys.videoMessage } }, {})
+                    const Joshbotbaileys = await require("@whiskeysockets/baileys").generateWAMessageContent({ video: await m.quoted.download() }, { upload: Joshbot.waUploadToServer })
+                    await Joshbot.relayMessage(from, { ptvMessage: { ...Joshbotbaileys.videoMessage } }, {})
                 } catch (err) {
                     reply(`Reply to a Video with Caption ${prefix + command}`)
                 }
@@ -1623,7 +1671,7 @@ const txt = `╭━──═❮ *${botname}* ❯═─┈•
                     let member = participants.map((u) => u.id);
                     let orang = member[Math.floor(Math.random() * member.length)];
                     let jodoh = member[Math.floor(Math.random() * member.length)];
-                    joshbot.sendMessage(
+                    Joshbot.sendMessage(
                         m.chat,
                         {
                             text: `@${orang.split("@")[0]}  @${jodoh.split("@")[0]}
@@ -1665,20 +1713,21 @@ Cieeee, What's Going On`,
                 const cek1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99', '100']
                 const cek2 = cek1[Math.floor(Math.random() * cek1.length)]
                 if (mentionByReply) {
-                    joshbot.sendMessage(from, { text: 'Question : *' + cex + '*\nChecker : ' + `@${mentionByReply.split('@')[0]}` + '\nAnswer : ' + cek2 + '%', mentions: [mentionByReply] }, { quoted: m })
+                    Joshbot.sendMessage(from, { text: 'Question : *' + cex + '*\nChecker : ' + `@${mentionByReply.split('@')[0]}` + '\nAnswer : ' + cek2 + '%', mentions: [mentionByReply] }, { quoted: m })
                 } else if (mentionByTag[0] && isGroup) {
-                    joshbot.sendMessage(from, { text: 'Question : *' + cex + '*\nChecker : ' + `@${mentionByTag[0].split('@')[0]}` + '\nAnswer : ' + cek2 + '%', mentions: [mentionByTag[0]] }, { quoted: m })
+                    Joshbot.sendMessage(from, { text: 'Question : *' + cex + '*\nChecker : ' + `@${mentionByTag[0].split('@')[0]}` + '\nAnswer : ' + cek2 + '%', mentions: [mentionByTag[0]] }, { quoted: m })
                 } else if (!mentionByReply && !mentionByTag[0]) {
-                    joshbot.sendMessage(from, { text: 'Question : *' + cex + '*\nChecker : ' + `@${sender.split('@')[0]}` + '\nAnswer : ' + cek2 + '%', mentions: [sender] }, { quoted: m })
+                    Joshbot.sendMessage(from, { text: 'Question : *' + cex + '*\nChecker : ' + `@${sender.split('@')[0]}` + '\nAnswer : ' + cek2 + '%', mentions: [sender] }, { quoted: m })
                 }
                 break
 
-            case 'runtime': {
-
-                let lowq = `*The Bot Has Been Online For:*\n*${runtime(process.uptime())}*`
+        case 'runtime': {
+Joshbot.sendMessage(from, { react: { text: "🔖", key: m.key }}) 
+      
+            	let lowq = `*The Bot Has Been Online For:*\n*${runtime(process.uptime())}*`
                 reply(lowq)
-            }
-                break
+            	}
+            break
 
             case "alive": {
                 let alive = `BOT AS BEEN RUNNING SINCE \n ${runtime(process.uptime())} ago`
@@ -1749,7 +1798,7 @@ case "ping": {
                 }
         }
     } catch (err) {
-        joshbot.sendText(ownernumber + '@s.whatsapp.net', util.format(err), m)
+        Joshbot.sendText(ownernumber + '@s.whatsapp.net', util.format(err), m)
         console.log(util.format(err))
     }
 }
