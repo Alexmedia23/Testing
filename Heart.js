@@ -757,13 +757,13 @@ module.exports = joshbot = async (joshbot, m, msg, chatUpdate, store) => {
 
                     let response = await joshbot.groupInviteCode(m.chat);
                     joshbot.sendText(
-                        m.chat,
+                        mess.group,
                         ` 🤖𝐵𝑜𝑡 𝑛𝑎𝑚𝑒:- joshbot Bot\n\n🔖𝐺𝑟𝑜𝑢𝑝 𝑛𝑎𝑚𝑒:- ${groupMetadata.subject}\n\n🔰𝐺𝑟𝑜𝑢𝑝 𝑙𝑖𝑛𝑘:- https://chat.whatsapp.com/${response}`,
                         m,
                         { detectLink: true }
                     );
                 }
-                await joshbot.sendMessage(m.chat, { video: { url: `https://media.tenor.com/hzWYhzhMTeEAAAPo/joshbot-useless.mp4` }, caption: 'I sent you the Group Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
+                await joshbot.sendMessage(m.group, { video: { url: `https://media.tenor.com/hzWYhzhMTeEAAAPo/joshbot-useless.mp4` }, caption: 'I sent you the Group Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
                 break
 
             case 'revoke':
