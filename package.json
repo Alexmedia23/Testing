@@ -1,5 +1,5 @@
 {
-    "name": "joshbot-Bot",
+    "name": "Joshbot-Bot",
     "version": "1.0.0",
     "description": "WhatsApp Bot Using Nodejs",
     "main": "index.js",

@@ -1,7 +1,7 @@
 {
-    "name": "joshbot-MD",
+    "name": "Joshbot-MD",
     "description": "A WhatsApp bot based on Baileysjs with Multi-Device support",
-    "repository": "https://github.com/AYUSH-PANDEY023/joshbot-Md",
+    "repository": "https://github.com/AYUSH-PANDEY023/Joshbot-Md",
     "logo": "https://telegra.ph/file/351133422917a8bd7d776.jpg",
     "keywords": ["nodejs", "bot", "whatsapp bot", "whatsapp automation", "multi device"],
     "buildpacks": [

@@ -10,7 +10,7 @@ const axios = require('axios')
 const PhoneNumber = require('awesome-phonenumber')
 const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = require('./Gallery/lib/exif')
 const { smsg, isUrl, generateMessageTag, getBuffer, getSizeMedia, fetch, await, sleep, reSize } = require('./Gallery/lib/myfunc')
-const { default: joshbotConnect, delay, PHONENUMBER_MCC, makeCacheableSignalKeyStore, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto } = require("@whiskeysockets/baileys")
+const { default: JoshbotConnect, delay, PHONENUMBER_MCC, makeCacheableSignalKeyStore, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto } = require("@whiskeysockets/baileys")
 const NodeCache = require("node-cache")
 const Pino = require("pino")
 const readline = require("readline")
@@ -33,12 +33,12 @@ const useMobile = process.argv.includes("--mobile")
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout })
 const question = (text) => new Promise((resolve) => rl.question(text, resolve))
          
-async function startjoshbot() {
+async function startJoshbot() {
 //------------------------------------------------------
 let { version, isLatest } = await fetchLatestBaileysVersion()
 const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
     const msgRetryCounterCache = new NodeCache() // for retry message, "waiting message"
-    const joshbot = makeWASocket({
+    const Joshbot = makeWASocket({
         logger: pino({ level: 'silent' }),
         printQRInTerminal: !pairingCode, // popping up QR in terminal log
       mobile: useMobile, // mobile api (prone to bans)
@@ -60,11 +60,11 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
       defaultQueryTimeoutMs: undefined, // for this issues https://github.com/WhiskeySockets/Baileys/issues/276
    })
    
-   store.bind(joshbot.ev)
+   store.bind(Joshbot.ev)
 
     // login use pairing code
    // source code https://github.com/WhiskeySockets/Baileys/blob/master/Example/example.ts#L61
-   if (pairingCode && !joshbot.authState.creds.registered) {
+   if (pairingCode && !Joshbot.authState.creds.registered) {
       if (useMobile) throw new Error('Cannot use pairing code with mobile api')
 
       let phoneNumber
@@ -90,13 +90,13 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
       }
 
       setTimeout(async () => {
-         let code = await joshbot.requestPairingCode(phoneNumber)
+         let code = await Joshbot.requestPairingCode(phoneNumber)
          code = code?.match(/.{1,4}/g)?.join("-") || code
          console.log(chalk.black(chalk.bgGreen(`Your Pairing Code: `)), chalk.black(chalk.white(code)))
       }, 3000)
    }
 
-    joshbot.ev.on('messages.upsert', async chatUpdate => {
+    Joshbot.ev.on('messages.upsert', async chatUpdate => {
         //console.log(JSON.stringify(chatUpdate, undefined, 2))
         try {
             const mek = chatUpdate.messages[0]
@@ -104,20 +104,20 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
             mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
             if (mek.key && mek.key.remoteJid === 'status@broadcast'){
             if (autoread_status) {
-            await joshbot.readMessages([mek.key]) 
+            await Joshbot.readMessages([mek.key]) 
             }
             } 
-            if (!joshbot.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
+            if (!Joshbot.public && !mek.key.fromMe && chatUpdate.type === 'notify') return
             if (mek.key.id.startsWith('BAE5') && mek.key.id.length === 16) return
-            const m = smsg(joshbot, mek, store)
-            require("./Heart")(joshbot, m, chatUpdate, store)
+            const m = smsg(Joshbot, mek, store)
+            require("./Heart")(Joshbot, m, chatUpdate, store)
         } catch (err) {
             console.log(err)
         }
     })
 
    
-    joshbot.decodeJid = (jid) => {
+    Joshbot.decodeJid = (jid) => {
         if (!jid) return jid
         if (/:\d+@/gi.test(jid)) {
             let decode = jidDecode(jid) || {}
@@ -125,9 +125,9 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
         } else return jid
     }
 
-    joshbot.ev.on('contacts.update', update => {
+    Joshbot.ev.on('contacts.update', update => {
         for (let contact of update) {
-            let id = joshbot.decodeJid(contact.id)
+            let id = Joshbot.decodeJid(contact.id)
             if (store && store.contacts) store.contacts[id] = {
                 id,
                 name: contact.notify
@@ -135,32 +135,32 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
         }
     })
 
-    joshbot.getName = (jid, withoutContact = false) => {
-        id = joshbot.decodeJid(jid)
-        withoutContact = joshbot.withoutContact || withoutContact
+    Joshbot.getName = (jid, withoutContact = false) => {
+        id = Joshbot.decodeJid(jid)
+        withoutContact = Joshbot.withoutContact || withoutContact
         let v
         if (id.endsWith("@g.us")) return new Promise(async (resolve) => {
             v = store.contacts[id] || {}
-            if (!(v.name || v.subject)) v = joshbot.groupMetadata(id) || {}
+            if (!(v.name || v.subject)) v = Joshbot.groupMetadata(id) || {}
             resolve(v.name || v.subject || PhoneNumber('+' + id.replace('@s.whatsapp.net', '')).getNumber('international'))
         })
         else v = id === '0@s.whatsapp.net' ? {
                 id,
                 name: 'WhatsApp'
-            } : id === joshbot.decodeJid(joshbot.user.id) ?
-            joshbot.user :
+            } : id === Joshbot.decodeJid(Joshbot.user.id) ?
+            Joshbot.user :
             (store.contacts[id] || {})
         return (withoutContact ? '' : v.name) || v.subject || v.verifiedName || PhoneNumber('+' + jid.replace('@s.whatsapp.net', '')).getNumber('international')
     }
     
-    joshbot.public = true
+    Joshbot.public = true
 
-    joshbot.serializeM = (m) => smsg(joshbot, m, store)
+    Joshbot.serializeM = (m) => smsg(Joshbot, m, store)
 
-joshbot.ev.on("connection.update",async  (s) => {
+Joshbot.ev.on("connection.update",async  (s) => {
         const { connection, lastDisconnect } = s
         if (connection == "open") {
-console.log(chalk.green('Welcome to joshbot-md'));
+console.log(chalk.green('Welcome to Joshbot-md'));
 console.log(chalk.gray('\n\n🚀Initializing...'));
 console.log(chalk.cyan('\n\n Connected'));
 
@@ -185,27 +185,27 @@ printRainbowMessage();
             lastDisconnect.error &&
             lastDisconnect.error.output.statusCode != 401
         ) {
-            startjoshbot()
+            startJoshbot()
         }
     })
-    joshbot.ev.on('creds.update', saveCreds)
-    joshbot.ev.on("messages.upsert",  () => { })
+    Joshbot.ev.on('creds.update', saveCreds)
+    Joshbot.ev.on("messages.upsert",  () => { })
 
-    joshbot.sendText = (jid, text, quoted = '', options) => joshbot.sendMessage(jid, {
+    Joshbot.sendText = (jid, text, quoted = '', options) => Joshbot.sendMessage(jid, {
         text: text,
         ...options
     }, {
         quoted,
         ...options
     })
-    joshbot.sendTextWithMentions = async (jid, text, quoted, options = {}) => joshbot.sendMessage(jid, {
+    Joshbot.sendTextWithMentions = async (jid, text, quoted, options = {}) => Joshbot.sendMessage(jid, {
         text: text,
         mentions: [...text.matchAll(/@(\d{0,16})/g)].map(v => v[1] + '@s.whatsapp.net'),
         ...options
     }, {
         quoted
     })
-    joshbot.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
+    Joshbot.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
         let buff = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,` [1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
         let buffer
         if (options && (options.packname || options.author)) {
@@ -214,7 +214,7 @@ printRainbowMessage();
             buffer = await imageToWebp(buff)
         }
 
-        await joshbot.sendMessage(jid, {
+        await Joshbot.sendMessage(jid, {
             sticker: {
                 url: buffer
             },
@@ -224,7 +224,7 @@ printRainbowMessage();
         })
         return buffer
     }
-    joshbot.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
+    Joshbot.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
         let buff = Buffer.isBuffer(path) ? path : /^data:.*?\/.*?;base64,/i.test(path) ? Buffer.from(path.split`,` [1], 'base64') : /^https?:\/\//.test(path) ? await (await getBuffer(path)) : fs.existsSync(path) ? fs.readFileSync(path) : Buffer.alloc(0)
         let buffer
         if (options && (options.packname || options.author)) {
@@ -233,7 +233,7 @@ printRainbowMessage();
             buffer = await videoToWebp(buff)
         }
 
-        await joshbot.sendMessage(jid, {
+        await Joshbot.sendMessage(jid, {
             sticker: {
                 url: buffer
             },
@@ -243,7 +243,7 @@ printRainbowMessage();
         })
         return buffer
     }
-    joshbot.downloadAndSaveMediaMessage = async (message, filename, attachExtension = true) => {
+    Joshbot.downloadAndSaveMediaMessage = async (message, filename, attachExtension = true) => {
         let quoted = message.msg ? message.msg : message
         let mime = (message.msg || message).mimetype || ''
         let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0]
@@ -258,41 +258,41 @@ printRainbowMessage();
         await fs.writeFileSync(trueFileName, buffer)
         return trueFileName
     }
-joshbot.ev.on('group-participants.update', async (anu) => {
+Joshbot.ev.on('group-participants.update', async (anu) => {
 console.log(anu)
 try {
-let metadata = await joshbot.groupMetadata(anu.id)
+let metadata = await Joshbot.groupMetadata(anu.id)
 let participants = anu.participants
 for (let num of participants) {
 try {
-ppuser = await joshbot.profilePictureUrl(num, 'image')
+ppuser = await Joshbot.profilePictureUrl(num, 'image')
 } catch (err) {
 ppuser = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png?q=60'
 }
 try {
-ppgroup = await joshbot.profilePictureUrl(anu.id, 'image')
+ppgroup = await Joshbot.profilePictureUrl(anu.id, 'image')
 } catch (err) {
 ppgroup = 'https://i.ibb.co/RBx5SQC/avatar-group-large-v2.png?q=60'
 }
 //welcome\\
 memb = metadata.participants.length
-joshbotWlcm = await getBuffer(ppuser)
-joshbotLft = await getBuffer(ppuser)
+JoshbotWlcm = await getBuffer(ppuser)
+JoshbotLft = await getBuffer(ppuser)
                 if (anu.action == 'add') {
-                const joshbotbuffer = await getBuffer(ppuser)
-                let joshbotName = num
+                const Joshbotbuffer = await getBuffer(ppuser)
+                let JoshbotName = num
                 const xtime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
 	            const xdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
 	            const xmembers = metadata.participants.length
-                joshbotbody = `┌──⊰ 🎗𝑾𝑬𝑳𝑳𝑪𝑶𝑴𝑬🎗⊰
+                Joshbotbody = `┌──⊰ 🎗𝑾𝑬𝑳𝑳𝑪𝑶𝑴𝑬🎗⊰
 │--⊳  To: ${metadata.subject}
-│--⊳  Name: @${joshbotName.split("@")[0]}
+│--⊳  Name: @${JoshbotName.split("@")[0]}
 │--⊳  Members: ${xmembers}th
 │--⊳  Joined: ${xtime} ${xdate}
 └──────────⊰
 `
-joshbot.sendMessage(anu.id,
- { text: joshbotbody,
+Joshbot.sendMessage(anu.id,
+ { text: Joshbotbody,
  contextInfo:{
  mentionedJid:[num],
  "externalAdReply": {"showAdAttribution": true,
@@ -301,26 +301,26 @@ joshbot.sendMessage(anu.id,
 "body": `${ownername}`,
  "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": joshbotWlcm,
+"thumbnail": JoshbotWlcm,
 "sourceUrl": `${link}`}}})
                 } else if (anu.action == 'remove') {
-                	const joshbotbuffer = await getBuffer(ppuser)
-                    const joshbottime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
-	                const joshbotdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
-                	let joshbotName = num
-                    const joshbotmembers = metadata.participants.length
-  joshbotbody = `┌──⊰🍁𝑭𝑨𝑹𝑬𝑾𝑬𝑳𝑳🍁⊰
+                	const Joshbotbuffer = await getBuffer(ppuser)
+                    const Joshbottime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
+	                const Joshbotdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
+                	let JoshbotName = num
+                    const Joshbotmembers = metadata.participants.length
+  Joshbotbody = `┌──⊰🍁𝑭𝑨𝑹𝑬𝑾𝑬𝑳𝑳🍁⊰
 │--⊳  From: ${metadata.subject}
 │--⊳  Reason: Left
-│--⊳  Name: @${joshbotName.split("@")[0]}
-│--⊳  Members: ${joshbotmembers}th
-│--⊳  Time: ${joshbottime} ${joshbotdate}
+│--⊳  Name: @${JoshbotName.split("@")[0]}
+│--⊳  Members: ${Joshbotmembers}th
+│--⊳  Time: ${Joshbottime} ${Joshbotdate}
 └──────────⊰
 
 
 `
-joshbot.sendMessage(anu.id,
- { text: joshbotbody,
+Joshbot.sendMessage(anu.id,
+ { text: Joshbotbody,
  contextInfo:{
  mentionedJid:[num],
  "externalAdReply": {"showAdAttribution": true,
@@ -329,16 +329,16 @@ joshbot.sendMessage(anu.id,
 "body": `${ownername}`,
  "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": joshbotLft,
+"thumbnail": JoshbotLft,
 "sourceUrl": `${link}`}}})
 } else if (anu.action == 'promote') {
-const joshbotbuffer = await getBuffer(ppuser)
-const joshbottime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
-const joshbotdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
-let joshbotName = num
-joshbotbody = ` 𝗖𝗼𝗻𝗴𝗿𝗮𝘁𝘀 @${joshbotName.split("@")[0]}, you have been *promoted* to *admin* 🥳`
-   joshbot.sendMessage(anu.id,
- { text: joshbotbody,
+const Joshbotbuffer = await getBuffer(ppuser)
+const Joshbottime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
+const Joshbotdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
+let JoshbotName = num
+Joshbotbody = ` 𝗖𝗼𝗻𝗴𝗿𝗮𝘁𝘀 @${JoshbotName.split("@")[0]}, you have been *promoted* to *admin* 🥳`
+   Joshbot.sendMessage(anu.id,
+ { text: Joshbotbody,
  contextInfo:{
  mentionedJid:[num],
  "externalAdReply": {"showAdAttribution": true,
@@ -347,16 +347,16 @@ joshbotbody = ` 𝗖𝗼𝗻𝗴𝗿𝗮𝘁𝘀 @${joshbotName.split("@")[0]}, 
 "body": `${ownername}`,
  "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": joshbotWlcm,
+"thumbnail": JoshbotWlcm,
 "sourceUrl": `${link}`}}})
 } else if (anu.action == 'demote') {
-const joshbotbuffer = await getBuffer(ppuser)
-const joshbottime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
-const joshbotdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
-let joshbotName = num
-joshbotbody = `𝗢𝗼𝗽𝘀‼️ @${joshbotName.split("@")[0]}, you have been *demoted* from *admin* 😬`
-joshbot.sendMessage(anu.id,
- { text: joshbotbody,
+const Joshbotbuffer = await getBuffer(ppuser)
+const Joshbottime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
+const Joshbotdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
+let JoshbotName = num
+Joshbotbody = `𝗢𝗼𝗽𝘀‼️ @${JoshbotName.split("@")[0]}, you have been *demoted* from *admin* 😬`
+Joshbot.sendMessage(anu.id,
+ { text: Joshbotbody,
  contextInfo:{
  mentionedJid:[num],
  "externalAdReply": {"showAdAttribution": true,
@@ -365,7 +365,7 @@ joshbot.sendMessage(anu.id,
 "body": `${ownername}`,
  "previewType": "PHOTO",
 "thumbnailUrl": ``,
-"thumbnail": joshbotLft,
+"thumbnail": JoshbotLft,
 "sourceUrl": `${link}`}}})
 }
 }
@@ -374,7 +374,7 @@ console.log(err)
 }
 })
 
-    joshbot.downloadMediaMessage = async (message) => {
+    Joshbot.downloadMediaMessage = async (message) => {
         let mime = (message.msg || message).mimetype || ''
         let messageType = message.mtype ? message.mtype.replace(/Message/gi, '') : mime.split('/')[0]
         const stream = await downloadContentFromMessage(message, messageType)
@@ -386,7 +386,7 @@ console.log(err)
         return buffer
     }
     }
-return startjoshbot()
+return startJoshbot()
 
 let file = require.resolve(__filename)
 fs.watchFile(file, () => {
