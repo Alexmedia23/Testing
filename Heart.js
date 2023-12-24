@@ -1242,7 +1242,6 @@ Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key }})
 
             case "info":
 
-
                 let ifx = `『Joshbot-𝕄𝕕 』
 *🌟Description:* A WhatsApp Bot With Rich features based on Joshbot
 *🚦Uptime:* ${runtime(process.uptime())}
@@ -1544,9 +1543,11 @@ const txt = `╭━──═❮ *${botname}* ❯═─┈•
 ┃│◦ ALIVE
 ┃│◦ PING
 ┃│◦ RUNTIME 
+┃│◦ IMG
 ┃└──────────
 ┠┌─═❮ *AI* ❯═─┈•
 ┃│◦ ɢᴘᴛ
+┃│◦ DALLE
 ┃└──────────
 ┠┌─═❮ *GROUP* ❯═─┈•
 ┃│◦ ANTILINK 
