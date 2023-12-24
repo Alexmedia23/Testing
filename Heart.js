@@ -759,13 +759,13 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
 
                     let response = await Joshbot.groupInviteCode(m.chat);
                     Joshbot.sendText(
-                        m.group,
+                        m.sender,
                         ` 🤖𝐵𝑜𝑡 𝑛𝑎𝑚𝑒:- Joshbot Bot\n\n🔖𝐺𝑟𝑜𝑢𝑝 𝑛𝑎𝑚𝑒:- ${groupMetadata.subject}\n\n🔰𝐺𝑟𝑜𝑢𝑝 𝑙𝑖𝑛𝑘:- https://chat.whatsapp.com/${response}`,
                         m,
                         { detectLink: true }
                     );
                 }
-                await Joshbot.sendMessage(m.group, { video: { url: `https://media.tenor.com/hzWYhzhMTeEAAAPo/Joshbot-useless.mp4` }, caption: 'I sent you the Group Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
+                await Joshbot.sendMessage(m.chat, { video: { url: `https://media.tenor.com/hzWYhzhMTeEAAAPo/Joshbot-useless.mp4` }, caption: 'I sent you the Group Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
                 break
 
             case 'revoke':
@@ -779,42 +779,16 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                     }).catch((err) => reply(json(err)))
                 break
 
-
-            case "sc": case "script": case "repo": {
-                const scritxt = `*🚀Josh-𝑩𝒐𝒕-𝑺𝒄𝒓𝒊𝒑𝒕🚀*\n
-  *🌟Creator:* Joshua\n
-  *🌟 Repo:* https://github.com/Joshua-PANDEY023/Joshbot-Md \n
-  *🌟 pair:*https://replit.com/@theofficialbhar/Joshua-PAIRING
-  *🌟 Tutorial:*https://youtu.be/wqc0LtA0abo?si=BbZ4iml94hX6WcsS
-  *🌟 Website:*https://Joshua-botz.vercel.app/
-
-©️ *Joshua Bots inc* 
-*❝ Dont forget to give a Star ⭐ to the repo.*`
-
-                let buttonMessage = {
-                    video: fs.readFileSync('./Gallery/thumb.jpg'), gifPlayback: true,
-                    caption: scritxt,
-
-
-                }
-                Joshbot.sendMessage(m.chat, buttonMessage, { quoted: m })
-            }
-                break
-
-
-
             case 'owner': {
 const repf = await Joshbot.sendMessage(from, { 
 contacts: { 
-displayName: `${list.length} Contact`, 
+displayName: Josh `${list.length} Contact`, 
 contacts: list }, mentions: [sender] }, { quoted: m })
 }
                 break
 
 
-            case 'sticker':
-            case 'stiker':
-            case 's': {
+            case 'sticker':{
                 if (!quoted) return reply(`Reply to Video/Image With Caption ${prefix + command}`)
                 if (/image/.test(mime)) {
                     let media = await quoted.download()
@@ -853,7 +827,7 @@ contacts: list }, mentions: [sender] }, { quoted: m })
                 fs.unlinkSync(pop)
             }
                 break
-            case 'swm': case 'steal': case 'stickerwm': case 'take': {
+             case 'take': {
                 if (!args.join(" ")) return reply(`Where is the text?`)
                 const swn = args.join(" ")
                 const pcknm = swn.split("|")[0]
@@ -910,11 +884,6 @@ contacts: list }, mentions: [sender] }, { quoted: m })
                 await fs.unlinkSync(media)
 
             }
-                break
-            case 'checkdeath':
-                if (!text) return replay(`Use Someone's Name, Example : ${prefix + command} Joshua`)
-                predea = await axios.get(`https://api.agify.io/?name=${q}`)
-                reply(`Name : ${predea.data.name}\n*Dead At Age :* ${predea.data.age} Year.\n\n_Quick, Quick, Repent Bro, Because No One Knows About Death_`)
                 break
             case 'tomp3': {
                 if (!/video/.test(mime) && !/audio/.test(mime)) return reply(`Send/Reply Video/Audio that you want to make into MP3 with caption ${prefix + command}`)
@@ -998,7 +967,7 @@ contacts: list }, mentions: [sender] }, { quoted: m })
                 }
             }
                 break
-            case 'toonce':
+            case 'tovv':
             case 'toviewonce': {
                 if (!quoted) return reply(`Reply Image/Video`)
                 if (/image/.test(mime)) {
@@ -1163,7 +1132,7 @@ contacts: list }, mentions: [sender] }, { quoted: m })
                 break
             ///////////////////////////////////////////////////
 
-            case 'chatgpt': case 'gpt':{
+             case 'gpt':{
 Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key }}) 
               if (!q) return reply(`Please provide a text query. Example: ${prefix + command} Hello, ChatGPT!`);
             
@@ -1200,9 +1169,8 @@ Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key }})
               }
             }
               break;
+              
              case 'dalle': {
-       
-
         if (!q) return reply(`Please provide a query to generate an image. Example: ${prefix + command} Beautiful landscape`);
 
         const apiUrl = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(q)}`;
@@ -1227,10 +1195,11 @@ Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key }})
 			}
 			break
 			
-			case 'pinterest':
-      case 'pin': {
+			case 'img':
+      case 'Img': {
       if (!args.join(" ")) return reply(`${pushname} Please provide a search term!`);
         reply(mess.waiting)
+        reply(`Downloading ${numImages} Inages of ${anutrest}`)
         let { pinterest } = require('./Gallery/lib/scraper');
         let anutrest = await pinterest(text);
         let results = [];
