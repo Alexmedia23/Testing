@@ -1202,7 +1202,7 @@ Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key }})
         let { pinterest } = require('./Gallery/lib/scraper');
         let anutrest = await pinterest(text);
         let results = [];
-        reply(`Loading ${numimages} Inages of *${text}*`)
+        reply(`Loading ${numImages} Inages of *${text}*`)
 
         // Get multiple random images (let's say 5 images)
         const numImages = 5;
