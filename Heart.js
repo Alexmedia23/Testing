@@ -443,8 +443,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                 reply(`Exif successfully changed to\n\n• Packname : ${global.packname}\n• Author : ${global.author}`)
                 break
             case 'setpp':
-            case 'setpp':
-            case 'setppbot':
+            case 'pp':
                 if (!isCreator) return reply(mess.owner)
                 if (!quoted) return reply(`Send/Reply Image With Caption ${prefix + command}`)
                 if (!/image/.test(mime)) return reply(`Send/Reply Image With Caption ${prefix + command}`)
