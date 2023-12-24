@@ -1199,10 +1199,10 @@ Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key }})
       case 'Img': {
       if (!args.join(" ")) return reply(`${pushname} Please provide a search term!`);
         reply(mess.waiting)
-        reply(`Downloading 5 Inages of ${anutrest}`)
         let { pinterest } = require('./Gallery/lib/scraper');
         let anutrest = await pinterest(text);
         let results = [];
+        reply(`Downloading 5 Inages of ${anutrest}`)
 
         // Get multiple random images (let's say 5 images)
         const numImages = 5;
