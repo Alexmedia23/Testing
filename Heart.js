@@ -1588,6 +1588,8 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
 ┃┃ Prefix:- (${prefix})
 ┃┃ MODE :- private 
 ┃┃ Time :${time2}
+┃┃ RAM:- ${formatp(os.totalmem() - os.freemem())} / ${formatp(os.totalmem())}
+┃┃ PLATFORM:- ${systemName}
 ┃╰━━━━━━━━━━━━━
 ┠┌─═❮ *GENERAL* ❯═─┈•
 ┃│◦ MENU
@@ -1595,6 +1597,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
 ┃│◦ PING
 ┃│◦ RUNTIME 
 ┃│◦ IMG
+┃│◦ SERVER
 ┃└──────────
 ┠┌─═❮ *AI* ❯═─┈•
 ┃│◦ ɢᴘᴛ
