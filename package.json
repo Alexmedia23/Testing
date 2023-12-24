@@ -21,6 +21,7 @@
         "@whiskeysockets/baileys": "^6.5.0",
         "awesome-phonenumber": "^5.9.0",
         "axios": "^1.4.0",
+        "baileys": "^6.0.9",
         "chalk": "^4.1.2",
         "cheerio": "^1.0.0-rc.12",
         "cookie": "^0.5.0",

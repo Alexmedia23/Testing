@@ -124,6 +124,8 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                 { quoted: m })
         }
 
+
+
         async function loading() {
             var Joshualod = [
                 "《 ▒▒▒▒▒▒▒▒▒▒▒》10%",
@@ -292,6 +294,76 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                 }
             }
                 break
+
+            case 'changeprefix':
+            case 'setprefix': {
+                if (!isCreator) return reply(mess.owner)
+                Joshbot.sendMessage(from, { react: { text: "🛡️", key: m.key } })
+
+                if (args.length !== 1) {
+                    return m.reply(`Please provide a single character as the new prefix.`);
+                } else {
+                    const newPrefix = args[0];
+                    try {
+                        global.prefix = [newPrefix];
+                        return m.reply(`${pushname} Successfully changed Prefix to "${newPrefix}"`);
+                    } catch (error) {
+                        console.error('Error changing prefix:', error);
+                        return m.reply(`An error occurred while changing the prefix. Please try again later.`);
+                    }
+                }
+            }
+    
+            case 'server':
+            case 'sysinfo': {
+                const used = process.memoryUsage();
+                const cpu = os.cpus()[0];
+                const totalCpuUsage = (100 * (cpu.times.user + cpu.times.nice + cpu.times.sys + cpu.times.irq) / cpu.times.idle).toFixed(2);
+                const systemName = os.platform() + ' ' + os.release();
+
+                const respon = `
+    *Joshbot's Server Info* 
+    
+    *System*: ${systemName}
+    
+    *RAM*: ${formatp(os.totalmem() - os.freemem())} / ${formatp(os.totalmem())}
+    
+    *NodeJS Memory Usage*: ${Object.keys(used).map(key => `${key}: ${formatp(used[key])}`).join(', ')}
+    
+    *Total CPU Usage*: ${totalCpuUsage}%
+    
+    *CPU Model*: ${cpu.model.trim()} (${cpu.speed} MHz)
+    
+    *Runtime*: ${runtime(process.uptime())}
+    
+    `.trim();
+
+                m.reply(respon);
+            }
+                break;
+
+                case 'speedtest': case 'speedcheck': {
+                    Joshbot.sendMessage(from, { react: { text: "🫡", key: m.key } })
+            
+                    m.reply(`Plz Wait ${pushname} Testing Speed... ⚙️`)
+                    let cp = require('child_process')
+                    let { promisify } = require('util')
+                    let exec = promisify(cp.exec).bind(cp)
+                    let o
+                    try {
+                      o = await exec('python speed.py')
+                    } catch (e) {
+                      o = e
+                    } finally {
+                      let { stdout, stderr } = o
+                      if (stdout.trim()) m.reply(stdout)
+                      if (stderr.trim()) m.reply(stderr)
+                    }
+                  }
+                    break;
+            
+
+
             case 'deletesession':
             case 'delsession':
             case 'clearsession': {
@@ -428,8 +500,8 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                 if (q == 'public') {
                     Joshbot.public = true
                     reply(mess.done)
-        
-        
+
+
                 } else if (q == 'self') {
                     Joshbot.public = false
                     reply(mess.done)
@@ -751,21 +823,20 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                     reply(`Mode ${command}\n\n\nType ${prefix + command}on/off`)
                 }
                 break
-            case "invite":
-                {
+                case 'grouplink': case 'gclink': {
                     if (!m.isGroup) return reply(mess.group)
                     if (!isBotAdmins) return reply(mess.botAdmin)
-
-                    let response = await Joshbot.groupInviteCode(m.chat);
-                    Joshbot.sendText(
-                        m.sender,
-                        ` 🤖𝐵𝑜𝑡 𝑛𝑎𝑚𝑒:- Joshbot Bot\n\n🔖𝐺𝑟𝑜𝑢𝑝 𝑛𝑎𝑚𝑒:- ${groupMetadata.subject}\n\n🔰𝐺𝑟𝑜𝑢𝑝 𝑙𝑖𝑛𝑘:- https://chat.whatsapp.com/${response}`,
-                        m,
-                        { detectLink: true }
-                    );
-                }
-                await Joshbot.sendMessage(m.chat, { video: { url: `https://media.tenor.com/hzWYhzhMTeEAAAPo/Joshbot-useless.mp4` }, caption: 'I sent you the Group Link in personal message.\n Pls check.', gifPlayback: true }, { quoted: m });
-                break
+                    Joshbot.sendMessage(from, { react: { text: "🪄", key: m.key } })
+                    let response = await Joshbot.groupInviteCode(m.chat)
+                    Joshbot.sendMessage(m.chat, {
+                      text: `*Group Name:* *${groupMetadata.subject}* \n\n*Group Link :* \nhttps://chat.whatsapp.com/${response}l`, "contextInfo": {
+                        // "forwardingScore": 1000000000,
+                        // isForwarded: true,
+                        // sendEphemeral: true,
+                      }
+                    }, { quoted: m, detectLink: true })
+                  }
+                    break;
 
             case 'revoke':
             case 'resetlink':
@@ -779,15 +850,17 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                 break
 
             case 'owner': {
-const repf = await Joshbot.sendMessage(from, { 
-contacts: { 
-displayName: Josh `${list.length} Contact`, 
-contacts: list }, mentions: [sender] }, { quoted: m })
-}
+                const repf = await Joshbot.sendMessage(from, {
+                    contacts: {
+                        displayName: Josh`${list.length} Contact`,
+                        contacts: list
+                    }, mentions: [sender]
+                }, { quoted: m })
+            }
                 break
 
 
-            case 'sticker':{
+            case 'sticker': {
                 if (!quoted) return reply(`Reply to Video/Image With Caption ${prefix + command}`)
                 if (/image/.test(mime)) {
                     let media = await quoted.download()
@@ -826,7 +899,7 @@ contacts: list }, mentions: [sender] }, { quoted: m })
                 fs.unlinkSync(pop)
             }
                 break
-             case 'take': {
+            case 'take': {
                 if (!args.join(" ")) return reply(`Where is the text?`)
                 const swn = args.join(" ")
                 const pcknm = swn.split("|")[0]
@@ -1073,7 +1146,7 @@ contacts: list }, mentions: [sender] }, { quoted: m })
                 let yts = require("youtube-yts")
                 let search = await yts(text)
                 let anup3k = search.videos[0]
-                const pl= await Joshuaplaymp3.mp3(anup3k.url);
+                const pl = await Joshuaplaymp3.mp3(anup3k.url);
                 m.reply('```Song found! Sending...```');
                 await Joshbot.sendMessage(m.chat, {
                     audio: fs.readFileSync(pl.path),
@@ -1131,91 +1204,91 @@ contacts: list }, mentions: [sender] }, { quoted: m })
                 break
             ///////////////////////////////////////////////////
 
-             case 'gpt':{
-Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key }}) 
-              if (!q) return reply(`Please provide a text query. Example: ${prefix + command} Hello, ChatGPT!`);
-            
-              const apiUrl1 = `https://vihangayt.me/tools/chatgpt?q=${encodeURIComponent(q)}`;
-              const apiUrl2 = `https://gurugpt.cyclic.app/gpt4?prompt=${encodeURIComponent(q)}&model=llama`;
-            
-              try {
-                
-                const response1 = await fetch(apiUrl1);
-                const responseData1 = await response1.json();
-            
-                if (response1.status === 200 && responseData1 && responseData1.status === true && responseData1.data) {
-                  
-                  const message = responseData1.data;
-                  const me = m.sender;
-                  await Joshbot.sendMessage(m.chat, { text: message, mentions: [me] }, { quoted: m });
-                } else {
-                  
-                  const response2 = await fetch(apiUrl2);
-                  const responseData2 = await response2.json();
-            
-                  if (response2.status === 200 && responseData2 && responseData2.data) {
-                    
-                    const message = responseData2.data;
-                    const me = m.sender;
-                    await Joshbot.sendMessage(m.chat, { text: message, mentions: [me] }, { quoted: m });
-                  } else {
-                    reply("Sorry, I couldn't fetch a response from both APIs at the moment.");
-                  }
+            case 'gpt': {
+                Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key } })
+                if (!q) return reply(`Please provide a text query. Example: ${prefix + command} Hello, ChatGPT!`);
+
+                const apiUrl1 = `https://vihangayt.me/tools/chatgpt?q=${encodeURIComponent(q)}`;
+                const apiUrl2 = `https://gurugpt.cyclic.app/gpt4?prompt=${encodeURIComponent(q)}&model=llama`;
+
+                try {
+
+                    const response1 = await fetch(apiUrl1);
+                    const responseData1 = await response1.json();
+
+                    if (response1.status === 200 && responseData1 && responseData1.status === true && responseData1.data) {
+
+                        const message = responseData1.data;
+                        const me = m.sender;
+                        await Joshbot.sendMessage(m.chat, { text: message, mentions: [me] }, { quoted: m });
+                    } else {
+
+                        const response2 = await fetch(apiUrl2);
+                        const responseData2 = await response2.json();
+
+                        if (response2.status === 200 && responseData2 && responseData2.data) {
+
+                            const message = responseData2.data;
+                            const me = m.sender;
+                            await Joshbot.sendMessage(m.chat, { text: message, mentions: [me] }, { quoted: m });
+                        } else {
+                            reply("Sorry, I couldn't fetch a response from both APIs at the moment.");
+                        }
+                    }
+                } catch (error) {
+                    console.error(error);
+                    reply("An error occurred while fetching the response from both APIs.");
                 }
-              } catch (error) {
-                console.error(error);
-                reply("An error occurred while fetching the response from both APIs.");
-              }
             }
-              break;
-              
-             case 'dalle': {
-        if (!q) return reply(`Please provide a query to generate an image. Example: ${prefix + command} Beautiful landscape`);
+                break;
 
-        const apiUrl = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(q)}`;
+            case 'dalle': {
+                if (!q) return reply(`Please provide a query to generate an image. Example: ${prefix + command} Beautiful landscape`);
 
-        try {
-          await Joshbot.sendMessage(m.chat, { image: { url: apiUrl } }, { quoted: m });
-        } catch (error) {
-          console.error(error);
-          reply("An error occurred while generating the image.");
-        }
-      }
-        break;
-        
-        case 'hd': {
-			if (!quoted) return reply(`Where is the picture?`)
-			if (!/image/.test(mime)) return reply(`Send/Reply Photos With Captions ${prefix + command}`)
-			reply(mess.wait)
-			const { remini } = require('./Gallery/lib/remini')
-			let media = await quoted.download()
-			let proses = await remini(media, "enhance")
-			Joshbot.sendMessage(m.chat, { image: proses, caption: mess.done}, { quoted: m})
-			}
-			break
-			
-			case 'img':
-      case 'Img': {
-      if (!args.join(" ")) return reply(`${pushname} Please provide a search term!`);
-        reply(mess.waiting)
-        let { pinterest } = require('./Gallery/lib/scraper');
-        let anutrest = await pinterest(text);
-        let results = [];
-        
-        // Get multiple random images (let's say 5 images)
-        const numImages = 5;
-        for (let i = 0; i < numImages && i < anutrest.length; i++) {
-          results.push(anutrest[Math.floor(Math.random() * anutrest.length)]);
-        }
-        reply(`Loading ${numImages} Inages of *${text}*`)
+                const apiUrl = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(q)}`;
 
-        // Send each image without any caption
-        for (let i = 0; i < results.length; i++) {
-          Joshbot.sendMessage(m.chat, { image: { url: results[i] } }, { quoted: m });
-        }
-      }
-        break;  
-        
+                try {
+                    await Joshbot.sendMessage(m.chat, { image: { url: apiUrl } }, { quoted: m });
+                } catch (error) {
+                    console.error(error);
+                    reply("An error occurred while generating the image.");
+                }
+            }
+                break;
+
+            case 'hd': {
+                if (!quoted) return reply(`Where is the picture?`)
+                if (!/image/.test(mime)) return reply(`Send/Reply Photos With Captions ${prefix + command}`)
+                reply(mess.wait)
+                const { remini } = require('./Gallery/lib/remini')
+                let media = await quoted.download()
+                let proses = await remini(media, "enhance")
+                Joshbot.sendMessage(m.chat, { image: proses, caption: mess.done }, { quoted: m })
+            }
+                break
+
+            case 'img':
+            case 'Img': {
+                if (!args.join(" ")) return reply(`${pushname} Please provide a search term!`);
+                reply(mess.waiting)
+                let { pinterest } = require('./Gallery/lib/scraper');
+                let anutrest = await pinterest(text);
+                let results = [];
+
+                // Get multiple random images (let's say 5 images)
+                const numImages = 5;
+                for (let i = 0; i < numImages && i < anutrest.length; i++) {
+                    results.push(anutrest[Math.floor(Math.random() * anutrest.length)]);
+                }
+                reply(`Loading ${numImages} Inages of *${text}*`)
+
+                // Send each image without any caption
+                for (let i = 0; i < results.length; i++) {
+                    Joshbot.sendMessage(m.chat, { image: { url: results[i] } }, { quoted: m });
+                }
+            }
+                break;
+
             case "rules":
 
                 const helptxt = `_*📍[Rules for Joshbot Md usage]📍*_\n\n\n*>>>* use -support to get the Official group link in your dm.\n\n*--->* If you want to add Joshbot-Md in your group the contact the owner by *-owner/-mods* \n\n*--->* Dont use wrong command, use the command given in the *-help* list \n\n* Dont spam the bot with commands if Joshbot-Md is not responding, its means the maybe owner is offline or facing internet issue. \n\n*IF YOU DONT FOLLOW THE RULES THEN YOU WILL BE BANNED* 🚫 \n\n\n*©️ Joshua Bots inc* `
@@ -1251,9 +1324,9 @@ Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key }})
                 break
 
 
-           case 'owner': case 'creator': case 'mod': case 'mods': {
-        Joshbot.sendContact(m.chat, global.Owner, m)
-      }
+            case 'owner': case 'creator': case 'mod': case 'mods': {
+                Joshbot.sendContact(m.chat, global.Owner, m)
+            }
 
 
                 break
@@ -1528,7 +1601,7 @@ Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key }})
                 break
 
             case 'menu': case 'help':
-const txt = `╭━──═❮ *${botname}* ❯═─┈•
+                const txt = `╭━──═❮ *${botname}* ❯═─┈•
 ┃╭━━━━━━━━━━━━━━
 ┃┃ User :- ${pushname}
 ┃┃ Owner :- ${ownername}
@@ -1690,13 +1763,13 @@ Cieeee, What's Going On`,
                 }
                 break
 
-        case 'runtime': {
-Joshbot.sendMessage(from, { react: { text: "🔖", key: m.key }}) 
-      
-            	let lowq = `*The Bot Has Been Online For:*\n*${runtime(process.uptime())}*`
+            case 'runtime': {
+                Joshbot.sendMessage(from, { react: { text: "🔖", key: m.key } })
+
+                let lowq = `*The Bot Has Been Online For:*\n*${runtime(process.uptime())}*`
                 reply(lowq)
-            	}
-            break
+            }
+                break
 
             case "alive": {
                 let alive = `BOT AS BEEN RUNNING SINCE \n ${runtime(process.uptime())} ago`
@@ -1704,30 +1777,30 @@ Joshbot.sendMessage(from, { react: { text: "🔖", key: m.key }})
             }
 
                 break
-        // Define the getRandomProcessingTime function
-function getRandomProcessingTime() {
-    // Generate a random processing time between 500 and 3000 milliseconds
-    return Math.floor(Math.random() * (2000 - 500 + 1) - 600);
-}
+                // Define the getRandomProcessingTime function
+                function getRandomProcessingTime() {
+                    // Generate a random processing time between 500 and 3000 milliseconds
+                    return Math.floor(Math.random() * (2000 - 500 + 1) - 600);
+                }
 
-// Your existing code
-case "ping": {
-    // Record the start time just before sending the command
-    const startTime = new Date();
+            // Your existing code
+            case "ping": {
+                // Record the start time just before sending the command
+                const startTime = new Date();
 
-    const processingTime = getRandomProcessingTime();
-    await sleep(processingTime);
-
- 
-    const endTime = new Date();
-
-  
-    const pingTime = endTime - startTime;
+                const processingTime = getRandomProcessingTime();
+                await sleep(processingTime);
 
 
-    reply(`*Pong!* ${pingTime} ms`);
-    break;
-}
+                const endTime = new Date();
+
+
+                const pingTime = endTime - startTime;
+
+
+                reply(`*Pong!* ${pingTime} ms`);
+                break;
+            }
 
             default:
                 if (budy.startsWith('=>')) {
