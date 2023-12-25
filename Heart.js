@@ -118,7 +118,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                 {
                     text: teks,
                     contextInfo: {
-                        mentionedJid: [sender],
+                     mentionedJid: [sender],
                     }
                 },
                 { quoted: m })
