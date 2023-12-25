@@ -162,7 +162,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
         }
         
         if(global.online) {
-          Joshbot.sendPresenceUpdate('available',from)
+          Joshbot.sendPresenceUpdate('unavailable',from)
         }
         
         if (global.autorecordtype) {
