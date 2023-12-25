@@ -827,11 +827,13 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                         reply(`Successful Reset, Group Invite Link ${groupMetadata.subject}`)
                     }).catch((err) => reply(json(err)))
                 break
+                
+           
 
             case 'owner': {
                 const repf = await Joshbot.sendMessage(from, {
                     contacts: {
-                        displayName: Josh`${list.length} Contact`,
+                        displayName:`${list.length} Contact`,
                         contacts: list
                     }, mentions: [sender]
                 }, { quoted: m })
@@ -1584,7 +1586,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
 ┃╭━━━━━━━━━━━━━━
 ┃┃ User :- ${pushname}
 ┃┃ Owner :- ${ownername}
-┃┃ Version: 1.2.0
+┃┃ Version: 1.2.1
 ┃┃ Prefix:- (${prefix})
 ┃┃ MODE :- private 
 ┃┃ Time :${time2}
