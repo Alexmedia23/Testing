@@ -67,7 +67,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
         } = m
         var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype == 'buttonsResponseMessage') ? m.message.buttonsResponseMessage.selectedButtonId : (m.mtype == 'listResponseMessage') ? m.message.listResponseMessage.singleSelectreply.selectedRowId : (m.mtype == 'templateButtonreplyMessage') ? m.message.templateButtonreplyMessage.selectedId : (m.mtype === 'messageContextInfo') ? (m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectreply.selectedRowId || m.text) : ''
         var budy = (typeof m.text == 'string' ? m.text : '')
-        const prefix = global.Prefix
+        const prefix = global.prefix
         const isCmd = body.startsWith(prefix)
         const command = body.replace(prefix, '').trim().split(/ +/).shift().toLowerCase()
         const args = body.trim().split(/ +/).slice(1)
