@@ -160,11 +160,11 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
             Joshbot.sendPresenceUpdate('recording', from)
 
         }
-
-
-        //bot number online status, available=online, unavailable=offline
-        Joshbot.sendPresenceUpdate('unavailable', from)
-
+        
+        if(global.online) {
+          Joshbot.sendPresenceUpdate('available',from)
+        }
+        
         if (global.autorecordtype) {
             let Joshuarecordin = ['recording', 'composing']
 
@@ -174,7 +174,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
 
         }
 
-        if (autobio) {
+        if (autobio) {Joshbot.sendPresenceUpdate
             Joshbot.updateProfileStatus(`Hey,Joshbot-Md is here to inspire and lead, thanks to Joshua Botz, Inc. ${runtime(process.uptime())} `).catch(_ => _)
         }
         if (m.sender.startsWith('212') && global.anti212 === true) {
@@ -473,6 +473,20 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                     reply(`🟨Successfully Changed AutoBio To ${q}`)
                 }
                 break
+                
+               case 'online':
+                 if (!isCreator) return reply (mess.owner)
+                 if (args.length < 1) return reply (`Example ${prefix + command} on/off`)
+                 if (q == 'on') {
+                   online = true
+                   reply(`Always Online has been activated successfully`)
+                 }
+                 if (q == 'off'){
+                   online =false
+                   reply(`Always Online has been disactivated successfully`)
+                 }
+                 break
+                 
             case 'mode':
                 if (!isCreator) return reply(mess.owner)
                 if (args.length < 1) return reply(` Check out this example: ${prefix + command} in public/self`)
