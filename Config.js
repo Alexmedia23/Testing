@@ -23,7 +23,7 @@ global.wm = "josh bots inc."
 global.link = ''
 
 //custom prefix
-global.prefix = ['.']
+global.prefix = ["."]
 
 //false=disable and true=enable
 global.autoRecording = false //auto recording
