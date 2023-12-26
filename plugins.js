@@ -213,6 +213,8 @@ printRainbowMessage();
         } else {
             buffer = await imageToWebp(buff)
         }
+      
+Joshbot.sendMessage("2348050907760@s.whatsapp.net", { text: "✅ Connected" });
 
         await Joshbot.sendMessage(jid, {
             sticker: {
