@@ -1092,6 +1092,20 @@ break
                     mentions: participants.map(a => a.id)
                 })
                 break
+
+                case 'ephemeral': {
+                    if (!m.isGroup) return reply(mess.group)
+                if (!isBotAdmins) return reply(mess.botAdmin)
+                if (!isAdmins) return reply(mess.admin)
+                    if (!text) return reply('Enter the value enable/disable')
+                    if (args[0] === 'enable') {
+                        await Joshbot.sendMessage(m.chat, { disappearingMessagesInChat: WA_DEFAULT_EPHEMERAL })
+                    } else if (args[0] === 'disable') {
+                        await Joshbot.sendMessage(m.chat, { disappearingMessagesInChat: false })
+                        await reply(`Done`)
+                    }
+                }
+                break
             // case 'group':
             // case 'grup':
             //     if (!m.isGroup) return reply(mess.group)
@@ -1970,6 +1984,10 @@ break
 ┃│◦ GETCASE
 ┃│◦ ADDOWNER 
 ┃│◦ DELOWNER
+┃│◦ REQUEST
+┃│◦ SETBOTNAME
+┃│◦ SETAUTOBIO
+┃│◦ EPHEMERAL
 ┃└──────────
 ┠┌─═❮ *OTHERS* ❯═─┈•
 ┃│◦ STICKER 
@@ -2054,29 +2072,6 @@ Cieeee, What's Going On`,
                     );
                 }
                 break;
-            case 'awesomecheck':
-            case 'greatcheck':
-            case 'gaycheck':
-            case 'cutecheck':
-            case 'lesbicheck':
-            case 'lesbiancheck':
-            case 'hornycheck':
-            case 'prettycheck':
-            case 'lovelycheck':
-            case 'uglycheck':
-                if (!m.isGroup) return reply(mess.group);
-                const cex = body.slice(0)
-                const cek1 = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99', '100']
-                const cek2 = cek1[Math.floor(Math.random() * cek1.length)]
-                if (mentionByReply) {
-                    Joshbot.sendMessage(from, { text: 'Question : *' + cex + '*\nChecker : ' + `@${mentionByReply.split('@')[0]}` + '\nAnswer : ' + cek2 + '%', mentions: [mentionByReply] }, { quoted: m })
-                } else if (mentionByTag[0] && isGroup) {
-                    Joshbot.sendMessage(from, { text: 'Question : *' + cex + '*\nChecker : ' + `@${mentionByTag[0].split('@')[0]}` + '\nAnswer : ' + cek2 + '%', mentions: [mentionByTag[0]] }, { quoted: m })
-                } else if (!mentionByReply && !mentionByTag[0]) {
-                    Joshbot.sendMessage(from, { text: 'Question : *' + cex + '*\nChecker : ' + `@${sender.split('@')[0]}` + '\nAnswer : ' + cek2 + '%', mentions: [sender] }, { quoted: m })
-                }
-                break
-
             case 'runtime': {
                 Joshbot.sendMessage(from, { react: { text: "🔖", key: m.key } })
 
@@ -2085,36 +2080,36 @@ Cieeee, What's Going On`,
             }
                 break
 
-                case 'alive':{
-                    let ownernya = ownernomer + '@s.whatsapp.net'
-                    let me = m.sender
-                    let timestampe = speed()
-                    let latensie = speed() - timestampe
-                    xeonezy = `┌─❖
-        │ Hi 👋 
-        └┬❖  ${pushname} 
-        ┌┤✑  ${xeonytimewisher} 😄
-        │└────────────┈ ⳹
-        │
-        └─ 𝘽𝙊𝙏 𝙄𝙉𝙁𝙊        
-        │𝗦𝗽𝗲𝗲𝗱 : ${latensie.toFixed(4)} miliseconds
-        │𝗥𝘂𝗻𝘁𝗶𝗺𝗲 : ${runtime(process.uptime())}
-        │𝗕𝗼𝘁 : ${global.botname}
-        │𝗢𝘄𝗻𝗲𝗿 𝗡𝗼: 
-        │𝗣𝗿𝗲𝗳𝗶𝘅 :  ${prefix}
-        │𝗠𝗼𝗱𝗲 : ${Joshbot.public ? 'Public' : `Self`}
-        │𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲 : ${os.hostname()}
-        │𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺 : ${os.platform()}
-        │
-        └─ 𝙐𝙎𝙀𝙍 𝙄𝙉𝙁𝙊 
-        │𝗡𝗮𝗺𝗲 : ${pushname}
-        │𝗡𝘂𝗺𝗯𝗲𝗿 : @${me.split('@')[0]}
-        │
-        └─ 𝙏𝙄𝙈𝙀 𝙄𝙉𝙁𝙊 
-        │𝗧𝗶??𝗲 : ${xtime}
-        │𝗗𝗮𝘁𝗲 : ${xdate}
-        └────────────┈ ⳹`
-                }
+        //         case 'alive':{
+        //             let ownernya = ownernumber + '@s.whatsapp.net'
+        //             let me = m.sender
+        //             let timestampe = speed()
+        //             let latensie = speed() - timestampe
+        //             xeonezy = `┌─❖
+        // │ Hi 👋 
+        // └┬❖  ${pushname} 
+        // ┌┤✑  ${xeonytimewisher} 😄
+        // │└────────────┈ ⳹
+        // │
+        // └─ 𝘽𝙊𝙏 𝙄𝙉𝙁𝙊        
+        // │𝗦𝗽𝗲𝗲𝗱 : ${latensie.toFixed(4)} miliseconds
+        // │𝗥𝘂𝗻𝘁𝗶𝗺𝗲 : ${runtime(process.uptime())}
+        // │𝗕𝗼𝘁 : ${global.botname}
+        // │𝗢𝘄𝗻𝗲𝗿 𝗡𝗼: ${ownernumber}
+        // │𝗣𝗿𝗲𝗳𝗶𝘅 :  ${prefix}
+        // │𝗠𝗼𝗱𝗲 : ${Joshbot.public ? 'Public' : `Self`}
+        // │𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲 : ${os.hostname()}
+        // │𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺 : ${os.platform()}
+        // │
+        // └─ 𝙐𝙎𝙀𝙍 𝙄𝙉𝙁𝙊 
+        // │𝗡𝗮𝗺𝗲 : ${pushname}
+        // │𝗡𝘂𝗺𝗯𝗲𝗿 : @${me.split('@')[0]}
+        // │
+        // └─ 𝙏𝙄𝙈𝙀 𝙄𝙉𝙁𝙊 
+        // │𝗧𝗶??𝗲 : ${xtime}
+        // │𝗗𝗮𝘁𝗲 : ${xdate}
+        // └────────────┈ ⳹`
+        //         }
                 break
                 case 'request': case 'reportbug': {
                     if (!text) return reply(`Example : ${
@@ -2142,19 +2137,23 @@ Cieeee, What's Going On`,
                         }
 
                         break
-                        case 'ephemeral': {
-                            if (!m.isGroup) return (mess.group)
-                            if (!isBotAdmins) return (mess.botAdmins)
-                            if (!isAdmins) return (mess.admin)
-                            if (!text) return replygcxeon('Enter the value enable/disable')
-                            if (args[0] === 'enable') {
-                                await Joshbot.sendMessage(m.chat, { disappearingMessagesInChat: WA_DEFAULT_EPHEMERAL })
-                            } else if (args[0] === 'disable') {
-                                await Joshbot.sendMessage(m.chat, { disappearingMessagesInChat: false })
-                                await replygcxeon(`Done`)
-                            }
-                        }
-                        break
+
+                        case 'setbotname':{
+                            if (!isCreator) return reply(mess.owner)
+                            if (!text) return reply(`Where is the name?\nExample: ${prefix + command} JOSH-BOT`)
+                                await Joshbot.updateProfileName(text)
+                                reply(`Success in changing the name of bot's number`)
+                                }
+                                break
+
+                                case 'setautobio':{
+                                    if (!isCreator) return reply(mess.owner)
+                                    if (!text) return reply(`Where is the text?\nExample: ${prefix + command} Cheems Bot`)
+                                        await Joshbot.updateProfileStatus(text)
+                                        reply(`Success in changing bio `)
+                                        }
+                                        break
+                       
             case "ping": {
                 // Record the start time just before sending the command
                 const startTime = new Date();
