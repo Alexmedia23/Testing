@@ -2142,7 +2142,19 @@ Cieeee, What's Going On`,
                         }
 
                         break
-
+                        case 'ephemeral': {
+                            if (!m.isGroup) return (mess.group)
+                            if (!isBotAdmins) return (mess.botAdmins)
+                            if (!isAdmins) return (mess.admin)
+                            if (!text) return replygcxeon('Enter the value enable/disable')
+                            if (args[0] === 'enable') {
+                                await XeonBotInc.sendMessage(m.chat, { disappearingMessagesInChat: WA_DEFAULT_EPHEMERAL })
+                            } else if (args[0] === 'disable') {
+                                await XeonBotInc.sendMessage(m.chat, { disappearingMessagesInChat: false })
+                                await replygcxeon(`Done`)
+                            }
+                        }
+                        break
             case "ping": {
                 // Record the start time just before sending the command
                 const startTime = new Date();
