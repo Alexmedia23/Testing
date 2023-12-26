@@ -398,7 +398,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
                 break
                 case 'poll': {
 
-	if (isCreator) return mess.owner()
+	if (isCreator) return mess.Owner()
 
             let [poll, opt] = text.split("|")
 
