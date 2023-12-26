@@ -3,6 +3,7 @@ const os = require('os')
 const fs = require('fs')
 const fsx = require('fs-extra')
 const path = require('path')
+const googleTTS = require('google-tts-api')
 const util = require('util')
 const chalk = require('chalk')
 const moment = require('moment-timezone')
@@ -1798,6 +1799,7 @@ break
 ┃└──────────
 ┠┌─═❮ *OTHERS* ❯═─┈•
 ┃│◦ STICKER 
+┃│◦ TTS
 ┃│◦ QC
 ┃│◦ SMEME
 ┃│◦ TAKE
@@ -1881,6 +1883,25 @@ break
                 reply(e)
                 }
                 break
+                case 'say': case 'tts': case 'gtts':{
+                    if (!text) return reply('Where is the text?')
+                                let texttts = text
+                                const xeonrl = googleTTS.getAudioUrl(texttts, {
+                                    lang: "en",
+                                    slow: false,
+                                    host: "https://translate.google.com",
+                                })
+                                return Joshbot.sendMessage(m.chat, {
+                                    audio: {
+                                        url: xeonrl,
+                                    },
+                                    mimetype: 'audio/mp4',
+                                    ptt: true,
+                                    fileName: `${text}.mp3`,
+                                }, {
+                                    quoted: m,
+                                })
+                            }
             case 'circlevideo': {
                 try {
                     const Joshbotbaileys = await require("@whiskeysockets/baileys").generateWAMessageContent({ video: await m.quoted.download() }, { upload: Joshbot.waUploadToServer })
