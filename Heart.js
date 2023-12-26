@@ -30,7 +30,7 @@ let _owner = JSON.parse(fs.readFileSync('./Gallery/database/owner.json'))
 let owner = JSON.parse(fs.readFileSync('./Gallery/database/owner.json'))
 let _afk = JSON.parse(fs.readFileSync('./Gallery/database/afk-user.json'))
 let hit = JSON.parse(fs.readFileSync('./Gallery/database/total-hit-user.json'))
-let vote = db.others.vote = []
+
 
 //time
 const replay = (teks) => {
@@ -685,7 +685,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join('\n')}
 
 
 
-©${XeonBotInc.user.id}
+©${Joshbot.user.id}
 
 `
 
@@ -856,7 +856,7 @@ break
 if (!q) return reply(`Example ${prefix+command} link`)
 XeonStickWait()
 let krt = await scp1.ssweb(q)
-XeonBotInc.sendMessage(from,{image:krt.result,caption:mess.succes}, {quoted:m})
+Joshbot.sendMessage(from,{image:krt.result,caption:mess.succes}, {quoted:m})
 }
 break
             case 'block':
@@ -2102,7 +2102,7 @@ Cieeee, What's Going On`,
         │𝗕𝗼𝘁 : ${global.botname}
         │𝗢𝘄𝗻𝗲𝗿 𝗡𝗼: ${ownernumber}
         │𝗣𝗿𝗲𝗳𝗶𝘅 :  ${prefix}
-        │𝗠𝗼𝗱𝗲 : ${XeonBotInc.public ? 'Public' : `Self`}
+        │𝗠𝗼𝗱𝗲 : ${Joshbot.public ? 'Public' : `Self`}
         │𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲 : ${os.hostname()}
         │𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺 : ${os.platform()}
         │
@@ -2148,9 +2148,9 @@ Cieeee, What's Going On`,
                             if (!isAdmins) return (mess.admin)
                             if (!text) return replygcxeon('Enter the value enable/disable')
                             if (args[0] === 'enable') {
-                                await XeonBotInc.sendMessage(m.chat, { disappearingMessagesInChat: WA_DEFAULT_EPHEMERAL })
+                                await Joshbot.sendMessage(m.chat, { disappearingMessagesInChat: WA_DEFAULT_EPHEMERAL })
                             } else if (args[0] === 'disable') {
-                                await XeonBotInc.sendMessage(m.chat, { disappearingMessagesInChat: false })
+                                await Joshbot.sendMessage(m.chat, { disappearingMessagesInChat: false })
                                 await replygcxeon(`Done`)
                             }
                         }
