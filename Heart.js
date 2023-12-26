@@ -2100,7 +2100,7 @@ Cieeee, What's Going On`,
         │𝗦𝗽𝗲𝗲𝗱 : ${latensie.toFixed(4)} miliseconds
         │𝗥𝘂𝗻𝘁𝗶𝗺𝗲 : ${runtime(process.uptime())}
         │𝗕𝗼𝘁 : ${global.botname}
-        │𝗢𝘄𝗻𝗲𝗿 𝗡𝗼: ${ownernumber}
+        │𝗢𝘄𝗻𝗲𝗿 𝗡𝗼: 
         │𝗣𝗿𝗲𝗳𝗶𝘅 :  ${prefix}
         │𝗠𝗼𝗱𝗲 : ${Joshbot.public ? 'Public' : `Self`}
         │𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲 : ${os.hostname()}
