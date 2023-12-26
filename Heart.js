@@ -513,7 +513,7 @@ Please Type Below
 
             wasVote = isVote.includes(m.sender)
 
-            if (wasVote) return replygcxeon('You have Voted')
+            if (wasVote) return reply('You have Voted')
 
             vote[m.chat][1].push(m.sender)
 
@@ -573,7 +573,7 @@ Please Type Below
 
             if (!m.isGroup) return (mess.group)
 
-            if (!(m.chat in vote)) return replygcxeon(`_*no voting in this group!*_\n\n*${prefix}vote* - to start voting`)
+            if (!(m.chat in vote)) return reply(`_*no voting in this group!*_\n\n*${prefix}vote* - to start voting`)
 
             isVote = vote[m.chat][1].concat(vote[m.chat][2])
 
@@ -1817,6 +1817,19 @@ break
 ┃│◦ YTMP4 
 ┃│◦ CIRCLEVIDEO 
 ┃│◦ GOOGLE
+┠┌─═❮ *AUDIO EDITOR* ❯═─┈•
+┃│◦ BASS
+┃│◦ DEEP
+┃│◦ BLOWN
+┃│◦ FAST
+┃│◦ FAT
+┃│◦ EARRAPE
+┃│◦ NIGHTCORE
+┃│◦ ROBOT
+┃│◦ REVERSE
+┃│◦ SLOW
+┃│◦ SMOOTH
+┃│◦ SQUIRREL
 ┃└──────────
 ╰━━━━━━━━━━━━━
 `
@@ -1836,6 +1849,37 @@ break
 
                 }, { quoted: m })
 
+                break
+                case 'bass': case 'blown': case 'deep': case 'earrape': case 'fast': case 'fat': case 'nightcore': case 'reverse': case 'robot': case 'slow': case 'smooth': case 'squirrel':
+                try {
+                let set
+                if (/bass/.test(command)) set = '-af equalizer=f=54:width_type=o:width=2:g=20'
+                if (/blown/.test(command)) set = '-af acrusher=.1:1:64:0:log'
+                if (/deep/.test(command)) set = '-af atempo=4/4,asetrate=44500*2/3'
+                if (/earrape/.test(command)) set = '-af volume=12'
+                if (/fast/.test(command)) set = '-filter:a "atempo=1.63,asetrate=44100"'
+                if (/fat/.test(command)) set = '-filter:a "atempo=1.6,asetrate=22100"'
+                if (/nightcore/.test(command)) set = '-filter:a atempo=1.06,asetrate=44100*1.25'
+                if (/reverse/.test(command)) set = '-filter_complex "areverse"'
+                if (/robot/.test(command)) set = '-filter_complex "afftfilt=real=\'hypot(re,im)*sin(0)\':imag=\'hypot(re,im)*cos(0)\':win_size=512:overlap=0.75"'
+                if (/slow/.test(command)) set = '-filter:a "atempo=0.7,asetrate=44100"'
+                if (/smooth/.test(command)) set = '-filter:v "minterpolate=\'mi_mode=mci:mc_mode=aobmc:vsbmc=1:fps=120\'"'
+                if (/squirrel/.test(command)) set = '-filter:a "atempo=0.5,asetrate=65100"'
+                if (/audio/.test(mime)) {
+              reply(mess.wait)
+                let media = await XeonBotInc.downloadAndSaveMediaMessage(quoted)
+                let ran = getRandom('.mp3')
+                exec(`ffmpeg -i ${media} ${set} ${ran}`, (err, stderr, stdout) => {
+                fs.unlinkSync(media)
+                if (err) return reply(err)
+                let buff = fs.readFileSync(ran)
+                XeonBotInc.sendMessage(m.chat, { audio: buff, mimetype: 'audio/mpeg' }, { quoted : m })
+                fs.unlinkSync(ran)
+                })
+                } else reply(`Reply to the audio you want to change with a caption *${prefix + command}*`)
+                } catch (e) {
+                reply(e)
+                }
                 break
             case 'circlevideo': {
                 try {
