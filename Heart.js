@@ -30,6 +30,9 @@ let _owner = JSON.parse(fs.readFileSync('./Gallery/database/owner.json'))
 let owner = JSON.parse(fs.readFileSync('./Gallery/database/owner.json'))
 let _afk = JSON.parse(fs.readFileSync('./Gallery/database/afk-user.json'))
 let hit = JSON.parse(fs.readFileSync('./Gallery/database/total-hit-user.json'))
+let tebaklagu = db.game.tebaklagu = []
+let kuismath = db.game.math = []
+let vote = db.others.vote = []
 
 //time
 const replay = (teks) => {
