@@ -2117,17 +2117,11 @@ Cieeee, What's Going On`,
            │✑  Please Type The *MENU*
            │✑  Given *BELOW*
         ┌└─────────────┈ ⳹
-        │❏Me
+        │❏Menu
         └─────────────────┈ ⳹`
-
-                break
-                // Define the getRandomProcessingTime function
-                function getRandomProcessingTime() {
-                    // Generate a random processing time between 500 and 3000 milliseconds
-                    return Math.floor(Math.random() * (2000 - 500 + 1) - 600);
                 }
+                break
 
-            // Your existing code
             case "ping": {
                 // Record the start time just before sending the command
                 const startTime = new Date();
