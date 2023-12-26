@@ -1,4 +1,4 @@
-const Config=require ('./Config')
+const config=require ('./Config')
 const pino = require('pino')
 const { Boom } = require('@hapi/boom')
 const fs = require('fs')
@@ -164,7 +164,7 @@ console.log(chalk.green('Welcome to Joshbot-md'));
 console.log(chalk.gray('\n\n🚀Initializing...'));
 console.log(chalk.cyan('\n\n Connected'));
 
-const ownerNumber = Config.ownerNumber; 
+const ownerNumber = config.ownernumber; 
 await Joshbot.sendMessage(ownerNumber + '@s.whatsapp.net', { text: "✅ Connected" });
 
 const rainbowColors = ['red', 'yellow', 'green', 'blue', 'purple'];
