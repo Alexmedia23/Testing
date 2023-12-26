@@ -2085,10 +2085,40 @@ Cieeee, What's Going On`,
             }
                 break
 
-            case "alive": {
-                let alive = `BOT AS BEEN RUNNING SINCE \n ${runtime(process.uptime())} ago`
-                reply(alive)
-            }
+                case 'alive':{
+                    let ownernya = ownernomer + '@s.whatsapp.net'
+                    let me = m.sender
+                    let timestampe = speed()
+                    let latensie = speed() - timestampe
+                    xeonezy = `┌─❖
+        │ Hi 👋 
+        └┬❖  ${pushname} 
+        ┌┤✑  ${xeonytimewisher} 😄
+        │└────────────┈ ⳹
+        │
+        └─ 𝘽𝙊𝙏 𝙄𝙉𝙁𝙊        
+        │𝗦𝗽𝗲𝗲𝗱 : ${latensie.toFixed(4)} miliseconds
+        │𝗥𝘂𝗻𝘁𝗶𝗺𝗲 : ${runtime(process.uptime())}
+        │𝗕𝗼𝘁 : ${global.botname}
+        │𝗢𝘄𝗻𝗲𝗿 𝗡𝗼: ${ownernumber}
+        │𝗣𝗿𝗲𝗳𝗶𝘅 :  ${prefix}
+        │𝗠𝗼𝗱𝗲 : ${XeonBotInc.public ? 'Public' : `Self`}
+        │𝗛𝗼𝘀𝘁 𝗡𝗮𝗺𝗲 : ${os.hostname()}
+        │𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺 : ${os.platform()}
+        │
+        └─ 𝙐𝙎𝙀𝙍 𝙄𝙉𝙁𝙊 
+        │𝗡𝗮𝗺𝗲 : ${pushname}
+        │𝗡𝘂𝗺𝗯𝗲𝗿 : @${me.split('@')[0]}
+        │
+        └─ 𝙏𝙄𝙈𝙀 𝙄𝙉𝙁𝙊 
+        │𝗧𝗶??𝗲 : ${xtime}
+        │𝗗𝗮𝘁𝗲 : ${xdate}
+        └┬────────────┈ ⳹
+           │✑  Please Type The *MENU*
+           │✑  Given *BELOW*
+        ┌└─────────────┈ ⳹
+        │❏Me
+        └─────────────────┈ ⳹`
 
                 break
                 // Define the getRandomProcessingTime function
