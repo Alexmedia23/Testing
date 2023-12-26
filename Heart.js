@@ -436,8 +436,8 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
 
         case 'vote': {
 
-            if (!m.isGroup) return messGroup()
-
+            if (!m.isGroup) return (mess.group)
+            
             if (m.chat in vote) return reply(`_There are still votes in this chat!_\n\n*${prefix}deletevote* - to delete votes`)
 
             if (!text) return reply(`Enter Reason for Vote, Example: *${prefix + command} Handsome Owner*`)
@@ -504,7 +504,7 @@ Please Type Below
 
                case 'upvote': {
 
-            if (!m.isGroup) return messGroup()
+            if (!m.isGroup) return (mess.group)
 
             if (!(m.chat in vote)) return reply(`_*no voting in this group!*_\n\n*${prefix}vote* - to start voting`)
 
@@ -570,7 +570,7 @@ Please Type Below
 
                 case 'downvote': {
 
-            if (!m.isGroup) return messGroup()
+            if (!m.isGroup) return (mess.group)
 
             if (!(m.chat in vote)) return replygcxeon(`_*no voting in this group!*_\n\n*${prefix}vote* - to start voting`)
 
@@ -638,7 +638,7 @@ Please Type Below
 
 case 'checkvote':
 
-if (!m.isGroup) return messGroup()
+if (!m.isGroup) return (mess.group)
 
 if (!(m.chat in vote)) return reply(`_*no voting in this group!*_\n\n*${prefix}vote* - to start voting`)
 
@@ -694,7 +694,7 @@ break
 
 		case 'deletevote': case'delvote': case 'hapusvote': {
 
-            if (!m.isGroup) return messGroup()
+            if (!m.isGroup) return (mess.group)
 
             if (!(m.chat in vote)) return reply(`_*no voting in this group!*_\n\n*${prefix}vote* - to start voting`)
 
