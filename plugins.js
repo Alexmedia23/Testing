@@ -164,7 +164,7 @@ console.log(chalk.green('Welcome to Joshbot-md'));
 console.log(chalk.gray('\n\n🚀Initializing...'));
 console.log(chalk.cyan('\n\n Connected'));
 
-const ownerNumber = "2348050907760"; // Replace with the actual owner's number
+const ownerNumber = config.ownerNumber; // Replace with the actual owner's number
 await Joshbot.sendMessage(ownerNumber + '@s.whatsapp.net', { text: "✅ Connected" });
 
 const rainbowColors = ['red', 'yellow', 'green', 'blue', 'purple'];
