@@ -404,7 +404,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
 
             if (text.split("|") < 2)
 
-                return await replygcxeon(
+                return await reply(
 
                     `Mention question and atleast 2 options\nExample: ${prefix}poll Who is best admin?|Xeon,Cheems,Doge...`
 
