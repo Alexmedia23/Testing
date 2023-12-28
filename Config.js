@@ -1,4 +1,5 @@
 const fs = require('fs')
+require("dotenv").config();
 const chalk = require('chalk')
 
 //contact details
