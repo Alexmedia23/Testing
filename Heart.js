@@ -2369,6 +2369,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
 ┃│◦ YTMP4 
 ┃│◦ CIRCLEVIDEO 
 ┃│◦ GOOGLE
+┃│◦ APK
 ┠┌─═❮ *AUDIO EDITOR* ❯═─┈•
 ┃│◦ BASS
 ┃│◦ DEEP
