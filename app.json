@@ -1,18 +1,14 @@
 {
-  "name": "Queen Anya Ver.2",
-  "description": "Anya_v2-MD is an efficient and versatile WhatsApp bot designed to streamline your messaging experience with innovative features and seamless automation.",
-  "repository": "https://github.COM/PikaBotz/Anya_v2-MD",
-  "logo": "https://i.ibb.co/bgfFFjF/Videoshot-20221026-164328.jpg",
+  "name": "JOSHBOT-MD",
+  "description": "JOSHBOT-MD is an efficient and versatile WhatsApp bot designed to streamline your messaging experience with innovative features and seamless automation.",
+  "repository": "https://github.com/Alexmedia23/Testing",
+  "logo": "",
   "keywords": ["Automation", "Innovation", "Versatility", "Efficiency", "Messaging", "Chatbot", "Integration", "Customization", "Ease of Use", "Personalization"],
   "success_url": "/",
   "stack": "container",
   "env": {
        "BotName": {
            "description": "Enter your desired bot\"s name (Ex:- Queen Anya)",
-           "required": true
-       },
-       "Footer": {
-           "description": "Enter a watermark for your bot\"s messages (Ex:- ? Queen Anya)",
            "required": true
        },
        "Prefix": {
@@ -25,14 +21,6 @@
        },
        "Owner_Number": {
            "description": "Enter owner\"s number of the bot (Ex:- 918811xxxxxx)",
-           "required": true
-       },
-       "MongoDB": {
-           "description": "Get your mongoDB url from mongoDB website",
-           "required": true
-       },
-       "SESSION_ID" : {
-           "description": "Get your session id first, if you already have then paste here",
            "required": true
        },
        "Insta": {
