@@ -1,4 +1,4 @@
-const Config = require('./Config')
+require('./Config')
 const pino = require('pino')
 const { Boom } = require('@hapi/boom')
 const fs = require('fs')
@@ -24,7 +24,7 @@ const store = makeInMemoryStore({
     })
 })
 
-let phoneNumber = "2348050907760"
+let phoneNumber = "919931122319"
 let owner = JSON.parse(fs.readFileSync('./Gallery/database/owner.json'))
 
 const pairingCode = !!phoneNumber || process.argv.includes("--pairing-code")
@@ -54,7 +54,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
          let jid = jidNormalizedUser(key.remoteJid)
          let msg = await store.loadMessage(jid, key.id)
 
-         return msg?.message || "Bot is working"
+         return msg?.message || ""
       },
       msgRetryCounterCache, // Resolve waiting messages
       defaultQueryTimeoutMs: undefined, // for this issues https://github.com/WhiskeySockets/Baileys/issues/276
@@ -72,18 +72,18 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
          phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
 
          if (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v))) {
-            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +2341123567819")))
+            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +919931122319")))
             process.exit(0)
          }
       } else {
-         phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number\nFor example: +2341123567819 : `)))
+         phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number\nFor example: +919931122319 : `)))
          phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
 
          // Ask again when entering the wrong number
          if (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v))) {
-            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +2341123567819")))
+            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +919931122319")))
 
-            phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number please\nFor example: +2341123567819: `)))
+            phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number please\nFor example: +919931122319: `)))
             phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
             rl.close()
          }
@@ -92,7 +92,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
       setTimeout(async () => {
          let code = await Joshbot.requestPairingCode(phoneNumber)
          code = code?.match(/.{1,4}/g)?.join("-") || code
-         console.log(chalk.black(chalk.bgGreen(`Your Pairing Code: `)), chalk.black(chalk.white(code)))
+         console.log(chalk.black(chalk.bgGreen(`🤖Your Pairing Code🤖: `)), chalk.black(chalk.white(code)))
       }, 3000)
    }
 
@@ -160,21 +160,19 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
 Joshbot.ev.on("connection.update",async  (s) => {
         const { connection, lastDisconnect } = s
         if (connection == "open") {
-console.log(chalk.green('Welcome to Joshbot-md'));
+console.log(chalk.green('🟨Welcome to Joshbot-md'));
 console.log(chalk.gray('\n\n🚀Initializing...'));
-console.log(chalk.cyan('\n\n Connected'));
+console.log(chalk.cyan('\n\n🧩Connected'));
 
-const ownernumber = global.ownernumber; 
-await Joshbot.sendMessage(ownernumber + '@s.whatsapp.net', { text: "✅ Connected" });
 
 const rainbowColors = ['red', 'yellow', 'green', 'blue', 'purple'];
 let index = 0;
 
 function printRainbowMessage() {
   const color = rainbowColors[index];
-  console.log(chalk.keyword(color)('\n\nwaiting for messages'));
+  console.log(chalk.keyword(color)('\n\n⏳️waiting for messages'));
   index = (index + 1) % rainbowColors.length;
-  setTimeout(printRainbowMessage, 70000);  // Adjust the timeout for desired speed
+  setTimeout(printRainbowMessage, 60000);  // Adjust the timeout for desired speed
 }
 
 printRainbowMessage();
@@ -215,7 +213,7 @@ printRainbowMessage();
         } else {
             buffer = await imageToWebp(buff)
         }
-      
+
         await Joshbot.sendMessage(jid, {
             sticker: {
                 url: buffer
@@ -287,10 +285,10 @@ JoshbotLft = await getBuffer(ppuser)
 	            const xdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
 	            const xmembers = metadata.participants.length
                 Joshbotbody = `┌──⊰ 🎗𝑾𝑬𝑳𝑳𝑪𝑶𝑴𝑬🎗⊰
-│--⊳  To: ${metadata.subject}
-│--⊳  Name: @${JoshbotName.split("@")[0]}
-│--⊳  Members: ${xmembers}th
-│--⊳  Joined: ${xtime} ${xdate}
+│⊳  🌐 To: ${metadata.subject}
+│⊳  📋 Name: @${JoshbotName.split("@")[0]}
+│⊳  👥 Members: ${xmembers}th
+│⊳  🕰️ Joined: ${xtime} ${xdate}
 └──────────⊰
 `
 Joshbot.sendMessage(anu.id,
@@ -312,11 +310,11 @@ Joshbot.sendMessage(anu.id,
                 	let JoshbotName = num
                     const Joshbotmembers = metadata.participants.length
   Joshbotbody = `┌──⊰🍁𝑭𝑨𝑹𝑬𝑾𝑬𝑳𝑳🍁⊰
-│--⊳  From: ${metadata.subject}
-│--⊳  Reason: Left
-│--⊳  Name: @${JoshbotName.split("@")[0]}
-│--⊳  Members: ${Joshbotmembers}th
-│--⊳  Time: ${Joshbottime} ${Joshbotdate}
+│⊳  👤 From: ${metadata.subject}
+│⊳  📃 Reason: Left
+│⊳  📔 Name: @${JoshbotName.split("@")[0]}
+│⊳  👥 Members: ${Joshbotmembers}th
+│⊳  🕒 Time: ${Joshbottime} ${Joshbotdate}
 └──────────⊰
 
 
@@ -338,7 +336,7 @@ const Joshbotbuffer = await getBuffer(ppuser)
 const Joshbottime = moment.tz('Asia/Kolkata').format('HH:mm:ss')
 const Joshbotdate = moment.tz('Asia/Kolkata').format('DD/MM/YYYY')
 let JoshbotName = num
-Joshbotbody = ` 𝗖𝗼𝗻𝗴𝗿𝗮𝘁𝘀 @${JoshbotName.split("@")[0]}, you have been *promoted* to *admin* 🥳`
+Joshbotbody = ` 𝗖𝗼𝗻𝗴𝗿𝗮𝘁𝘀🎉 @${JoshbotName.split("@")[0]}, you have been *promoted* to *admin* 🥳`
    Joshbot.sendMessage(anu.id,
  { text: Joshbotbody,
  contextInfo:{
