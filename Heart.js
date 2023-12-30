@@ -133,12 +133,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
     var budy = typeof m.text == "string" ? m.text : "";
     const prefix = global.prefa;
     const isCmd = body.startsWith(prefix);
-    const command = body
-      .replace(prefix, "")
-      .trim()
-      .split(/ +/)
-      .shift()
-      .toLowerCase();
+    const command = isCmd ? body.slice(1).trim().split(' ')[0].toLowerCase() : '' 
     const args = body.trim().split(/ +/).slice(1);
     const full_args = body.replace(command, "").slice(1).trim();
     const pushname = m.pushName || "No Name";
