@@ -2646,50 +2646,56 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
       }
 
       default:
-        if (budy.startsWith("=>")) {
-          if (!isCreator) return reply(mess.owner);
-
+         if (budy.startsWith('=>')) {
+          if (!isCreator) return reply(mess.botowner)
           function Return(sul) {
-            sat = JSON.stringify(sul, null, 2);
-            bang = util.format(sat);
+            sat = JSON.stringify(sul, null, 2)
+            bang = util.format(sat)
             if (sat == undefined) {
-              bang = util.format(sul);
+              bang = util.format(sul)
             }
-            return reply(bang);
+            return reply(bang)
           }
           try {
-            reply(
-              util.format(eval(`(async () => { return ${budy.slice(3)} })()`))
-            );
+            reply(util.format(eval(`(async () => { ${budy.slice(3)} })()`)))
           } catch (e) {
-            reply(String(e));
+            Jovia.sendMessage(from, { image: ErrorPic, caption: String(e) }, { quoted: m })
+          }
+        }
+        if (budy.startsWith('>')) {
+          if (!isCreator) return reply(mess.botowner)
+          try {
+            let evaled = await eval(budy.slice(2))
+            if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
+            await reply(evaled)
+          } catch (err) {
+            await Jovia.sendMessage(from, { image: ErrorPic, caption: String(err) }, { quoted: m })
           }
         }
 
-        if (budy.startsWith(">")) {
-          if (!isCreator) return reply(mess.owner);
-          try {
-            let evaled = await eval(budy.slice(2));
-            if (typeof evaled !== "string")
-              evaled = require("util").inspect(evaled);
-            await reply(evaled);
-          } catch (err) {
-            await reply(String(err));
-          }
-        }
-        if (budy.startsWith("$")) {
-          if (!isCreator) return reply(mess.owner);
+
+        if (budy.startsWith('$')) {
+          if (!isCreator) return reply(mess.botowner)
           exec(budy.slice(2), (err, stdout) => {
-            if (err) return reply(err);
-            if (stdout) return reply(stdout);
-          });
+            if (err) return Jovia.sendMessage(from, { image: ErrorPic, caption: String(err) }, { quoted: m })
+            if (stdout) return replyH(stdout)
+          })
+        }
+
+
+        if (isCmd && budy.toLowerCase() != undefined) {
+          if (m.chat.endsWith('broadcast')) return
+          if (m.isBaileys) return
+          let msgs = global.db.database
+          if (!(budy.toLowerCase() in msgs)) return
+          Jovia.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
         }
     }
   } catch (err) {
-    Joshbot.sendText(ownernumber + "@s.whatsapp.net", util.format(err), m);
-    console.log(util.format(err));
+    Jovia.sendMessage(`${ownertag}@s.whatsapp.net`, util.format(err), { quoted: m })
+    console.log(err)
   }
-};
+}
 let file = require.resolve(__filename);
 fs.watchFile(file, () => {
   fs.unwatchFile(file);
