@@ -216,8 +216,6 @@ printRainbowMessage();
             buffer = await imageToWebp(buff)
         }
       
-await Joshbot.sendMessage("2348050907760@s.whatsapp.net", { text: "WELCOME TO JOSHBOT-MD           YOUR BOT HAS BEEN CONNECTED TO THE SERVER.ENJOY 😊" });
-
         await Joshbot.sendMessage(jid, {
             sticker: {
                 url: buffer
