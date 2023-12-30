@@ -14,6 +14,7 @@ const fs = require("fs");
 const fsx = require("fs-extra");
 const path = require("path");
 const googleTTS = require("google-tts-api");
+const mumaker=require("mumaker")
 const util = require("util");
 const chalk = require("chalk");
 const moment = require("moment-timezone");
@@ -452,6 +453,16 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
           }
         }
         break;
+
+        case 'tiktok':{ 
+          if (!text) return reply( `Example : ${prefix + command} link`)
+          if (!q.includes('tiktok')) return reply(`Link Invalid!!`)
+          reply("wait")
+          require('./lib/tiktok').Tiktok(q).then( data => {
+          Joshbot.sendMessage(m.chat, { caption: `Here you go!`, video: { url: data.watermark }}, {quoted:m})
+          })
+          }
+          break
 
       case "changeprefix":
       case "setprefix": {
@@ -2389,18 +2400,18 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
         }
 
 
-        if (isCmd && budy.toLowerCase() != undefined) {
-          if (m.chat.endsWith('broadcast')) return
-          if (m.isBaileys) return
-          let msgs = global.db.database
-          if (!(budy.toLowerCase() in msgs)) return
-          Joshbot.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
-        }
-    }
-  } catch (err) {
-    Joshbot.sendMessage(`${ownertag}@s.whatsapp.net`, util.format(err), { quoted: m })
-    console.log(err)
-  }
+        if (budy.startsWith('$')) {
+          if (!isCreator) return reply(mess.owner)
+          exec(budy.slice(2), (err, stdout) => {
+              if (err) return reply(err)
+              if (stdout) return reply(stdout)
+          })
+      }
+}
+} catch (err) {
+Joshbot.sendText(ownernumber + '@s.whatsapp.net', util.format(err), m)
+console.log(util.format(err))
+}
 }
 
 let file = require.resolve(__filename);
