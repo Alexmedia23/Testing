@@ -465,7 +465,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
         } else {
           const newPrefix = args[0];
           try {
-            global.prefix = [newPrefix];
+            global.prefa = [newPrefix];
             return m.reply(
               `${pushname} Successfully changed Prefix to "${newPrefix}"`
             );
