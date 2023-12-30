@@ -23,10 +23,6 @@
            "description": "Enter owner\"s number of the bot (Ex:- 918811xxxxxx)",
            "required": true
        },
-       "Insta": {
-           "description": "Enter your Instagram user Id (Ex:- 3.69_pika)",
-           "required": false
-       },
        "Author": {
            "description": "Enter a name for sticker\"s owner name (Ex:- PikaBotz)",
            "required": false
@@ -35,24 +31,8 @@
            "description": "Enter a packname for stickers (Ex:- Queen Anya Stickers)",
            "required": false
        },
-       "Web": {
-           "description": "Enter your any social platform link (Ex:- https://github.com/PikaBotz)",
-           "required": false
-       },
        "ThemeEmoji": {
            "description": "Enter a desired emoji according to your theme (Ex:- ?)",
-           "required": false
-       },
-       "Warns_Limits": {
-           "description": "Enter the limit of warns for users (Ex:- 3)",
-           "required": false
-       },
-       "Welcome_Msg": {
-           "description": "Welcome message for users in groups, $user for user, $prefix for prefix",
-           "required": false
-       },
-       "Left_Msg": {
-           "description": "Goodbye message for users in groups, $user for user, $prefix for prefix",
            "required": false
        }
     },

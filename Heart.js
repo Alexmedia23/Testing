@@ -252,7 +252,9 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
     }
 
     if (global.online) {
-      Joshbot.sendPresenceUpdate("unavailable", from);
+      if (m.chat) {
+        Joshbot.sendPresenceUpdate("available", m.chat);
+      }
     }
 
     if (global.autorecordtype) {
@@ -606,306 +608,10 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
         }
 
         break;
-
-      case "vote":
-        {
-          if (!m.isGroup) return mess.group;
-
-          if (m.chat in vote)
-            return reply(
-              `_There are still votes in this chat!_\n\n*${prefix}deletevote* - to delete votes`
-            );
-
-          if (!text)
-            return reply(
-              `Enter Reason for Vote, Example: *${
-                prefix + command
-              } Handsome Owner*`
-            );
-
-          reply(
-            `Voting starts!\n\n*${prefix}upvote* - for upvote\n*${prefix}downvote* - for downvote\n*${prefix}checkvote* - to check the vote\n*${prefix}deletevote* - to delete vote`
-          );
-
-          vote[m.chat] = [q, [], []];
-
-          await sleep(1000);
-
-          upvote = vote[m.chat][1];
-
-          devote = vote[m.chat][2];
-
-          teks_vote = `* VOTE *
-
-
-
-*Reason:* ${vote[m.chat][0]}
-
-
-
-┌〔 UPVOTE 〕
-
-│ 
-
-├ Total: ${vote[m.chat][1].length}
-
-│
-
-│ 
-
-└────
-
-
-
-┌〔 DOWNVOTE 〕
-
-│ 
-
-├ Total: ${vote[m.chat][2].length}
-
-│
-
-│ 
-
-└────
-
-
-
-Please Type Below
-
-*${prefix}upvote* - to cast vote
-
-*${prefix}downvote* -  to downvote
-
-*${prefix}deletevote* - to delete vote`;
-
-          Joshbot.sendMessage(m.chat, { text: teks_vote }, { quoted: m });
-        }
-
-        break;
-
-      case "upvote":
-        {
-          if (!m.isGroup) return mess.group;
-
-          if (!(m.chat in vote))
-            return reply(
-              `_*no voting in this group!*_\n\n*${prefix}vote* - to start voting`
-            );
-
-          isVote = vote[m.chat][1].concat(vote[m.chat][2]);
-
-          wasVote = isVote.includes(m.sender);
-
-          if (wasVote) return reply("You have Voted");
-
-          vote[m.chat][1].push(m.sender);
-
-          menvote = vote[m.chat][1].concat(vote[m.chat][2]);
-
-          teks_vote = `* VOTE *
-
-
-
-*Reason:* ${vote[m.chat][0]}
-
-
-
-┌〔 UPVOTE 〕
-
-│ 
-
-├ Total: ${vote[m.chat][1].length}
-
-${vote[m.chat][1].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
-
-│ 
-
-└────
-
-
-
-┌〔 DOWNVOTE 〕
-
-│ 
-
-├ Total: ${vote[m.chat][2].length}
-
-${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
-
-│ 
-
-└────
-
-
-
-Please Type Below
-
-*${prefix}upvote* - to upvote
-
-*${prefix}downvote* -  to downvote
-
-*${prefix}deletevote* - to delete vote`;
-
-          Joshbot.sendMessage(
-            m.chat,
-            { text: teks_vote, mentions: menvote },
-            { quoted: m }
-          );
-        }
-
-        break;
-
-      case "downvote":
-        {
-          if (!m.isGroup) return mess.group;
-
-          if (!(m.chat in vote))
-            return reply(
-              `_*no voting in this group!*_\n\n*${prefix}vote* - to start voting`
-            );
-
-          isVote = vote[m.chat][1].concat(vote[m.chat][2]);
-
-          wasVote = isVote.includes(m.sender);
-
-          if (wasVote) return reply("You have Voted");
-
-          vote[m.chat][2].push(m.sender);
-
-          menvote = vote[m.chat][1].concat(vote[m.chat][2]);
-
-          teks_vote = `* VOTE *
-
-
-
-*Reason:* ${vote[m.chat][0]}
-
-
-
-┌〔 UPVOTE 〕
-
-│ 
-
-├ Total: ${vote[m.chat][1].length}
-
-${vote[m.chat][1].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
-
-│ 
-
-└────
-
-
-
-┌〔 DOWNVOTE 〕
-
-│ 
-
-├ Total: ${vote[m.chat][2].length}
-
-${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
-
-│ 
-
-└────
-
-
-
-Please Type Below
-
-*${prefix}upvote* - to upvote
-
-*${prefix}downvote* -  to downvote
-
-*${prefix}deletevote* - to delete vote`;
-
-          Joshbot.sendMessage(
-            m.chat,
-            { text: teks_vote, mentions: menvote },
-            { quoted: m }
-          );
-        }
-
-        break;
-
-      case "checkvote":
-        if (!m.isGroup) return mess.group;
-
-        if (!(m.chat in vote))
-          return reply(
-            `_*no voting in this group!*_\n\n*${prefix}vote* - to start voting`
-          );
-
-        teks_vote = `* VOTE *
-
-
-
-*Reason:* ${vote[m.chat][0]}
-
-
-
-┌〔 UPVOTE 〕
-
-│ 
-
-├ Total: ${upvote.length}
-
-${vote[m.chat][1].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
-
-│ 
-
-└────
-
-
-
-┌〔 DOWNVOTE 〕
-
-│ 
-
-├ Total: ${devote.length}
-
-${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
-
-│ 
-
-└────
-
-
-
-*${prefix}deletevote* - to delete votes
-
-
-
-
-
-©${Joshbot.user.id}
-
-`;
-
-        Joshbot.sendTextWithMentions(m.chat, teks_vote, m);
-
-        break;
-
-      case "deletevote":
-      case "delvote":
-      case "hapusvote":
-        {
-          if (!m.isGroup) return mess.group;
-
-          if (!(m.chat in vote))
-            return reply(
-              `_*no voting in this group!*_\n\n*${prefix}vote* - to start voting`
-            );
-
-          delete vote[m.chat];
-
-          reply("Successfully Deleted Vote Session In This Group");
-        }
-        break;
       case "shutdown":
         if (!isCreator) return reply(mess.owner);
-        reply(`♠️Goodbye........`);
-        await sleep(3000);
+        reply(`Goodbye........`);
+        await sleep(5000);
         process.exit();
         break;
       case "restart":
@@ -2659,7 +2365,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
           try {
             reply(util.format(eval(`(async () => { ${budy.slice(3)} })()`)))
           } catch (e) {
-            Jovia.sendMessage(from, { image: ErrorPic, caption: String(e) }, { quoted: m })
+            Joshbot.sendMessage(from, { image: ErrorPic, caption: String(e) }, { quoted: m })
           }
         }
         if (budy.startsWith('>')) {
@@ -2669,7 +2375,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
             if (typeof evaled !== 'string') evaled = require('util').inspect(evaled)
             await reply(evaled)
           } catch (err) {
-            await Jovia.sendMessage(from, { image: ErrorPic, caption: String(err) }, { quoted: m })
+            await Joshbot.sendMessage(from, { image: ErrorPic, caption: String(err) }, { quoted: m })
           }
         }
 
@@ -2677,7 +2383,7 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
         if (budy.startsWith('$')) {
           if (!isCreator) return reply(mess.botowner)
           exec(budy.slice(2), (err, stdout) => {
-            if (err) return Jovia.sendMessage(from, { image: ErrorPic, caption: String(err) }, { quoted: m })
+            if (err) return Joshbot.sendMessage(from, { image: ErrorPic, caption: String(err) }, { quoted: m })
             if (stdout) return replyH(stdout)
           })
         }
@@ -2688,14 +2394,15 @@ ${vote[m.chat][2].map((v, i) => `├ ${i + 1}. @${v.split`@`[0]}`).join("\n")}
           if (m.isBaileys) return
           let msgs = global.db.database
           if (!(budy.toLowerCase() in msgs)) return
-          Jovia.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
+          Joshbot.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
         }
     }
   } catch (err) {
-    Jovia.sendMessage(`${ownertag}@s.whatsapp.net`, util.format(err), { quoted: m })
+    Joshbot.sendMessage(`${ownertag}@s.whatsapp.net`, util.format(err), { quoted: m })
     console.log(err)
   }
 }
+
 let file = require.resolve(__filename);
 fs.watchFile(file, () => {
   fs.unwatchFile(file);

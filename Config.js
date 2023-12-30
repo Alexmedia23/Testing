@@ -2,31 +2,31 @@ const fs = require('fs')
 require("dotenv").config();
 const chalk = require('chalk')
 
-//contact details
-global.ownernumber =  "2348050907760"
-global.ownername = "Joshua"
+module.exports = {
+    botname: process.env.BotName || "JOSH-MD", 
+    author: process.env.Author || "josh Bot",
+    packname: process.env.PackName || "Joshbot-MD",
+    prefa: process.env.Prefix || ['.'],
+    themeemoji: process.env.ThemeEmoji || "🧩",
+    ownername: process.env.Owner_Name || "Joshua",
+    ownernumber: process.env.Owner_Number || "2348050907760",
+  }
+
+  // Ignore them 👇🏻
+  global.botname = process.env.BotName || "JOSH-MD" 
+  global.author = process.env.Author || "josh Bot" 
+  global.packname = process.env.PackName || "Joshbot-MD" 
+  global.footer = process.env.Footer || "© Queen Anya Bot" 
+  global.prefa = process.env.Prefix || ['.'] 
+  global.themeemoji = process.env.ThemeEmoji || "🧩" 
+  global.ownername = process.env.Owner_Name || "Joshua" 
+  global.ownernumber = process.env.Owner_Number || "2348050907760" 
+
 global.ytname = "YT: JOSHUA.INC"
 global.socialm = "GitHub: Alexmedia23"
 global.location = "Nigeria"
-
-global.ownername = 'JOSHUA' //owner name
-global.botname = 'JOSH-MD' //name of the bot
-
-//sticker details
-global.stickername = '𓆩‎✘JOSHUA✘𓆪_✰'
-global.packname = 'Sticker By'
-global.author = 'josh Bot'
-//console view/theme
-global.themeemoji = '🧩'
-global.wm = "josh bots inc."
-
-//theme link
+global.stickername = '✘JOSHUA✘𓆪'
 global.link = ''
-
-//custom prefix
-global.prefa = ['.']
-
-//false=disable and true=enable
 global.autoRecording = false //auto recording
 global.autoTyping = false //auto typing
 global.autorecordtype = false //auto typing + recording
