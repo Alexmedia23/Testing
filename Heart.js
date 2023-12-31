@@ -17,6 +17,7 @@ const googleTTS = require("google-tts-api");
 const mumaker=require("mumaker")
 const util = require("util");
 const chalk = require("chalk");
+const photooxy = require('./lib/photooxy.js')
 const moment = require("moment-timezone");
 const speed = require("performance-now");
 const ms = (toMs = require("ms"));
@@ -714,16 +715,78 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
         if (!isCreator) return reply(mess.owner);
         if (args.length < 1)
           return reply(
-            ` Check out this example: ${prefix + command} in public/self`
+            ` Check out this example: ${prefix + command} in public/private`
           );
         if (q == "public") {
           Joshbot.public = true;
           reply(mess.done);
-        } else if (q == "self") {
+        } else if (q == "private") {
           Joshbot.public = false;
           reply(mess.done);
         }
         break;
+ case 'shadow': 
+case 'write': 
+case 'romantic': 
+case 'burnpaper':
+case 'smoke': 
+case 'narutobanner': 
+case 'love': 
+case 'undergrass':
+case 'doublelove': 
+case 'coffecup':
+case 'underwaterocean':
+case 'smokyneon':
+case 'starstext':
+case 'rainboweffect':
+case 'balloontext':
+case 'metalliceffect':
+case 'embroiderytext':
+case 'flamingtext':
+case 'stonetext':
+case 'writeart':
+case 'summertext':
+case 'wolfmetaltext':
+case 'nature3dtext':
+case 'rosestext':
+case 'naturetypography':
+case 'quotesunder':
+case 'shinetext':{
+
+if (!q) return reply(`Example : ${prefix+command} Joshbot`) 
+reply("_please wait am processing your command_")
+let link
+if (/stonetext/.test(command)) link = 'https://photooxy.com/online-3d-white-stone-text-effect-utility-411.html'
+if (/writeart/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-art-quote-on-wood-heart-370.html'
+if (/summertext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/3d-summer-text-effect-367.html'
+if (/wolfmetaltext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-a-wolf-metal-text-effect-365.html'
+if (/nature3dtext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/make-nature-3d-text-effects-364.html'
+if (/rosestext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/yellow-roses-text-360.html'
+if (/naturetypography/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-vector-nature-typography-355.html'
+if (/quotesunder/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/quotes-under-fall-leaves-347.html'
+if (/shinetext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/rainbow-shine-text-223.html'
+if (/shadow/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html'
+if (/write/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-text-on-the-cup-392.html'
+if (/romantic/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/romantic-messages-for-your-loved-one-391.html'
+if (/burnpaper/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-text-on-burn-paper-388.html'
+if (/smoke/.test(command)) link = 'https://photooxy.com/other-design/create-an-easy-smoke-type-effect-390.html'
+if (/narutobanner/.test(command)) link = 'https://photooxy.com/manga-and-anime/make-naruto-banner-online-free-378.html'
+if (/love/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-a-picture-of-love-message-377.html'
+if (/undergrass/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/make-quotes-under-grass-376.html'
+if (/doublelove/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/love-text-effect-372.html'
+if (/coffecup/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/put-any-text-in-to-coffee-cup-371.html'
+if (/underwaterocean/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/creating-an-underwater-ocean-363.html'
+if (/smokyneon/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/make-smoky-neon-glow-effect-343.html'
+if (/starstext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-stars-text-on-the-night-sky-200.html'
+if (/rainboweffect/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/glow-rainbow-effect-generator-201.html'
+if (/balloontext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/royal-look-text-balloon-effect-173.html'
+if (/metalliceffect/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/illuminated-metallic-effect-177.html'
+if (/embroiderytext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-embroidery-text-online-191.html'
+if (/flamingtext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/realistic-flaming-text-effect-online-197.html'
+let dehe = await photooxy.photoOxy(link, q)
+Joshbot.sendMessage(m.chat, { image: { url: dehe }, caption: `${mess.done}` }, { quoted: m })
+}
+break
       case "setexif":
         if (!isCreator) return reply(mess.owner);
         if (!text)
@@ -774,19 +837,6 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
           });
           fs.unlinkSync(medis);
           reply(mess.done);
-        }
-        break;
-      case "ss":
-      case "ssweb":
-        {
-          if (!q) return reply(`Example ${prefix + command} link`);
-          XeonStickWait();
-          let krt = await scp1.ssweb(q);
-          Joshbot.sendMessage(
-            from,
-            { image: krt.result, caption: mess.succes },
-            { quoted: m }
-          );
         }
         break;
       case "block":
@@ -1112,19 +1162,6 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
           }
         }
         break;
-      // case 'group':
-      // case 'grup':
-      //     if (!m.isGroup) return reply(mess.group)
-      //     if (!isAdmins && !isGroupOwner && !isCreator) return reply(mess.admin)
-      //     if (!isBotAdmins) return reply(mess.botAdmin)
-      //     if (args[0] === 'mute') {
-      //         await Joshbot.groupSettingUpdate(m.chat, 'announcement').then((res) => reply(`♠️Success In Closing The Group️`)).catch((err) => reply(json(err)))
-      //     } else if (args[0] === 'unmute') {
-      //         await Joshbot.groupSettingUpdate(m.chat, 'not_announcement').then((res) => reply(`Success In Opening The Group 🕊️`)).catch((err) => reply(json(err)))
-      //     } else {
-      //         reply(`Mode ${command}\n\n\nType ${prefix + command} unmute/mute`)
-      //     }
-      //     break
 
       case "unmute":
         if ((args[0] = "unmute")) {
@@ -2095,6 +2132,34 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
 ┃│◦ SLOW
 ┃│◦ SMOOTH
 ┃│◦ SQUIRREL
+┠┌─═❮ *LOGO MAKER* ❯═─┈•
+┃│◦ shadow
+┃│◦ romantic 
+┃│◦ write
+┃│◦ smoke
+┃│◦ undergrass
+┃│◦ burnpaper
+┃│◦ doublelove 
+┃│◦ coffecup
+┃│◦ underwaterocean
+┃│◦ smokyneon
+┃│◦ starstext
+┃│◦ rainboweffect
+┃│◦ balloontext
+┃│◦ metalliceffect
+┃│◦ embroiderytext
+┃│◦ flamingtext
+┃│◦ stonetext
+┃│◦ writeart
+┃│◦ summertext
+┃│◦ wolfmetaltext
+┃│◦ nature3dtext
+┃│◦ rosestext
+┃│◦ naturetypography
+┃│◦ quotesunder
+┃│◦ shinetext
+┃│◦ love
+┃│◦ narutobanner
 ┃└──────────
 ╰━━━━━━━━━━━━━
 `;
@@ -2347,20 +2412,44 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
         }
         break;
 
-      case "ping": {
-        // Record the start time just before sending the command
-        const startTime = new Date();
-
-        const processingTime = getRandomProcessingTime();
-        await sleep(processingTime);
-
-        const endTime = new Date();
-
-        const pingTime = endTime - startTime;
-
-        reply(`*Pong!* ${pingTime} ms`);
-        break;
+        case 'ping':  {
+          const used = process.memoryUsage()
+          const cpus = os.cpus().map(cpu => {
+              cpu.total = Object.keys(cpu.times).reduce((last, type) => last + cpu.times[type], 0)
+        return cpu
+          })
+          const cpu = cpus.reduce((last, cpu, _, { length }) => {
+              last.total += cpu.total
+              last.speed += cpu.speed / length
+              last.times.user += cpu.times.user
+              last.times.nice += cpu.times.nice
+              last.times.sys += cpu.times.sys
+              last.times.idle += cpu.times.idle
+              last.times.irq += cpu.times.irq
+              return last
+          }, {
+              speed: 0,
+              total: 0,
+              times: {
+            user: 0,
+            nice: 0,
+            sys: 0,
+            idle: 0,
+            irq: 0
+          }
+          })
+          let timestamp = speed()
+          let latensi = speed() - timestamp
+          neww = performance.now()
+          oldd = performance.now()
+          respon = `
+*Response Speed* ${latensi.toFixed(4)} _Second_ \n ${oldd - neww} _miliseconds_
+${readmore}
+*Runtime* : ${runtime(process.uptime())}
+`
+          reply(respon)
       }
+      break
 
       default:
          if (budy.startsWith('=>')) {

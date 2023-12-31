@@ -13,6 +13,8 @@ const { smsg, isUrl, generateMessageTag, getBuffer, getSizeMedia, fetch, await, 
 const { default: JoshbotConnect, delay, PHONENUMBER_MCC, makeCacheableSignalKeyStore, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, generateForwardMessageContent, prepareWAMessageMedia, generateWAMessageFromContent, generateMessageID, downloadContentFromMessage, makeInMemoryStore, jidDecode, proto } = require("@whiskeysockets/baileys")
 const NodeCache = require("node-cache")
 const Pino = require("pino")
+const more = String.fromCharCode(8206);
+const readmore = more.repeat(4001);
 const readline = require("readline")
 const { parsePhoneNumber } = require("libphonenumber-js")
 const makeWASocket = require("@whiskeysockets/baileys").default
@@ -72,18 +74,18 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
          phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
 
          if (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v))) {
-            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +919931122319")))
+            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +2341993112239")))
             process.exit(0)
          }
       } else {
-         phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number\nFor example: +919931122319 : `)))
+         phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number\nFor example: +2341993112239 : `)))
          phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
 
          // Ask again when entering the wrong number
          if (!Object.keys(PHONENUMBER_MCC).some(v => phoneNumber.startsWith(v))) {
-            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +919931122319")))
+            console.log(chalk.bgBlack(chalk.redBright("Start with country code of your WhatsApp Number, Example : +2341993112239")))
 
-            phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number please\nFor example: +919931122319: `)))
+            phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Your WhatsApp bot number please\nFor example: +2341993112239: `)))
             phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
             rl.close()
          }
@@ -92,7 +94,7 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
       setTimeout(async () => {
          let code = await Joshbot.requestPairingCode(phoneNumber)
          code = code?.match(/.{1,4}/g)?.join("-") || code
-         console.log(chalk.black(chalk.bgGreen(`🤖Your Pairing Code🤖: `)), chalk.black(chalk.white(code)))
+         console.log(chalk.black(chalk.bgGreen(`Your Pairing Code: `)), chalk.black(chalk.white(code)))
       }, 3000)
    }
 
@@ -160,19 +162,19 @@ const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
 Joshbot.ev.on("connection.update",async  (s) => {
         const { connection, lastDisconnect } = s
         if (connection == "open") {
-console.log(chalk.green('🟨Welcome to Joshbot-md'));
-console.log(chalk.gray('\n\n🚀Initializing...'));
-console.log(chalk.cyan('\n\n🧩Connected'));
+console.log(chalk.green('Welcome to Joshbot-md'));
+console.log(chalk.gray('\n\nInitializing...'));
+console.log(chalk.cyan('\n\nConnected'));
 
 const ownernumber = global.ownernumber;
-await Joshbot.sendMessage(ownernumber + '@s.whatsapp.net', { text: "✅ Connected" });
+await Joshbot.sendMessage(ownernumber + '@s.whatsapp.net', { text: `Your bot has been Connected ${readmore} to the server\n\n_*Sudo:${global.ownernumber}*_\n_*Prefix:( ${global.prefa} )*_\n\n _*Other Configurations*_\n\n*Always-online->* _${global.online}_\n*Auto-typing->* _${global.autoTyping}_\n*Autorecording->* _${global.autoRecording}_\n*Autoread->* _${global.autoread}_` });
 
 const rainbowColors = ['red', 'yellow', 'green', 'blue', 'purple'];
 let index = 0;
 
 function printRainbowMessage() {
   const color = rainbowColors[index];
-  console.log(chalk.keyword(color)('\n\n⏳️waiting for messages'));
+  console.log(chalk.keyword(color)('\n\nwaiting for messages'));
   index = (index + 1) % rainbowColors.length;
   setTimeout(printRainbowMessage, 60000);  // Adjust the timeout for desired speed
 }
