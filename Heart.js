@@ -1863,20 +1863,20 @@ break
         }
         break;
 
-      case "rules":
-        const helptxt = `_*📍[Rules for Joshbot Md usage]📍*_\n\n\n*>>>* use -support to get the Official group link in your dm.\n\n*--->* If you want to add Joshbot-Md in your group the contact the owner by *-owner/-mods* \n\n*--->* Dont use wrong command, use the command given in the *-help* list \n\n* Dont spam the bot with commands if Joshbot-Md is not responding, its means the maybe owner is offline or facing internet issue. \n\n*IF YOU DONT FOLLOW THE RULES THEN YOU WILL BE BANNED* 🚫 \n\n\n*©️ Joshua Bots inc* `;
+      // case "rules":
+      //   const helptxt = `_*📍[Rules for Joshbot Md usage]📍*_\n\n\n*>>>* use -support to get the Official group link in your dm.\n\n*--->* If you want to add Joshbot-Md in your group the contact the owner by *-owner/-mods* \n\n*--->* Dont use wrong command, use the command given in the *-help* list \n\n* Dont spam the bot with commands if Joshbot-Md is not responding, its means the maybe owner is offline or facing internet issue. \n\n*IF YOU DONT FOLLOW THE RULES THEN YOU WILL BE BANNED* 🚫 \n\n\n*©️ Joshua Bots inc* `;
 
-        Joshbot.sendMessage(
-          from,
-          {
-            video: { url: "https://c.tenor.com/geMdtLCXZkAAAAPo/rules.mp4" },
-            gifPlayback: true,
-            caption: helptxt,
-          },
-          { quoted: m }
-        );
+      //   Joshbot.sendMessage(
+      //     from,
+      //     {
+      //       video: { url: "https://c.tenor.com/geMdtLCXZkAAAAPo/rules.mp4" },
+      //       gifPlayback: true,
+      //       caption: helptxt,
+      //     },
+      //     { quoted: m }
+      //   );
 
-        break;
+      //   break;
       case "hii":
       case "hi":
       case "Hi":
