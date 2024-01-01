@@ -1902,7 +1902,7 @@ break
           {
             image: { url: "./Gallery/ch2.jpg" },
             caption:
-              "I sent you the support Link in personal message.\n Pls check.",
+              "I sent you the support Link in personal messaghggffffccfge.\n Pls check.",
             gifPlayback: true,
           },
           { quoted: m }
