@@ -1,4 +1,5 @@
 const config = require('./Config')
+require("dotenv").config();  
 const pino = require('pino')
 const { Boom } = require('@hapi/boom')
 const fs = require('fs')
