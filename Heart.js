@@ -1910,6 +1910,7 @@ loading()
         break;
 
       case "info":
+        loading()
         let ifx = `『Joshbot-𝕄𝕕 』
 *🌟Description:* A WhatsApp Bot With Rich features based on Joshbot
 *🚦Uptime:* ${runtime(process.uptime())}
