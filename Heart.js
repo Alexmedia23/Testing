@@ -241,15 +241,18 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
     }
 
     if (!Joshbot.public) {
-      if (!isCreator && !m.key.fromMe) return;
+      if (!isCreator && !m.key.fromMe) return
     }
-    if (process.env.RECORDING || 'true' === 'true' && command) {
+
+ if (process.env.RECORDING || 'true' === 'true' && command) {
 client.sendPresenceUpdate('composing', from)
 }
+
 if (process.env.AUTO_READ || 'true' === 'true' && command) {
 client.readMessages([m.key])
 }
-if (process.env.ALWAYS_ONLINE || 'false' === 'false') { 
+
+if (process.env.ALWAYS_ONLINE || 'false' === 'false' && command) { 
   client.sendPresenceUpdate('available', m.chat) 
 }
 else {
@@ -258,7 +261,7 @@ else {
 
 if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith('994'))) {
   client.updateBlockStatus(m.sender, 'block');
-
+}
 
     if (autobio) {
       Joshbot.sendPresenceUpdate;
@@ -2555,9 +2558,9 @@ ${readmore}
       }
 }
 } catch (err) {
-Joshbot.sendText(ownernumber + '@s.whatsapp.net', util.format(err), m)
-console.log(util.format(err))
-}
+  Joshbot.sendText(ownernumber + '@s.whatsapp.net', util.format(err), m)
+  console.log(util.format(err))
+  }
 }
 
 let file = require.resolve(__filename);

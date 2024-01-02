@@ -5,7 +5,6 @@ const chalk = require('chalk')
 module.exports = {
     botname: process.env.BotName || "JOSH-MD", 
     author: process.env.Author || "josh Bot",
-    packname: process.env.PackName || "Joshbot-MD",
     prefa: process.env.Prefix || ['.'],
     themeemoji: process.env.ThemeEmoji || "🧩",
     ownername: process.env.Owner_Name || "Joshua",
