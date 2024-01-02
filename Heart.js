@@ -698,15 +698,15 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
         }
         break;
 
-      case "online":
+      case "alwaysonline":
         if (!isCreator) return reply(mess.owner);
         if (args.length < 1) return reply(`Example ${prefix + command} on/off`);
         if (q == "on") {
-          online = true;
+          alwaysonline = true;
           reply(`Always Online has been activated successfully`);
         }
         if (q == "off") {
-          online = false;
+          alwaysonline= false;
           reply(`Always Online has been disactivated successfully`);
         }
         break;
