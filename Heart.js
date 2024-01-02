@@ -242,31 +242,22 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
     if (!Joshbot.public) {
       if (!isCreator && !m.key.fromMe) return;
     }
-    if (autoread) {
-      Joshbot.readMessages([m.key]);
-    }
-    if (global.autoTyping) {
-      Joshbot.sendPresenceUpdate("composing", from);
-    }
+    if (process.env.RECORDING || 'true' === 'true' && command) {
+client.sendPresenceUpdate('composing', from)
+}
+if (process.env.AUTO_READ || 'true' === 'true' && command) {
+client.readMessages([m.key])
+}
+if (process.env.ALWAYS_ONLINE || 'false' === 'false') { 
+  client.sendPresenceUpdate('available', m.chat) 
+}
+else {
+  client.sendPresenceUpdate('unavailable', m.chat)
+}
 
-    if (global.autoRecording) {
-      Joshbot.sendPresenceUpdate("recording", from);
-    }
+if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith('994'))) {
+  client.updateBlockStatus(m.sender, 'block');
 
-    if (global.online) {
-      if (m.chat) {
-        Joshbot.sendPresenceUpdate("available", m.chat);
-      }
-    }
-
-    if (global.autorecordtype) {
-      let Joshuarecordin = ["recording", "composing"];
-
-      let Joshuarecordinfinal =
-        Joshuarecordin[Math.floor(Math.random() * Joshuarecordin.length)];
-
-      Joshbot.sendPresenceUpdate(Joshuarecordinfinal, from);
-    }
 
     if (autobio) {
       Joshbot.sendPresenceUpdate;
@@ -631,39 +622,47 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
         reply("In Process....");
         exec("pm2 restart all");
         break;
-      case "autoread":
-        if (!isCreator) return reply(mess.owner);
-        if (args.length < 1) return reply(`Example ${prefix + command} on/off`);
-        if (q === "on") {
-          autoread = true;
-          reply(`Successfully changed autoread to ${q}`);
-        } else if (q === "off") {
-          autoread = false;
-          reply(`Successfully changed autoread to ${q}`);
-        }
-        break;
+      
+case 'autoread': {
+  if (!isCreator && !isOwner) return reply('you are not my owner')
+  if (!args[0]) return reply(`Send the command with options: on or off. Example: ${prefix}${command} on`);
+
+  if (args[0].toLowerCase() === 'on') {
+    AUTO_READ = true;
+    reply(`Successfully changed auto-read to ${args}`);
+  } else if (args[0].toLowerCase() === 'off') {
+    AUTO_READ = false;
+    reply(`Successfully changed auto-read to ${args}`);
+  } else {
+    reply('Invalid option. Use "on" or "off".');
+  }
+  break;
+}
       case "autotyping":
         if (!isCreator) return reply(mess.owner);
-        if (args.length < 1) return reply(`Example ${prefix + command} on/off`);
-        if (q === "on") {
+        if (!args[0]) return reply(`Example ${prefix + command} on/off`);
+        
+        if (args[0].tolowercase() === 'on') {
           autoTyping = true;
-          reply(`Successfully changed auto-typing to ${q}`);
-        } else if (q === "off") {
+          reply(`Successfully changed auto-typing to ${args}`);
+        } else if (args[0].tolowercase() === "off") {
           autoTyping = false;
-          reply(`Successfully changed auto-typing to ${q}`);
+          reply(`Successfully changed auto-typing to ${args}`);
         }
         break;
-      case "autorecording":
-        if (!isCreator) return reply(mess.owner);
-        if (args.length < 1) return reply(`Example ${prefix + command} on/off`);
-        if (q === "on") {
-          autoRecording = true;
-          reply(`Successfully changed auto-recording to ${q}`);
-        } else if (q === "off") {
-          autoRecording = false;
-          reply(`Successfully changed auto-recording to ${q}`);
+      case 'autorecording': {
+          if (!isCreator) return reply(mess.owner)
+          if (!args[0]) return reply(`Send the command with options: on or off. Example: ${prefix}${command} on`);
+        
+          if (args[0].toLowerCase() === 'on') {
+            AUTO_RECORDING = true;
+          } else if (args[0].toLowerCase() === 'off') {
+            AUTO_RECORDING = false;
+          } else {
+            reply('Invalid option. Use "on" or "off".');
+          }
+          break;
         }
-        break;
       case "autorecordtype":
         if (!isCreator) return reply(mess.owner);
         if (args.length < 1) return reply(`Example ${prefix + command} on/off`);
@@ -697,6 +696,42 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
           reply(`🟨Successfully Changed AutoBio To ${q}`);
         }
         break;
+        
+        case 'translate': case 'trt': {
+  try {
+    if (!text) return m.reply(isPrefix, command, 'id what is translater');
+    if (text && m.quoted && m.quoted.text) {
+      let lang = text.slice(0, 2);
+      try {
+        let data = m.quoted.text;
+        let result = await translate(`${data}`, {
+          to: lang
+        });
+        m.reply(result[0]);
+      } catch {
+        return m.reply(` Language code not supported.`);
+      }
+    } else if (text) {
+      let lang = text.slice(0, 2);
+      try {
+        let data = text.substring(2).trim();
+        let result = await translate(`${data}`, {
+          to: lang
+        });
+        m.reply(result[0]);
+      } catch {
+        return m.reply(` Language code not supported.`);
+      }
+    }
+  } catch (error) {
+    console.error("Error in 'translate' command:", error);
+    m.reply(` An error occurred while translating.`);
+  }
+  break; // Case break statement
+}
+function isUrl(str) {
+}
+
 
       case "alwaysonline":
         if (!isCreator) return reply(mess.owner);
@@ -1112,27 +1147,37 @@ break
           reply(mess.done);
         }
         break;
-      case "tag":
-      case "tagall":
-      case "all":
-        {
-          if (!m.isGroup) return replay(mess.grouponly);
-          if (!isAdmins && !isCreator) return replay(mess.useradmin);
-          let teks = `𝗧𝗮𝗴𝗮𝗹𝗹
-  
- *Message : ${args.join(" ") ? args.join(" ") : "no message"}*\n\n`;
-          for (let mem of participants) {
-            teks += ` @${mem.id.split("@")[0]}\n`;
-          }
-          Joshbot.sendMessage(
-            m.chat,
-            { text: teks, mentions: participants.map((a) => a.id) },
-            { quoted: m }
-          );
-        }
-        break;
+        
+      case 'tagall':
+   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
+    // Fetch group metadata
+    const groupMetadata = await client.groupMetadata(m.chat);
 
-      case "totag":
+    // Check if group metadata is available
+    if (!groupMetadata) {
+        return reply(`Unable to fetch group metadata.`);
+    }
+
+    // Extract the list of participants from group metadata
+    const participants = groupMetadata.participants || [];
+
+    // Check if there are participants
+    if (participants.length === 0) {
+        return reply(`No participants found in this group.`);
+    }
+
+    // Create the tagall message
+    const readmore = String.fromCharCode(8206).repeat(4001);
+    const tagallMessage = `${participants.map(v => '◦  @' + v.id.replace(/@.+/, '')).join(' ')}`;
+    const finalMessage = `乂  *E V E R Y O N E*\n\n*“Hello everyone, check out this important message!”*\n${readmore}\n${tagallMessage}`;
+
+    // Send the tagall message
+    await client.sendMessage(m.chat, finalMessage, m);
+    break;
+
+
+      case "tag":
         if (!m.isGroup) return reply(mess.group);
         if (!isBotAdmins) return reply(mess.botAdmin);
         if (!isAdmins) return reply(mess.admin);
@@ -2249,28 +2294,38 @@ break
       case "say":
       case "tts":
       case "gtts": {
-        if (!text) return reply("Where is the text?");
-        let texttts = text;
-        const xeonrl = googleTTS.getAudioUrl(texttts, {
-          lang: "en",
-          slow: false,
-          host: "https://translate.google.com",
-        });
-        return Joshbot.sendMessage(
-          m.chat,
-          {
-            audio: {
-              url: xeonrl,
-            },
-            mimetype: "audio/mp4",
-            ptt: true,
-            fileName: `${text}.mp3`,
-          },
-          {
-            quoted: m,
-          }
-        );
-      }
+        if (!args[0] || !text) {
+        return m.reply('Usage: .say <language code> <text>');
+    }
+
+    const langCode = args[0]; // Language code provided by the user
+    const textToSpeak = args.slice(1).join(" "); // Get the text to speak
+
+    // Validate the language code
+    if (!isValidLanguageCode(langCode)) {
+        return m.reply('Invalid language code. Please provide a valid language code.');
+    }
+
+    // Generate the audio URL using the specified language code and text
+    const audioUrl = googleTTS.getAudioUrl(textToSpeak, {
+        lang: langCode,
+        slow: false,
+        host: "https://translate.google.com",
+    });
+
+    // Send the audio message
+    return client.sendMessage(m.chat, {
+        audio: {
+            url: audioUrl,
+        },
+        mimetype: 'audio/mp4',
+        ptt: true,
+        fileName: `${textToSpeak}.mp3`,
+    }, {
+        quoted: m,
+    });
+}
+break;
       case "circlevideo":
         {
           try {

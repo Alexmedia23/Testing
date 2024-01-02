@@ -10,10 +10,10 @@ module.exports = {
     themeemoji: process.env.ThemeEmoji || "🧩",
     ownername: process.env.Owner_Name || "Joshua",
     ownernumber: process.env.Owner_Number || "2348050907760",
-    always_online: process.env.Always_online || "true",
-    autoRecording:process.env.Auto_recording || "false",
+    ALWAYS_ONLINE: process.env.ALWAYS_ONLINE || "true",
+    RECORDING:process.env.RECORDING || "false",
     autoTyping :process.env.Auto_typing || "false",
-    autoread :process.env.Auto_read || "false",
+    AUTO_READ :process.env.AUTO_READ || "false",
   }
 
   // Ignore them 👇🏻
@@ -25,10 +25,10 @@ module.exports = {
   global.themeemoji = process.env.ThemeEmoji || "🧩" 
   global.ownername = process.env.Owner_Name || "Joshua" 
   global.ownernumber = process.env.Owner_Number || "2348050907760" 
-  global.autoRecording = process.env.Auto_recording || "false"
-  global.always_online = process.env.Always_online || "true"
+  global.RECORDING = process.env.RECORDING || "false"
+  global.ALWAYS_ONLINE = process.env.ALWAYS_ONLINE || "true"
   global.autoTyping = process.env.Auto_typing || "false"
-  global.autoread = process.env.Auto_read || "false"
+  global.AUTO_READ = process.env.AUTO_READ || "false"
   
 
 global.ytname = "YT: JOSHUA.INC"
@@ -36,7 +36,7 @@ global.socialm = "GitHub: Alexmedia23"
 global.location = "Nigeria"
 global.stickername = '✘JOSHUA✘𓆪'
 global.link = ''
-global.autorecordtype = false //auto typing + recording
+ //auto typing + recording
 global.autobio = false //auto update bio
 global.anti212 = true //auto block +212
 global.autoread_status = false //auto view status/story

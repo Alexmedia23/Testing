@@ -167,7 +167,7 @@ console.log(chalk.gray('\n\nInitializing...'));
 console.log(chalk.cyan('\n\nConnected'));
 
 const ownernumber = global.ownernumber;
-await Joshbot.sendMessage(ownernumber + '@s.whatsapp.net', { text: `Your bot has been Connected ${readmore} to the server\n\n_*Sudo:${global.ownernumber}*_\n_*Prefix:( ${global.prefa} )*_\n\n _*Other Configurations*_\n\n*Always-online->* _${config.online}_\n*Auto-typing->* _${global.autoTyping}_\n*Autorecording->* _${global.autoRecording}_\n*Autoread->* _${global.autoread}_` });
+await Joshbot.sendMessage(ownernumber + '@s.whatsapp.net', { text: `Your bot has been Connected ${readmore} to the server\n\n_*Sudo:${global.ownernumber}*_\n_*Prefix:( ${global.prefa} )*_\n\n _*Other Configurations*_\n\n*Always-online->* _${process.env.ALWAYS_ONLINE}_\n*Auto-typing->* _${global.autoTyping}_\n*Autorecording->* _${global.autoRecording}_\n*Autoread->* _${global.autoread}_` });
 
 const rainbowColors = ['red', 'yellow', 'green', 'blue', 'purple'];
 let index = 0;
