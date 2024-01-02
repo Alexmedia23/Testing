@@ -1896,13 +1896,13 @@ break
         let tex = `📍My Developer's Group📍\n\n*🎇 BOTS support group:🎇*\n\n**`;
 
         await Joshbot.sendMessage(m.sender, { text: `${tex}` });
-
+loading()
         await Joshbot.sendMessage(
           m.chat,
           {
             image: { url: "./Gallery/ch2.jpg" },
             caption:
-              "I sent you the support Link in personal messaghggffffccfge.\n Pls check.",
+              "I sent you the support Link in personal message.\n Pls check.",
             gifPlayback: true,
           },
           { quoted: m }
