@@ -10,7 +10,7 @@ module.exports = {
     themeemoji: process.env.ThemeEmoji || "🧩",
     ownername: process.env.Owner_Name || "Joshua",
     ownernumber: process.env.Owner_Number || "2348050907760",
-    alwaysonline: process.env.Always_online || "false",
+    online: process.env.Always_online || "false",
     autoRecording:process.env.Auto_recording || "false",
     autoTyping :process.env.Auto_typing || "false",
     autoread :process.env.Auto_read || "false",
