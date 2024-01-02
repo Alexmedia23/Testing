@@ -1896,7 +1896,7 @@ break
         let tex = `📍My Developer's Group📍\n\n*🎇 BOTS support group:🎇*\n\n**`;
 
         await Joshbot.sendMessage(m.sender, { text: `${tex}` });
-loading()
+
         await Joshbot.sendMessage(
           m.chat,
           {

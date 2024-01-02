@@ -10,6 +10,10 @@ module.exports = {
     themeemoji: process.env.ThemeEmoji || "🧩",
     ownername: process.env.Owner_Name || "Joshua",
     ownernumber: process.env.Owner_Number || "2348050907760",
+    alwaysonline: process.env.Always_online || "false",
+    autoRecording:process.env.Auto_recording || "false",
+    autoTyping :process.env.Auto_typing || "false",
+    autoread :process.env.Auto_read || "false",
   }
 
   // Ignore them 👇🏻
@@ -21,20 +25,21 @@ module.exports = {
   global.themeemoji = process.env.ThemeEmoji || "🧩" 
   global.ownername = process.env.Owner_Name || "Joshua" 
   global.ownernumber = process.env.Owner_Number || "2348050907760" 
+  global.autoRecording = process.env.Auto_recording || "false"
+  global.online = process.env.Always_online || "false"
+  global.autoTyping = process.env.Auto_typing || "false"
+  global.autoread = process.env.Auto_read || "false"
+  
 
 global.ytname = "YT: JOSHUA.INC"
 global.socialm = "GitHub: Alexmedia23"
 global.location = "Nigeria"
 global.stickername = '✘JOSHUA✘𓆪'
 global.link = ''
-global.autoRecording = false //auto recording
-global.autoTyping = false //auto typing
 global.autorecordtype = false //auto typing + recording
-global.autoread = false //auto read messages
 global.autobio = false //auto update bio
 global.anti212 = true //auto block +212
 global.autoread_status = false //auto view status/story
-global.online = false // always online
 
 
 
