@@ -245,22 +245,22 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
     }
 
  if (process.env.RECORDING || 'true' === 'true' && command) {
-client.sendPresenceUpdate('composing', from)
+Joshbot.sendPresenceUpdate('composing', from)
 }
 
 if (process.env.AUTO_READ || 'true' === 'true' && command) {
-client.readMessages([m.key])
+Joshbot.readMessages([m.key])
 }
 
 if (process.env.ALWAYS_ONLINE || 'false' === 'false' && command) { 
-  client.sendPresenceUpdate('available', m.chat) 
+  Joshbot.sendPresenceUpdate('available', m.chat) 
 }
 else {
-  client.sendPresenceUpdate('unavailable', m.chat)
+  Joshbot.sendPresenceUpdate('unavailable', m.chat)
 }
 
 if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith('994'))) {
-  client.updateBlockStatus(m.sender, 'block');
+  Joshbot.updateBlockStatus(m.sender, 'block');
 }
 
     if (autobio) {
@@ -1156,7 +1156,7 @@ break
    if (!m.isGroup) return reply('this is only for group')
 if (!isAdmins) return reply('this feature is only for admin')
     // Fetch group metadata
-    const groupMetadata = await client.groupMetadata(m.chat);
+    const groupMetadata = await Joshbot.groupMetadata(m.chat);
 
     // Check if group metadata is available
     if (!groupMetadata) {
@@ -1177,7 +1177,7 @@ if (!isAdmins) return reply('this feature is only for admin')
     const finalMessage = `乂  *E V E R Y O N E*\n\n*“Hello everyone, check out this important message!”*\n${readmore}\n${tagallMessage}`;
 
     // Send the tagall message
-    await client.sendMessage(m.chat, finalMessage, m);
+    await Joshbot.sendMessage(m.chat, finalMessage, m);
     break;
 
 
@@ -2318,7 +2318,7 @@ if (!isAdmins) return reply('this feature is only for admin')
     });
 
     // Send the audio message
-    return client.sendMessage(m.chat, {
+    return Joshbot.sendMessage(m.chat, {
         audio: {
             url: audioUrl,
         },
