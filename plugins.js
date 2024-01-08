@@ -41,6 +41,21 @@ async function startJoshbot() {
 let { version, isLatest } = await fetchLatestBaileysVersion()
 const {  state, saveCreds } =await useMultiFileAuthState(`./session`)
     const msgRetryCounterCache = new NodeCache() // for retry message, "waiting message"
+    const syncPlugins = async (directory) => {
+        fs.readdir(directory, (err, files) => {
+          if (err) {
+            console.error('Error reading directory:', err);
+            return;
+          }
+          const jsFiles = files.filter((file) => path.extname(file).toLowerCase() === '.js');
+          jsFiles.forEach((file) => {
+            const filePath = path.join(directory, file);
+            const requiredModule = require('./' + filePath);
+          });
+        });
+      };
+      
+      syncPlugins('./lib/plugins/');
     const Joshbot = makeWASocket({
         logger: pino({ level: 'silent' }),
         printQRInTerminal: !pairingCode, // popping up QR in terminal log

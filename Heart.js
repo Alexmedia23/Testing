@@ -1,4 +1,4 @@
-require("dotenv").config();  
+require("dotenv").config();
 const {
   BufferJSON,
   WA_DEFAULT_EPHEMERAL,
@@ -15,7 +15,7 @@ const fs = require("fs");
 const fsx = require("fs-extra");
 const path = require("path");
 const googleTTS = require("google-tts-api");
-const mumaker=require("mumaker")
+const mumaker = require("mumaker")
 const util = require("util");
 const chalk = require("chalk");
 const photooxy = require('./lib/photooxy.js')
@@ -117,26 +117,32 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
       m.mtype === "conversation"
         ? m.message.conversation
         : m.mtype == "imageMessage"
-        ? m.message.imageMessage.caption
-        : m.mtype == "videoMessage"
-        ? m.message.videoMessage.caption
-        : m.mtype == "extendedTextMessage"
-        ? m.message.extendedTextMessage.text
-        : m.mtype == "buttonsResponseMessage"
-        ? m.message.buttonsResponseMessage.selectedButtonId
-        : m.mtype == "listResponseMessage"
-        ? m.message.listResponseMessage.singleSelectreply.selectedRowId
-        : m.mtype == "templateButtonreplyMessage"
-        ? m.message.templateButtonreplyMessage.selectedId
-        : m.mtype === "messageContextInfo"
-        ? m.message.buttonsResponseMessage?.selectedButtonId ||
-          m.message.listResponseMessage?.singleSelectreply.selectedRowId ||
-          m.text
-        : "";
+          ? m.message.imageMessage.caption
+          : m.mtype == "videoMessage"
+            ? m.message.videoMessage.caption
+            : m.mtype == "extendedTextMessage"
+              ? m.message.extendedTextMessage.text
+              : m.mtype == "buttonsResponseMessage"
+                ? m.message.buttonsResponseMessage.selectedButtonId
+                : m.mtype == "listResponseMessage"
+                  ? m.message.listResponseMessage.singleSelectreply.selectedRowId
+                  : m.mtype == "templateButtonreplyMessage"
+                    ? m.message.templateButtonreplyMessage.selectedId
+                    : m.mtype === "messageContextInfo"
+                      ? m.message.buttonsResponseMessage?.selectedButtonId ||
+                      m.message.listResponseMessage?.singleSelectreply.selectedRowId ||
+                      m.text
+                      : "";
     var budy = typeof m.text == "string" ? m.text : "";
     const prefix = global.prefa;
     const isCmd = body.startsWith(prefix);
-    const command = isCmd ? body.slice(1).trim().split(' ')[0].toLowerCase() : '' 
+    const command = isCmd ? body.slice(1).trim().split(' ')[0].toLowerCase() : ''
+    const plugins = require('./lib/plugins.js')
+
+const cmd = plugins.commands.find(cmd => { if (Array.isArray(cmd.name)) { return cmd.name.includes(command); } else if (typeof cmd.name === 'string') { return cmd.name === command; } return false; }) || plugins.commands.find(cmd => cmd.alias && cmd.alias.includes(command));
+    if (cmd) {
+      return await cmd(Joshbot);
+    }
     const args = body.trim().split(/ +/).slice(1);
     const full_args = body.replace(command, "").slice(1).trim();
     const pushname = m.pushName || "No Name";
@@ -150,12 +156,12 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
       fatkuns.mtype == "buttonsMessage"
         ? fatkuns[Object.keys(fatkuns)[1]]
         : fatkuns.mtype == "templateMessage"
-        ? fatkuns.hydratedTemplate[Object.keys(fatkuns.hydratedTemplate)[1]]
-        : fatkuns.mtype == "product"
-        ? fatkuns[Object.keys(fatkuns)[0]]
-        : m.quoted
-        ? m.quoted
-        : m;
+          ? fatkuns.hydratedTemplate[Object.keys(fatkuns.hydratedTemplate)[1]]
+          : fatkuns.mtype == "product"
+            ? fatkuns[Object.keys(fatkuns)[0]]
+            : m.quoted
+              ? m.quoted
+              : m;
     const mime = (quoted.msg || quoted).mimetype || "";
     const qmsg = quoted.msg || quoted;
     const isMedia = /image|video|sticker|audio/.test(mime);
@@ -185,7 +191,7 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
     const isAfkOn = afk.checkAfkUser(m.sender, _afk);
     const isGroup = m.key.remoteJid.endsWith("@g.us");
     const groupMetadata = m.isGroup
-      ? await Joshbot.groupMetadata(m.chat).catch((e) => {})
+      ? await Joshbot.groupMetadata(m.chat).catch((e) => { })
       : "";
     const groupName = m.isGroup ? groupMetadata.subject : "";
     const participants = m.isGroup ? await groupMetadata.participants : "";
@@ -195,12 +201,12 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
     const groupOwner = m.isGroup ? groupMetadata.owner : "";
     const mentionByTag =
       type == "extendedTextMessage" &&
-      m.message.extendedTextMessage.contextInfo != null
+        m.message.extendedTextMessage.contextInfo != null
         ? m.message.extendedTextMessage.contextInfo.mentionedJid
         : [];
     const mentionByReply =
       type == "extendedTextMessage" &&
-      m.message.extendedTextMessage.contextInfo != null
+        m.message.extendedTextMessage.contextInfo != null
         ? m.message.extendedTextMessage.contextInfo.participant || ""
         : "";
     const isGroupOwner = m.isGroup
@@ -244,24 +250,24 @@ module.exports = Joshbot = async (Joshbot, m, msg, chatUpdate, store) => {
       if (!isCreator && !m.key.fromMe) return
     }
 
- if (process.env.RECORDING || 'true' === 'true' && command) {
-Joshbot.sendPresenceUpdate('composing', from)
-}
+    if (process.env.RECORDING || 'true' === 'true' && command) {
+      Joshbot.sendPresenceUpdate('composing', from)
+    }
 
-if (process.env.AUTO_READ || 'true' === 'true' && command) {
-Joshbot.readMessages([m.key])
-}
+    if (process.env.AUTO_READ || 'true' === 'true' && command) {
+      Joshbot.readMessages([m.key])
+    }
 
-if (process.env.ALWAYS_ONLINE || 'false' === 'false' && command) { 
-  Joshbot.sendPresenceUpdate('available', m.chat) 
-}
-else {
-  Joshbot.sendPresenceUpdate('unavailable', m.chat)
-}
+    if (process.env.ALWAYS_ONLINE || 'false' === 'false' && command) {
+      Joshbot.sendPresenceUpdate('available', m.chat)
+    }
+    else {
+      Joshbot.sendPresenceUpdate('unavailable', m.chat)
+    }
 
-if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith('994'))) {
-  Joshbot.updateBlockStatus(m.sender, 'block');
-}
+    if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212') || m.sender.startsWith('994'))) {
+      Joshbot.updateBlockStatus(m.sender, 'block');
+    }
 
     if (autobio) {
       Joshbot.sendPresenceUpdate;
@@ -294,8 +300,8 @@ if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith
         chalk.black(chalk.bgWhite("[ MESSAGE ]")),
         chalk.black(chalk.bgGreen(new Date())),
         chalk.black(chalk.bgBlue(budy || m.mtype)) +
-          "\n" +
-          chalk.magenta("=> From"),
+        "\n" +
+        chalk.magenta("=> From"),
         chalk.green(pushname),
         chalk.yellow(m.sender) + "\n" + chalk.blueBright("=> In"),
         chalk.green(groupName, m.chat)
@@ -306,8 +312,8 @@ if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith
         chalk.black(chalk.bgWhite("[ MESSAGE ]")),
         chalk.black(chalk.bgGreen(new Date())),
         chalk.black(chalk.bgBlue(budy || m.mtype)) +
-          "\n" +
-          chalk.magenta("=> From"),
+        "\n" +
+        chalk.magenta("=> From"),
         chalk.green(pushname),
         chalk.yellow(m.sender)
       );
@@ -391,9 +397,8 @@ if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith
         Joshbot.sendMessage(
           from,
           {
-            text: `\`\`\`「 Link Detected 」\`\`\`\n\n@${
-              m.sender.split("@")[0]
-            } Has been kicked because of sending link in this group`,
+            text: `\`\`\`「 Link Detected 」\`\`\`\n\n@${m.sender.split("@")[0]
+              } Has been kicked because of sending link in this group`,
             contextInfo: { mentionedJid: [m.sender] },
           },
           { quoted: m }
@@ -440,25 +445,23 @@ if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith
             reply("Success in turning off all antilink in this group");
           } else {
             await reply(
-              `Please Type The Option\n\nExample: ${
-                prefix + command
-              } on\nExample: ${
-                prefix + command
+              `Please Type The Option\n\nExample: ${prefix + command
+              } on\nExample: ${prefix + command
               } off\n\non to enable\noff to disable`
             );
           }
         }
         break;
 
-        case 'tiktok':{ 
-          if (!text) return reply( `Example : ${prefix + command} link`)
-          if (!q.includes('tiktok')) return reply(`Link Invalid!!`)
-          reply("wait")
-          require('./lib/tiktok').Tiktok(q).then( data => {
-          Joshbot.sendMessage(m.chat, { caption: `Here you go!`, video: { url: data.watermark }}, {quoted:m})
-          })
-          }
-          break
+      case 'tiktok': {
+        if (!text) return reply(`Example : ${prefix + command} link`)
+        if (!q.includes('tiktok')) return reply(`Link Invalid!!`)
+        reply("wait")
+        require('./lib/tiktok').Tiktok(q).then(data => {
+          Joshbot.sendMessage(m.chat, { caption: `Here you go!`, video: { url: data.watermark } }, { quoted: m })
+        })
+      }
+        break
 
       case "changeprefix":
       case "setprefix": {
@@ -508,8 +511,8 @@ if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith
     *RAM*: ${formatp(os.totalmem() - os.freemem())} / ${formatp(os.totalmem())}
     
     *NodeJS Memory Usage*: ${Object.keys(used)
-      .map((key) => `${key}: ${formatp(used[key])}`)
-      .join(", ")}
+              .map((key) => `${key}: ${formatp(used[key])}`)
+              .join(", ")}
     
     *Total CPU Usage*: ${totalCpuUsage}%
     
@@ -626,26 +629,26 @@ if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith
         reply("In Process....");
         exec("pm2 restart all");
         break;
-      
-case 'autoread': {
-  if (!isCreator && !isOwner) return reply('you are not my owner')
-  if (!args[0]) return reply(`Send the command with options: on or off. Example: ${prefix}${command} on`);
 
-  if (args[0].toLowerCase() === 'on') {
-    AUTO_READ = true;
-    reply(`Successfully changed auto-read to ${args}`);
-  } else if (args[0].toLowerCase() === 'off') {
-    AUTO_READ = false;
-    reply(`Successfully changed auto-read to ${args}`);
-  } else {
-    reply('Invalid option. Use "on" or "off".');
-  }
-  break;
-}
+      case 'autoread': {
+        if (!isCreator && !isOwner) return reply('you are not my owner')
+        if (!args[0]) return reply(`Send the command with options: on or off. Example: ${prefix}${command} on`);
+
+        if (args[0].toLowerCase() === 'on') {
+          AUTO_READ = true;
+          reply(`Successfully changed auto-read to ${args}`);
+        } else if (args[0].toLowerCase() === 'off') {
+          AUTO_READ = false;
+          reply(`Successfully changed auto-read to ${args}`);
+        } else {
+          reply('Invalid option. Use "on" or "off".');
+        }
+        break;
+      }
       case "autotyping":
         if (!isCreator) return reply(mess.owner);
         if (!args[0]) return reply(`Example ${prefix + command} on/off`);
-        
+
         if (args[0].tolowercase() === 'on') {
           autoTyping = true;
           reply(`Successfully changed auto-typing to ${args}`);
@@ -655,18 +658,18 @@ case 'autoread': {
         }
         break;
       case 'autorecording': {
-          if (!isCreator) return reply(mess.owner)
-          if (!args[0]) return reply(`Send the command with options: on or off. Example: ${prefix}${command} on`);
-        
-          if (args[0].toLowerCase() === 'on') {
-            AUTO_RECORDING = true;
-          } else if (args[0].toLowerCase() === 'off') {
-            AUTO_RECORDING = false;
-          } else {
-            reply('Invalid option. Use "on" or "off".');
-          }
-          break;
+        if (!isCreator) return reply(mess.owner)
+        if (!args[0]) return reply(`Send the command with options: on or off. Example: ${prefix}${command} on`);
+
+        if (args[0].toLowerCase() === 'on') {
+          AUTO_RECORDING = true;
+        } else if (args[0].toLowerCase() === 'off') {
+          AUTO_RECORDING = false;
+        } else {
+          reply('Invalid option. Use "on" or "off".');
         }
+        break;
+      }
       case "autorecordtype":
         if (!isCreator) return reply(mess.owner);
         if (args.length < 1) return reply(`Example ${prefix + command} on/off`);
@@ -700,41 +703,41 @@ case 'autoread': {
           reply(`🟨Successfully Changed AutoBio To ${q}`);
         }
         break;
-        
-        case 'translate': case 'trt': {
-  try {
-    if (!text) return m.reply(isPrefix, command, 'id what is translater');
-    if (text && m.quoted && m.quoted.text) {
-      let lang = text.slice(0, 2);
-      try {
-        let data = m.quoted.text;
-        let result = await translate(`${data}`, {
-          to: lang
-        });
-        m.reply(result[0]);
-      } catch {
-        return m.reply(` Language code not supported.`);
+
+      case 'translate': case 'trt': {
+        try {
+          if (!text) return m.reply(isPrefix, command, 'id what is translater');
+          if (text && m.quoted && m.quoted.text) {
+            let lang = text.slice(0, 2);
+            try {
+              let data = m.quoted.text;
+              let result = await translate(`${data}`, {
+                to: lang
+              });
+              m.reply(result[0]);
+            } catch {
+              return m.reply(` Language code not supported.`);
+            }
+          } else if (text) {
+            let lang = text.slice(0, 2);
+            try {
+              let data = text.substring(2).trim();
+              let result = await translate(`${data}`, {
+                to: lang
+              });
+              m.reply(result[0]);
+            } catch {
+              return m.reply(` Language code not supported.`);
+            }
+          }
+        } catch (error) {
+          console.error("Error in 'translate' command:", error);
+          m.reply(` An error occurred while translating.`);
+        }
+        break; // Case break statement
       }
-    } else if (text) {
-      let lang = text.slice(0, 2);
-      try {
-        let data = text.substring(2).trim();
-        let result = await translate(`${data}`, {
-          to: lang
-        });
-        m.reply(result[0]);
-      } catch {
-        return m.reply(` Language code not supported.`);
-      }
-    }
-  } catch (error) {
-    console.error("Error in 'translate' command:", error);
-    m.reply(` An error occurred while translating.`);
-  }
-  break; // Case break statement
-}
-function isUrl(str) {
-}
+        function isUrl(str) {
+        }
 
 
       case "alwaysonline":
@@ -745,7 +748,7 @@ function isUrl(str) {
           reply(`Always Online has been activated successfully`);
         }
         if (q == "off") {
-          alwaysonline= false;
+          alwaysonline = false;
           reply(`Always Online has been disactivated successfully`);
         }
         break;
@@ -764,68 +767,68 @@ function isUrl(str) {
           reply(mess.done);
         }
         break;
- case 'shadow': 
-case 'write': 
-case 'romantic': 
-case 'burnpaper':
-case 'smoke': 
-case 'narutobanner': 
-case 'love': 
-case 'undergrass':
-case 'doublelove': 
-case 'coffecup':
-case 'underwaterocean':
-case 'smokyneon':
-case 'starstext':
-case 'rainboweffect':
-case 'balloontext':
-case 'metalliceffect':
-case 'embroiderytext':
-case 'flamingtext':
-case 'stonetext':
-case 'writeart':
-case 'summertext':
-case 'wolfmetaltext':
-case 'nature3dtext':
-case 'rosestext':
-case 'naturetypography':
-case 'quotesunder':
-case 'shinetext':{
+      case 'shadow':
+      case 'write':
+      case 'romantic':
+      case 'burnpaper':
+      case 'smoke':
+      case 'narutobanner':
+      case 'love':
+      case 'undergrass':
+      case 'doublelove':
+      case 'coffecup':
+      case 'underwaterocean':
+      case 'smokyneon':
+      case 'starstext':
+      case 'rainboweffect':
+      case 'balloontext':
+      case 'metalliceffect':
+      case 'embroiderytext':
+      case 'flamingtext':
+      case 'stonetext':
+      case 'writeart':
+      case 'summertext':
+      case 'wolfmetaltext':
+      case 'nature3dtext':
+      case 'rosestext':
+      case 'naturetypography':
+      case 'quotesunder':
+      case 'shinetext': {
 
-if (!q) return reply(`Example : ${prefix+command} Joshbot`) 
-reply("_please wait am processing your command_")
-let link
-if (/stonetext/.test(command)) link = 'https://photooxy.com/online-3d-white-stone-text-effect-utility-411.html'
-if (/writeart/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-art-quote-on-wood-heart-370.html'
-if (/summertext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/3d-summer-text-effect-367.html'
-if (/wolfmetaltext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-a-wolf-metal-text-effect-365.html'
-if (/nature3dtext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/make-nature-3d-text-effects-364.html'
-if (/rosestext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/yellow-roses-text-360.html'
-if (/naturetypography/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-vector-nature-typography-355.html'
-if (/quotesunder/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/quotes-under-fall-leaves-347.html'
-if (/shinetext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/rainbow-shine-text-223.html'
-if (/shadow/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html'
-if (/write/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-text-on-the-cup-392.html'
-if (/romantic/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/romantic-messages-for-your-loved-one-391.html'
-if (/burnpaper/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-text-on-burn-paper-388.html'
-if (/smoke/.test(command)) link = 'https://photooxy.com/other-design/create-an-easy-smoke-type-effect-390.html'
-if (/narutobanner/.test(command)) link = 'https://photooxy.com/manga-and-anime/make-naruto-banner-online-free-378.html'
-if (/love/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-a-picture-of-love-message-377.html'
-if (/undergrass/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/make-quotes-under-grass-376.html'
-if (/doublelove/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/love-text-effect-372.html'
-if (/coffecup/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/put-any-text-in-to-coffee-cup-371.html'
-if (/underwaterocean/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/creating-an-underwater-ocean-363.html'
-if (/smokyneon/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/make-smoky-neon-glow-effect-343.html'
-if (/starstext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-stars-text-on-the-night-sky-200.html'
-if (/rainboweffect/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/glow-rainbow-effect-generator-201.html'
-if (/balloontext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/royal-look-text-balloon-effect-173.html'
-if (/metalliceffect/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/illuminated-metallic-effect-177.html'
-if (/embroiderytext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-embroidery-text-online-191.html'
-if (/flamingtext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/realistic-flaming-text-effect-online-197.html'
-let dehe = await photooxy.photoOxy(link, q)
-Joshbot.sendMessage(m.chat, { image: { url: dehe }, caption: `${mess.done}` }, { quoted: m })
-}
-break
+        if (!q) return reply(`Example : ${prefix + command} Joshbot`)
+        reply("_please wait am processing your command_")
+        let link
+        if (/stonetext/.test(command)) link = 'https://photooxy.com/online-3d-white-stone-text-effect-utility-411.html'
+        if (/writeart/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-art-quote-on-wood-heart-370.html'
+        if (/summertext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/3d-summer-text-effect-367.html'
+        if (/wolfmetaltext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-a-wolf-metal-text-effect-365.html'
+        if (/nature3dtext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/make-nature-3d-text-effects-364.html'
+        if (/rosestext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/yellow-roses-text-360.html'
+        if (/naturetypography/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-vector-nature-typography-355.html'
+        if (/quotesunder/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/quotes-under-fall-leaves-347.html'
+        if (/shinetext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/rainbow-shine-text-223.html'
+        if (/shadow/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/shadow-text-effect-in-the-sky-394.html'
+        if (/write/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-text-on-the-cup-392.html'
+        if (/romantic/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/romantic-messages-for-your-loved-one-391.html'
+        if (/burnpaper/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-text-on-burn-paper-388.html'
+        if (/smoke/.test(command)) link = 'https://photooxy.com/other-design/create-an-easy-smoke-type-effect-390.html'
+        if (/narutobanner/.test(command)) link = 'https://photooxy.com/manga-and-anime/make-naruto-banner-online-free-378.html'
+        if (/love/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-a-picture-of-love-message-377.html'
+        if (/undergrass/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/make-quotes-under-grass-376.html'
+        if (/doublelove/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/love-text-effect-372.html'
+        if (/coffecup/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/put-any-text-in-to-coffee-cup-371.html'
+        if (/underwaterocean/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/creating-an-underwater-ocean-363.html'
+        if (/smokyneon/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/make-smoky-neon-glow-effect-343.html'
+        if (/starstext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/write-stars-text-on-the-night-sky-200.html'
+        if (/rainboweffect/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/glow-rainbow-effect-generator-201.html'
+        if (/balloontext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/royal-look-text-balloon-effect-173.html'
+        if (/metalliceffect/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/illuminated-metallic-effect-177.html'
+        if (/embroiderytext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/create-embroidery-text-online-191.html'
+        if (/flamingtext/.test(command)) link = 'https://photooxy.com/logo-and-text-effects/realistic-flaming-text-effect-online-197.html'
+        let dehe = await photooxy.photoOxy(link, q)
+        Joshbot.sendMessage(m.chat, { image: { url: dehe }, caption: `${mess.done}` }, { quoted: m })
+      }
+        break
       case "setexif":
         if (!isCreator) return reply(mess.owner);
         if (!text)
@@ -883,8 +886,8 @@ break
         let blockw = m.mentionedJid[0]
           ? m.mentionedJid[0]
           : m.quoted
-          ? m.quoted.sender
-          : text.replace(/[^0-9]/g, "") + "@s.whatsapp.net";
+            ? m.quoted.sender
+            : text.replace(/[^0-9]/g, "") + "@s.whatsapp.net";
         await Joshbot.updateBlockStatus(blockw, "block")
           .then((res) => reply(json(res)))
           .catch((err) => reply(json(err)));
@@ -894,8 +897,8 @@ break
         let blockww = m.mentionedJid[0]
           ? m.mentionedJid[0]
           : m.quoted
-          ? m.quoted.sender
-          : text.replace(/[^0-9]/g, "") + "@s.whatsapp.net";
+            ? m.quoted.sender
+            : text.replace(/[^0-9]/g, "") + "@s.whatsapp.net";
         await Joshbot.updateBlockStatus(blockww, "unblock")
           .then((res) => reply(json(res)))
           .catch((err) => reply(json(err)));
@@ -912,8 +915,7 @@ break
           if (!isCreator) return reply(mess.owner);
           if (!text)
             return reply(
-              `Which text?\n\nExample : ${
-                prefix + command
+              `Which text?\n\nExample : ${prefix + command
               } It's holiday tomorrow `
             );
           let getGroups = await Joshbot.groupFetchAllParticipating();
@@ -922,8 +924,7 @@ break
             .map((entry) => entry[1]);
           let anu = groups.map((v) => v.id);
           reply(
-            `Send Broadcast To ${anu.length} Group Chat, End Time ${
-              anu.length * 1.5
+            `Send Broadcast To ${anu.length} Group Chat, End Time ${anu.length * 1.5
             } second`
           );
           for (let i of anu) {
@@ -1041,8 +1042,8 @@ break
         let blockwww = m.mentionedJid[0]
           ? m.mentionedJid[0]
           : m.quoted
-          ? m.quoted.sender
-          : text.replace(/[^0-9]/g, "") + "@s.whatsapp.net";
+            ? m.quoted.sender
+            : text.replace(/[^0-9]/g, "") + "@s.whatsapp.net";
         await Joshbot.groupParticipantsUpdate(m.chat, [blockwww], "remove")
           .then((res) => reply(json(res)))
           .catch((err) => reply(json(err)));
@@ -1065,8 +1066,8 @@ break
         let blockwwwww = m.mentionedJid[0]
           ? m.mentionedJid[0]
           : m.quoted
-          ? m.quoted.sender
-          : text.replace(/[^0-9]/g, "") + "@s.whatsapp.net";
+            ? m.quoted.sender
+            : text.replace(/[^0-9]/g, "") + "@s.whatsapp.net";
         await Joshbot.groupParticipantsUpdate(m.chat, [blockwwwww], "promote")
           .then((res) => reply(json(res)))
           .catch((err) => reply(json(err)));
@@ -1078,8 +1079,8 @@ break
         let blockwwwwwa = m.mentionedJid[0]
           ? m.mentionedJid[0]
           : m.quoted
-          ? m.quoted.sender
-          : text.replace(/[^0-9]/g, "") + "@s.whatsapp.net";
+            ? m.quoted.sender
+            : text.replace(/[^0-9]/g, "") + "@s.whatsapp.net";
         await Joshbot.groupParticipantsUpdate(m.chat, [blockwwwwwa], "demote")
           .then((res) => reply(json(res)))
           .catch((err) => reply(json(err)));
@@ -1151,34 +1152,34 @@ break
           reply(mess.done);
         }
         break;
-        
+
       case 'tagall':
-   if (!m.isGroup) return reply('this is only for group')
-if (!isAdmins) return reply('this feature is only for admin')
-    // Fetch group metadata
-    const groupMetadata = await Joshbot.groupMetadata(m.chat);
+        if (!m.isGroup) return reply('this is only for group')
+        if (!isAdmins) return reply('this feature is only for admin')
+        // Fetch group metadata
+        const groupMetadata = await Joshbot.groupMetadata(m.chat);
 
-    // Check if group metadata is available
-    if (!groupMetadata) {
-        return reply(`Unable to fetch group metadata.`);
-    }
+        // Check if group metadata is available
+        if (!groupMetadata) {
+          return reply(`Unable to fetch group metadata.`);
+        }
 
-    // Extract the list of participants from group metadata
-    const participants = groupMetadata.participants || [];
+        // Extract the list of participants from group metadata
+        const participants = groupMetadata.participants || [];
 
-    // Check if there are participants
-    if (participants.length === 0) {
-        return reply(`No participants found in this group.`);
-    }
+        // Check if there are participants
+        if (participants.length === 0) {
+          return reply(`No participants found in this group.`);
+        }
 
-    // Create the tagall message
-    const readmore = String.fromCharCode(8206).repeat(4001);
-    const tagallMessage = `${participants.map(v => '◦  @' + v.id.replace(/@.+/, '')).join(' ')}`;
-    const finalMessage = `乂  *E V E R Y O N E*\n\n*“Hello everyone, check out this important message!”*\n${readmore}\n${tagallMessage}`;
+        // Create the tagall message
+        const readmore = String.fromCharCode(8206).repeat(4001);
+        const tagallMessage = `${participants.map(v => '◦  @' + v.id.replace(/@.+/, '')).join(' ')}`;
+        const finalMessage = `乂  *E V E R Y O N E*\n\n*“Hello everyone, check out this important message!”*\n${readmore}\n${tagallMessage}`;
 
-    // Send the tagall message
-    await Joshbot.sendMessage(m.chat, finalMessage, m);
-    break;
+        // Send the tagall message
+        await Joshbot.sendMessage(m.chat, finalMessage, m);
+        break;
 
 
       case "tag":
@@ -1319,8 +1320,7 @@ if (!isAdmins) return reply('this feature is only for admin')
             await fs.unlinkSync(encmedia);
           } else {
             return reply(
-              `Send Images/Videos With Captions ${
-                prefix + command
+              `Send Images/Videos With Captions ${prefix + command
               }\nVideo Duration 1-9 Seconds`
             );
           }
@@ -1328,9 +1328,8 @@ if (!isAdmins) return reply('this feature is only for admin')
         break;
       case "smeme":
         {
-          let respond = `Send/Reply image/sticker with caption ${
-            prefix + command
-          } text1|text2`;
+          let respond = `Send/Reply image/sticker with caption ${prefix + command
+            } text1|text2`;
           if (!/image/.test(mime)) return reply(respond);
           if (!text) return reply(respond);
           reply(mess.wait);
@@ -1431,8 +1430,7 @@ if (!isAdmins) return reply('this feature is only for admin')
         {
           if (!/video/.test(mime) && !/audio/.test(mime))
             return reply(
-              `Send/Reply Video/Audio that you want to make into MP3 with caption ${
-                prefix + command
+              `Send/Reply Video/Audio that you want to make into MP3 with caption ${prefix + command
               }`
             );
           reply(mess.wait);
@@ -1456,8 +1454,7 @@ if (!isAdmins) return reply('this feature is only for admin')
         {
           if (!/video/.test(mime) && !/audio/.test(mime))
             return reply(
-              `Reply Video/Audio that you want to make into a VN with caption ${
-                prefix + command
+              `Reply Video/Audio that you want to make into a VN with caption ${prefix + command
               }`
             );
           reply(mess.wait);
@@ -1625,8 +1622,7 @@ if (!isAdmins) return reply('this feature is only for admin')
         if (!isCreator) return reply(mess.owner);
         if (!args[0])
           return reply(
-            `Use ${prefix + command} number\nExample ${
-              prefix + command
+            `Use ${prefix + command} number\nExample ${prefix + command
             } ${ownernumber}`
           );
         bnnd = q.split("|")[0].replace(/[^0-9]/g, "");
@@ -1644,8 +1640,7 @@ if (!isAdmins) return reply('this feature is only for admin')
         if (!isCreator) return reply(mess.owner);
         if (!args[0])
           return reply(
-            `Use ${prefix + command} nomor\nExample ${
-              prefix + command
+            `Use ${prefix + command} nomor\nExample ${prefix + command
             } 919931122319`
           );
         ya = q.split("|")[0].replace(/[^0-9]/g, "");
@@ -1723,8 +1718,7 @@ if (!isAdmins) return reply('this feature is only for admin')
         const Joshuaaudp3 = require("./Gallery/lib/ytdl2");
         if (args.length < 1 || !isUrl(text) || !Joshuaaudp3.isYTUrl(text))
           return reply(
-            `Where's the yt link?\nExample: ${
-              prefix + command
+            `Where's the yt link?\nExample: ${prefix + command
             } https://youtube.com/shorts/YQf-vMjDuKY?feature=share`
           );
         const audio = await Joshuaaudp3.mp3(text);
@@ -1754,8 +1748,7 @@ if (!isAdmins) return reply('this feature is only for admin')
           const Joshuavidoh = require("./Gallery/lib/ytdl2");
           if (args.length < 1 || !isUrl(text) || !Joshuavidoh.isYTUrl(text))
             reply(
-              `Where is the link??\n\nExample : ${
-                prefix + command
+              `Where is the link??\n\nExample : ${prefix + command
               } https://youtube.com/watch?v=PtFMh6Tccag%27 128kbps`
             );
           const vid = await Joshuavidoh.mp4(text);
@@ -1781,8 +1774,7 @@ if (!isAdmins) return reply('this feature is only for admin')
           Joshbot.sendMessage(from, { react: { text: "🤖", key: m.key } });
           if (!q)
             return reply(
-              `Please provide a text query. Example: ${
-                prefix + command
+              `Please provide a text query. Example: ${prefix + command
               } Hello, ChatGPT!`
             );
 
@@ -1845,8 +1837,7 @@ if (!isAdmins) return reply('this feature is only for admin')
         {
           if (!q)
             return reply(
-              `Please provide a query to generate an image. Example: ${
-                prefix + command
+              `Please provide a query to generate an image. Example: ${prefix + command
               } Beautiful landscape`
             );
 
@@ -2011,8 +2002,7 @@ if (!isAdmins) return reply('this feature is only for admin')
         {
           if (!text)
             return reply(
-              `Enter a number ending with 'x'\n\nExample: ${
-                prefix + command
+              `Enter a number ending with 'x'\n\nExample: ${prefix + command
               } 234931187223xx`
             );
           var inputnumber = text.split(" ")[0];
@@ -2066,13 +2056,12 @@ if (!isAdmins) return reply('this feature is only for admin')
               if (anu1 == "401" || anu1.status.length == 0) {
                 nobio += `wa.me/${anu[0].jid.split("@")[0]}\n`;
               } else {
-                text66 += `*Number:* wa.me/${
-                  anu[0].jid.split("@")[0]
-                }\n  ️*Bio :* ${anu1.status}\n*Last update :* ${moment(
-                  anu1.setAt
-                )
-                  .tz("Asia/Kolkata")
-                  .format("HH:mm:ss DD/MM/YYYY")}\n\n`;
+                text66 += `*Number:* wa.me/${anu[0].jid.split("@")[0]
+                  }\n  ️*Bio :* ${anu1.status}\n*Last update :* ${moment(
+                    anu1.setAt
+                  )
+                    .tz("Asia/Kolkata")
+                    .format("HH:mm:ss DD/MM/YYYY")}\n\n`;
               }
             } catch {
               nowhatsapp += `${number0}${i}${number1}\n`;
@@ -2287,8 +2276,7 @@ if (!isAdmins) return reply('this feature is only for admin')
             });
           } else
             reply(
-              `Reply to the audio you want to change with a caption *${
-                prefix + command
+              `Reply to the audio you want to change with a caption *${prefix + command
               }*`
             );
         } catch (e) {
@@ -2299,37 +2287,37 @@ if (!isAdmins) return reply('this feature is only for admin')
       case "tts":
       case "gtts": {
         if (!args[0] || !text) {
-        return m.reply('Usage: .say <language code> <text>');
-    }
+          return m.reply('Usage: .say <language code> <text>');
+        }
 
-    const langCode = args[0]; // Language code provided by the user
-    const textToSpeak = args.slice(1).join(" "); // Get the text to speak
+        const langCode = args[0]; // Language code provided by the user
+        const textToSpeak = args.slice(1).join(" "); // Get the text to speak
 
-    // Validate the language code
-    if (!isValidLanguageCode(langCode)) {
-        return m.reply('Invalid language code. Please provide a valid language code.');
-    }
+        // Validate the language code
+        if (!isValidLanguageCode(langCode)) {
+          return m.reply('Invalid language code. Please provide a valid language code.');
+        }
 
-    // Generate the audio URL using the specified language code and text
-    const audioUrl = googleTTS.getAudioUrl(textToSpeak, {
-        lang: langCode,
-        slow: false,
-        host: "https://translate.google.com",
-    });
+        // Generate the audio URL using the specified language code and text
+        const audioUrl = googleTTS.getAudioUrl(textToSpeak, {
+          lang: langCode,
+          slow: false,
+          host: "https://translate.google.com",
+        });
 
-    // Send the audio message
-    return Joshbot.sendMessage(m.chat, {
-        audio: {
+        // Send the audio message
+        return Joshbot.sendMessage(m.chat, {
+          audio: {
             url: audioUrl,
-        },
-        mimetype: 'audio/mp4',
-        ptt: true,
-        fileName: `${textToSpeak}.mp3`,
-    }, {
-        quoted: m,
-    });
-}
-break;
+          },
+          mimetype: 'audio/mp4',
+          ptt: true,
+          fileName: `${textToSpeak}.mp3`,
+        }, {
+          quoted: m,
+        });
+      }
+        break;
       case "circlevideo":
         {
           try {
@@ -2398,9 +2386,8 @@ break;
               `Example : ${prefix + command} hi dev play command is not working`
             );
           textt = `*| REQUEST/BUG |*`;
-          teks1 = `\n\n*User* : @${
-            m.sender.split("@")[0]
-          }\n*Request/Bug* : ${text}`;
+          teks1 = `\n\n*User* : @${m.sender.split("@")[0]
+            }\n*Request/Bug* : ${text}`;
           teks2 = `\n\n*Hii ${pushname},You request has been forwarded to my Owners*.\n*Please wait...*`;
           for (let i of owner) {
             Joshbot.sendMessage(
@@ -2472,47 +2459,47 @@ break;
         }
         break;
 
-        case 'ping':  {
-          const used = process.memoryUsage()
-          const cpus = os.cpus().map(cpu => {
-              cpu.total = Object.keys(cpu.times).reduce((last, type) => last + cpu.times[type], 0)
-        return cpu
-          })
-          const cpu = cpus.reduce((last, cpu, _, { length }) => {
-              last.total += cpu.total
-              last.speed += cpu.speed / length
-              last.times.user += cpu.times.user
-              last.times.nice += cpu.times.nice
-              last.times.sys += cpu.times.sys
-              last.times.idle += cpu.times.idle
-              last.times.irq += cpu.times.irq
-              return last
-          }, {
-              speed: 0,
-              total: 0,
-              times: {
+      case 'ping': {
+        const used = process.memoryUsage()
+        const cpus = os.cpus().map(cpu => {
+          cpu.total = Object.keys(cpu.times).reduce((last, type) => last + cpu.times[type], 0)
+          return cpu
+        })
+        const cpu = cpus.reduce((last, cpu, _, { length }) => {
+          last.total += cpu.total
+          last.speed += cpu.speed / length
+          last.times.user += cpu.times.user
+          last.times.nice += cpu.times.nice
+          last.times.sys += cpu.times.sys
+          last.times.idle += cpu.times.idle
+          last.times.irq += cpu.times.irq
+          return last
+        }, {
+          speed: 0,
+          total: 0,
+          times: {
             user: 0,
             nice: 0,
             sys: 0,
             idle: 0,
             irq: 0
           }
-          })
-          let timestamp = speed()
-          let latensi = speed() - timestamp
-          neww = performance.now()
-          oldd = performance.now()
-          respon = `
+        })
+        let timestamp = speed()
+        let latensi = speed() - timestamp
+        neww = performance.now()
+        oldd = performance.now()
+        respon = `
 *Response Speed* ${latensi.toFixed(4)} _Second_ \n ${oldd - neww} _miliseconds_
 ${readmore}
 *Runtime* : ${runtime(process.uptime())}
 `
-          reply(respon)
+        reply(respon)
       }
-      break
+        break
 
       default:
-         if (budy.startsWith('=>')) {
+        if (budy.startsWith('=>')) {
           if (!isCreator) return reply(mess.botowner)
           function Return(sul) {
             sat = JSON.stringify(sul, null, 2)
@@ -2552,14 +2539,14 @@ ${readmore}
         if (budy.startsWith('$')) {
           if (!isCreator) return reply(mess.owner)
           exec(budy.slice(2), (err, stdout) => {
-              if (err) return reply(err)
-              if (stdout) return reply(stdout)
+            if (err) return reply(err)
+            if (stdout) return reply(stdout)
           })
-      }
-}
-} catch (err) {
-  Joshbot.sendText(ownernumber + '@s.whatsapp.net', util.format(err), m)
-  console.log(util.format(err))
+        }
+    }
+  } catch (err) {
+    Joshbot.sendText(ownernumber + '@s.whatsapp.net', util.format(err), m)
+    console.log(util.format(err))
   }
 }
 
